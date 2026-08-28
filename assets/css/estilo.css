@@ -1,0 +1,3140 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   TRILHA CERTA - LANDING EXPEDIÇÃO CANASTRA
+
+   Um arquivo só, e não cinco, porque este projeto não tem empacotador: sem
+   bundler, cada @import ou <link> extra é uma requisição em cascata ANTES da
+   primeira pintura. Cinco arquivos organizados custariam quatro viagens de rede
+   que o visitante paga em tela branca.
+
+   A ordem abaixo é a ordem em que a cascata precisa delas. Mexer nela quebra
+   especificidade sem aviso.
+
+     1. Tokens                    o vocabulário
+     2. Reset e base              o chão
+     3. Superfícies do navegador  o que não desenhamos e ainda assim é nosso
+     4. Utilitários
+     5. Botão
+     6. Placa de mídia
+     7. Barra
+     8. Herói
+     9. Roteiro (a tira de roadbook)
+    10. Escopo (o manifesto)
+    11. Dor
+    12. Oferta
+    13. Redes e rodapé
+    14. Trilho
+    15. Estados de movimento
+    16. Movimento reduzido
+
+   MOBILE PRIMEIRO. Toda regra sem media query é a regra do celular. As duas
+   quebras são min-width: 48rem (768px) e min-width: 64rem (1024px), e elas só
+   ACRESCENTAM. Não existe max-width neste arquivo, de propósito: desktop-first
+   com max-width é como se produz uma página que funciona no monitor de quem a
+   escreveu e em nenhum celular.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+
+/* ── 1. TOKENS ──────────────────────────────────────────────────────────── */
+
+:root {
+
+  /* ── Cor ──────────────────────────────────────────────────────────────
+     A paleta vem do guia de campo: verde profundo de fundo, menta como único
+     acento de display, e os cinzas esverdeados no meio. O laranja da marca
+     continua, mas com um papel só: AÇÃO.
+
+     Essa divisão é o que resolve o conflito. A referência manda usar um acento
+     cromático apenas, e a Trilha Certa tem laranja na logo, no ônibus e dentro
+     de quase toda foto. Prender o laranja no botão e no ícone de contato deixa
+     a página inteira falar a língua do guia de campo sem apagar a marca no
+     único lugar em que ela precisa gritar.
+
+     DUAS superfícies, tinta e papel. Os valores aqui são os da tinta, que é o
+     padrão; os de papel estão no bloco .papel logo depois dos tokens. Todo
+     número abaixo foi medido antes de virar código. */
+
+  --fundo:       #161B13;  /* verde profundo. É quase preto com fundo de mata */
+
+  /* --fundo-2 e --fundo-3 valem o MESMO que --fundo, e isso é decisão e não
+     descuido. A referência não tem elevação: "sem sombra, profundidade vem da
+     sobreposição fotográfica". A medição confirma que ela teria razão de
+     qualquer jeito: sobre o verde profundo, uma superfície elevada plausível
+     entrega 1,08 de contraste contra o fundo, ou seja, é invisível.
+     O que separa uma folha da outra passa a ser fio de 1px, que se vê. */
+  --fundo-2:     #161B13;
+  --fundo-3:     #1A2017;  /* só o vazio de mídia carregando, quase imperceptível */
+
+  --tinta:       #DDE2E4;  /* 13,39:1 */
+  --tinta-media: #A9B3A3;  /*  8,05:1  apoio */
+  --tinta-fraca: #84907F;  /*  5,23:1  o degrau mais fraco que ainda passa */
+
+  --laranja:       #FF6A00; /* PREENCHIMENTO da marca, e só. 6,09:1 sobre o
+                               verde. Nunca muda de superfície: o rótulo dentro
+                               dele é escuro, então o contraste é do par botão
+                               e não do fundo da seção. */
+  --laranja-fundo: #E85D00; /* estado pressionado */
+
+  /* Cor do rótulo sobre o preenchimento da marca. Fica FORA do jogo de
+     superfície de propósito: --fundo muda com a seção, e usá-lo aqui fazia o
+     botão virar creme sobre laranja dentro do papel, 2,26:1 medido no
+     navegador. O par botão é absoluto porque o preenchimento dele é absoluto. */
+  --sobre-marca: #0E0E0F;   /* 6,72:1 sobre #FF6A00 */
+
+  /* A MARCA DO WHATSAPP. Absoluta pelo mesmo motivo que --sobre-marca: não
+     pertence à paleta da página, e sim a outra empresa. Nenhuma superfície a
+     redeclara, porque mudar de tom conforme a faixa destruiria exatamente o
+     reconhecimento que a traz para cá.
+
+     --zap-anel é o verde escuro da própria paleta do aplicativo, e está aqui
+     por medida e não por enfeite: o verde claro sobre o papel dá 1,52:1, e um
+     botão que some na faixa clara não é botão. O anel entrega 3,17:1 sobre o
+     papel e 4,20:1 sobre a banda escura, que é o mínimo de 3:1 para contorno
+     de controle nas duas superfícies que ele atravessa.
+
+     O glifo branco sobre o verde dá 1,98:1, abaixo dos 3:1. É consciente: a
+     WCAG 1.4.11 isenta logotipos, e este é o crachá do aplicativo, desenho e
+     cor que a pessoa reconhece antes de ler. Trocar o branco por um tom mais
+     escuro passaria na conta e perderia a única coisa que o botão vende. */
+  --zap:        #25D366;
+  --zap-anel:   #128C7E;
+  --zap-toque:  #1DA851;
+  --sobre-zap:  #FFFFFF;
+
+  /* --acento é o display: título de seção, traçado do mapa, marcador. A menta
+     SÓ existe na banda escura: sobre o papel ela entrega 1,21:1, e não há menta
+     que continue lendo como menta e passe sobre claro. O par de papel está no
+     bloco .papel. */
+  --acento: #E2FFCC;        /* 16,17:1 sobre o verde */
+
+  /* A linha do mapa é a cor do texto, não a do acento: ela é leitura de rota, e
+     rota se lê como informação. É o mesmo #DDE2E4 que a referência usa no
+     traçado dela. */
+  /* AS DUAS CORES DO PERCURSO, mais o halo que as sustenta.
+
+     O mapa é fixo e atravessa a página inteira. Enquanto o traçado desenhava
+     cru, a cor tinha de sobreviver a #161B13 e a #DDE2E4 ao mesmo tempo, e essa
+     janela é estreita: das cores do brasão, só o vermelho passava os 3:1 nas
+     duas. O amarelo entrega 12:1 no escuro e 1,11:1 no papel.
+
+     A primeira saída foi uma placa opaca por baixo do mapa. Ela resolvia a
+     conta e criava outro problema: sobre a banda escura chapada ela era
+     invisível, mas sobre a FOTO DO HERÓI virava um retângulo preto plantado no
+     meio da imagem. Superfície de página não é a mesma coisa que fundo de
+     página, e eu tratei as duas como se fossem.
+
+     A saída certa é a que a cartografia usa desde sempre: o traço carrega o
+     próprio contraste. --halo-mapa é um contorno escuro em volta de tudo, e a
+     conta deixa de ser contra o fundo e passa a ser contra o contorno. Sobre
+     ele o amarelo dá 15,11:1, esteja atrás o quê estiver: papel, mata, céu ou
+     a banda escura. E o fundo do mapa volta a ser o que sempre deveria ter
+     sido, que é nada.
+
+     --percurso-adiante fica neutro de propósito: repetir o amarelo apagaria a
+     única distinção que importa no desenho. A hierarquia entre os dois sai de
+     peso, 1,4 contra 2,6, e não de opacidade. */
+  --percurso-feito:    #FEF200;   /* 15,11:1 sobre o halo */
+  --percurso-adiante:  #7D7D7D;   /*  4,30:1 sobre o halo */
+  --halo-mapa:         20 26 17;  /* o contorno, em canais para o rgb() com alfa */
+
+  --alerta: #FF8A6B;        /* 7,58:1. Um coral quente, que pertence a esta
+                               paleta; o vermelho de impressão da marca entrega
+                               2,4:1 sobre o verde e reprova. */
+
+  /* Linhas em tinta com alfa: assim o fio acompanha o fundo onde a caixa cai,
+     em vez de clarear sozinho sobre as seções mais escuras. */
+  --linha-sutil: rgb(221 226 228 / 0.10);
+  --linha-media: rgb(221 226 228 / 0.18);
+
+  /* ── Tipografia ───────────────────────────────────────────────────────
+     Três famílias, três papéis que não se misturam.
+
+     Archivo é variável nos DOIS eixos, peso 400-900 e largura 62-125: a mesma
+     família dá a manchete larga e pesada do herói e o título condensado da
+     folha de roadbook, sem empilhar duas fontes para o mesmo trabalho.
+
+     Barlow fica só na PROSA longa, e é continuidade de marca: é a face de texto
+     do site institucional.
+
+     Martian Mono carrega todo o CHROME. A regra de divisão é simples: se o
+     texto é lido em sequência é prosa e vai de Barlow; se é lido de relance,
+     rótulo, número, etapa, regra, rótulo de botão, é chrome e vai de mono.
+
+     Fora ficaram Saira Stencil One (novidade decorativa, ilegível abaixo de
+     24px) e Outfit. */
+  --fonte-display: 'Archivo', system-ui, sans-serif;
+  --fonte-corpo:   'Barlow', system-ui, sans-serif;
+  /* Mono em TODO o chrome: rótulo, leitura de etapa, legenda, rótulo de botão,
+     regra, número. É a virada visual que mais aproxima a página de instrumento
+     de campo, e o que separa chrome de prosa em vez de deixar tudo na mesma
+     voz. Prosa longa continua em Barlow: mono cansa em parágrafo. */
+  --fonte-mono:    'Martian Mono', ui-monospace, monospace;
+
+  /* Escala por PAPEL, não por tamanho solto. O site institucional tinha 32
+     tamanhos distintos, onze deles entre 11 e 16px: a distância entre 0,85 e
+     0,875rem é 0,4px, invisível na tela e dois números para manter em sincronia
+     para sempre. Antes de acrescentar um degrau aqui, confira se o papel já não
+     existe. */
+  --txt-micro:    0.6875rem; /* 11px  rótulo micro em caixa alta */
+  --txt-rotulo:   0.8125rem; /* 13px  rótulo, spec de placa, unidade */
+  --txt-apoio:    0.9375rem; /* 15px  apoio, metadado */
+  --txt-corpo:    1.0625rem; /* 17px  corpo. 17 e não 16: o corpo desta página
+                                é lido no celular, com a mão, em movimento */
+  --txt-destaque: 1.1875rem; /* 19px  corpo destacado */
+
+  /* Fluidos. Crescem com a viewport em vez de saltar num breakpoint. */
+  --txt-titulo: clamp(1.625rem, 1.2rem + 1.9vw, 2.625rem);  /* 42px de teto */
+  --txt-secao:  clamp(2.25rem,  6.6vw,         5.5rem);     /* 88px de teto */
+  --txt-heroi:  clamp(2.5rem,   7vw,           6.25rem);    /* fica: já são 3 linhas */
+  --txt-preco:  clamp(2.75rem,  1.9rem + 3.8vw, 4.25rem);
+
+  /* O corpo dos DOIS totais do painel, e ele é fluido por uma razão medida, não
+     por gosto. "R$ 5.990,00 por pessoa" em mono a 78% de largura pede 283px a
+     21px e 256px a 19px. A coluna do painel tem 309px num celular de 390 e
+     239px num de 320. Fixo em 21 a linha quebra nas telas estreitas e deixa
+     "pessoa" órfã debaixo da cifra; fixo em 17, que é o que cabia em 320, o
+     total ficava a dois pixels do texto de apoio e parava de ser um degrau.
+     Entre 320 e 390 a inclinação leva 17 a 21, e a primeira etapa termina aí.
+
+     A partir de 390 é onde o teto ANTIGO travava — e o sinal (--txt-preco)
+     continuava crescendo até 68px em 990px de viewport. O total ficava para
+     trás: em 390 ele é 46% do sinal (21 contra 45,2), e em 1280 tinha caído
+     para 31% (21 contra 68). O segundo maior número do painel ia encolhendo
+     de importância bem na largura onde a tela sobra mais para ele crescer.
+
+     O clamp aninhado no terceiro argumento é a segunda etapa, e ela só entra
+     em jogo depois que a primeira já bateu no antigo teto de 21px: a partir
+     daí o total cresce PROPORCIONAL ao sinal, na mesma razão de 390px
+     (45,2 / 20,99 = 2,154), até o sinal bater no próprio teto aos 990px de
+     viewport — ponto em que os dois passam a crescer junto e depois os dois
+     param juntos. 1,973rem é 68px dividido por essa razão: o teto novo do
+     total, sempre 2,15x menor que o do sinal, nunca maior. */
+  --txt-total:  clamp(1.0625rem, -0.08rem + 5.71vw,
+                clamp(1.3125rem, 0.8821rem + 1.7641vw, 1.973rem));
+
+  /* Entrelinha do display, e é ela que faz a maior parte do trabalho. Subir 30%
+     de corpo é perceptível; fechar de 1.04 para 0.88 transforma duas linhas
+     soltas num bloco tipográfico sólido. Escala grande com entrelinha frouxa
+     continua lendo como landing comum, por maior que seja o número. */
+  --lh-heroi: 0.88;
+  --lh-secao: 0.92;
+
+  /* Largura do display. O Archivo é variável no eixo wdth (62 a 125), e estava
+     em 112%, que é o oposto de condensado. A face de display da referência é
+     extremamente estreita, e descer para 74% chega perto dela sem baixar
+     nenhuma fonte nova.
+     Condensar também devolve linha: o mesmo título ocupa menos largura, então
+     dá para subir o corpo sem ganhar uma linha. Foi o que permitiu a seção ir
+     de 72px para 88px sem estourar. */
+  --largura-display: 74%;
+
+  /* Tracking em em, nunca em px. Em px o valor não acompanha o clamp: o título
+     do herói ficaria com tracking negativo mais forte no celular, onde ele é
+     MENOR, que é exatamente o contrário do necessário.
+     E a regra do caixa alta é contraintuitiva: quanto menor a caixa alta, MAIS
+     tracking, porque as maiúsculas pequenas se fecham umas nas outras. */
+  --tracking-display:  -0.03em;
+  --tracking-caps-m:    0.06em; /* caixa alta de 15-20px: botões, navegação */
+  --tracking-caps-p:    0.11em; /* caixa alta de 11-13px: rótulos e selos */
+
+  /* ── Espaço ───────────────────────────────────────────────────────────
+     Base 4. Substitui os valores avulsos (60/80/100/120/140px) que se
+     acumulam quando cada seção escolhe sozinha o próprio respiro. */
+  --e-1:   4px;  --e-2:   8px;  --e-3:  12px;  --e-4:  16px;
+  --e-5:  20px;  --e-6:  24px;  --e-8:  32px;  --e-10: 40px;
+  --e-12: 48px;  --e-16: 64px;  --e-20: 80px;  --e-24: 96px;
+  --e-32: 128px;
+
+  /* ── Forma ────────────────────────────────────────────────────────────
+     Raio zero em toda a estrutura: botão, folha, painel, campo. O mundo da
+     página é roadbook impresso e placa de sinalização, e nenhum dos dois tem
+     canto arredondado. Um sistema de forma escolhido é o que separa uma página
+     desenhada de uma página montada.
+
+     Uma exceção, declarada: 2px na placa de mídia, para a foto não terminar
+     num pixel cortado contra o fundo. */
+  --raio:       0;
+  --raio-placa: 2px;
+
+  /* ── Layout ───────────────────────────────────────────────────────── */
+  --largura-conteudo: 72rem;   /* 1152px */
+  --medida-texto:     68ch;
+  --altura-barra:     64px;
+  /* O QUE O RODAPÉ RESERVA NO CELULAR, e para quem.
+
+     Era --altura-mapa: 150px, "o que o mapa ocupa no rodapé do celular". Duas
+     coisas estavam erradas nesse nome. O mapa não mora no rodapé faz tempo, ele
+     é fixo no alto à direita; e agora não existe no celular. O token seguia
+     reservando 150px para um elemento ausente, e o rodapé terminava com 198px
+     de ar morto.
+
+     Quem realmente ocupa o pé da tela é o botão flutuante: 56px de diâmetro a
+     --e-4 da borda, ou seja 72px tomados a contar de baixo. E ele PRECISA de
+     reserva: a linha de copyright quebra em duas linhas no celular e chega a
+     355px de uma tela de 375, entrando na coluna do botão. Sem reserva, o
+     flutuante senta em cima dela quando a rolagem chega ao fim.
+
+     96px são os 72 do botão mais 24 de folga. No desktop nada disso vale: lá o
+     rodapé zera o reserve e a linha cabe inteira longe da coluna do botão. */
+  --reserva-flutuante: 96px;
+  --largura-mapa:    150px;    /* coluna do mapa no desktop */
+  --respiro-lateral:  var(--e-5);
+
+  /* ── Movimento ────────────────────────────────────────────────────────
+     As curvas nativas do CSS (ease, ease-out) são fracas: a desaceleração é
+     suave demais para o movimento parecer decidido. Estas freiam com força no
+     fim, que é onde o olho está.
+
+     ease-in NUNCA entra em interface: começa devagar justamente no instante em
+     que o usuário está olhando, e 200ms com ease-in parecem mais lentos que
+     200ms com ease-out.
+
+     --ease-revelar é a terceira porque --ease-saida é violenta de propósito:
+     ela entrega cerca de 40% do movimento nos primeiros 10% do tempo, e é isso
+     que faz um botão parecer responder na hora. Numa revelação de conteúdo esse
+     mesmo arranque continua lendo como "rápido" por mais que a duração suba.
+     Esta entrega 19% no mesmo trecho: mesma chegada macia, sem o pulo. */
+  --ease-saida:     cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-movimento: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-revelar:   cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+  --dur-toque:   120ms;
+  --dur-estado:  200ms;
+  --dur-revelar: 600ms;
+}
+
+@media (min-width: 48rem) {
+  :root { --respiro-lateral: var(--e-10); }
+}
+@media (min-width: 64rem) {
+  :root {
+    --respiro-lateral: var(--e-16);
+    /* A barra cresce 12px no desktop, e é o token que faz isso: o respiro do
+       herói e o encosto do mapa saem dele por calc(), então nada precisa ser
+       reajustado à mão. Cresce porque a logo cresceu: é um brasão denso, com
+       texto, piloto, ônibus e seta dentro de um quadrado, e a 34px aquilo não
+       era leitura, era mancha. */
+    --altura-barra: 76px;
+
+    /* E A COLUNA DO MAPA CRESCE COM ELA.
+
+       Eram 150px, e 150px de largura para um SVG de 120x160 dava um traçado de
+       serra com 18 cotovelos espremidos em pouco mais de um dedo de tela: a
+       rota lia como um risco tremido, e as cinco paradas ficavam encostadas
+       umas nas outras. No celular ele é canto de tela e precisa ser discreto.
+       No desktop ele tem uma coluna inteira reservada só para ele, e estava
+       usando metade dela.
+
+       220px. O herói e o rodapé recuam sozinhos, porque os dois saem deste
+       token por calc(). */
+    --largura-mapa: 220px;
+  }
+}
+
+
+/* ── 1b. A SEGUNDA SUPERFÍCIE: PAPEL ────────────────────────────────────
+   A página passa a ter duas superfícies, e não duas cores soltas: tinta e
+   papel, alternando como guia de campo impresso alterna página de tinta e
+   página de papel. O ritmo é tinta, papel, tinta, papel, tinta.
+
+   Isto NÃO é a inversão de tema no meio da página que a regra proíbe. Aquela
+   regra existe contra a troca ACIDENTAL, a seção que clareia porque alguém
+   copiou um bloco de outro lugar. Aqui são dois jogos completos e declarados, e
+   um elemento pertence a exatamente um deles.
+
+   O mecanismo é o mais barato que existe: a classe redefine os MESMOS tokens
+   que o resto do arquivo já consome. Nenhum componente sabe em que superfície
+   está, nenhum componente precisa de variante, e um bloco inteiro muda de
+   superfície mudando uma classe no HTML.
+
+   Todos os valores abaixo foram medidos contra #E8E4DA antes de serem escritos.
+   O par que mais importa é o que NÃO está aqui: --laranja fica de fora de
+   propósito, porque ele é preenchimento e não texto. */
+
+.papel {
+  --fundo:       #DDE2E4;  /* icy-blue. A banda clara do guia de campo */
+  --fundo-2:     #DDE2E4;  /* sem elevação aqui também: o fio define, não o tom */
+  --fundo-3:     #CDD4D6;  /* só o vazio de mídia carregando */
+
+  --tinta:       #2D3329;  /*  9,94:1  forest-green */
+  --tinta-media: #4E5849;  /*  5,71:1 */
+  --tinta-fraca: #5A6455;  /*  4,74:1  o degrau mais fraco que ainda passa */
+
+  /* A menta NÃO tem par de papel: #E2FFCC sobre #DDE2E4 entrega 1,21:1, e não
+     existe menta que continue lendo como menta e passe sobre claro. A própria
+     referência escreve essa regra, e a medição confirma. Aqui o acento é o
+     laranja da marca escurecido até passar. */
+  --acento:      #A03F00;  /*  5,01:1. O #FF6A00 da marca dá 2,26:1 e reprova */
+  --alerta:      #8C2A14;  /*  6,54:1 */
+
+  /* Fios em tinta com alfa, não em branco: sobre papel, branco com alfa clareia
+     o papel em vez de desenhar sobre ele, e o fio some. */
+  --linha-sutil: rgb(45 51 41 / 0.14);
+  --linha-media: rgb(45 51 41 / 0.26);
+
+  background: var(--fundo);
+  color: var(--tinta);
+}
+
+/* A volta: uma peça de TINTA dentro de uma seção de PAPEL. É o que permite o
+   painel de preço ser uma placa escura embutida na página clara, que é a
+   gramática de guia de campo (placa de dados impressa colada na página) e ao
+   mesmo tempo resolve o problema do amarelo explicado logo abaixo.
+
+   Redeclara os mesmos tokens de volta aos valores de tinta, em vez de herdar os
+   de papel do ancestral. Uma classe, e a peça inteira volta para o escuro. */
+.tinta {
+  --fundo:       #161B13;
+  --fundo-2:     #161B13;
+  --fundo-3:     #1A2017;
+  --tinta:       #DDE2E4;
+  --tinta-media: #A9B3A3;
+  --tinta-fraca: #84907F;
+  --acento:      #E2FFCC;
+  --alerta:      #FF8A6B;
+  --linha-sutil: rgb(221 226 228 / 0.10);
+  --linha-media: rgb(221 226 228 / 0.18);
+
+  background: var(--fundo);
+  color: var(--tinta);
+}
+
+/* O amarelo não tem par de papel, e não é esquecimento: #FFCC00 sobre #E8E4DA
+   entrega 1,19:1, e não existe amarelo que continue lendo como amarelo e passe
+   no contraste sobre papel claro. O papel do amarelo aqui é carregar número
+   grande, e número grande vive dentro de placa de tinta.
+   A consequência de projeto está na oferta: a seção é papel, mas o painel de
+   preço é uma placa de tinta embutida nela. */
+
+
+/* ── FONTES ─────────────────────────────────────────────────────────────
+   Auto-hospedadas. Nada de CDN de fonte: é uma conexão a mais antes da primeira
+   pintura, um terceiro no caminho crítico e um ponto de falha que não é nosso.
+
+   Subset latin apenas. Todo acento do português (ç ã õ á é í ó ú â ê ô à)
+   cabe em U+0000-00FF, dentro do latin. Baixar latin-ext seria pagar por
+   caracteres que esta página não usa. */
+
+@font-face {
+  font-family: 'Archivo';
+  src: url('../fontes/archivo-var-latin.woff2') format('woff2-variations');
+  font-weight: 400 900;
+  font-stretch: 62% 125%;
+  font-style: normal;
+  font-display: swap;
+}
+/* Martian Mono é variável nos dois eixos, e é o eixo de LARGURA que a
+   qualifica para este papel: condensada a 80% ela continua legível em 11px em
+   caixa alta com tracking, que é onde vive quase todo o chrome desta página.
+   Uma mono de largura fixa nesse tamanho ou fica ilegível ou estoura a caixa.
+
+   Não é JetBrains Mono, IBM Plex Mono nem Space Mono: as três são o reflexo
+   automático de qualquer modelo, e as três são os fallbacks que a referência
+   lista. Cair no fallback dela seria chegar na mesma escolha por acidente. */
+@font-face {
+  font-family: 'Martian Mono';
+  src: url('../fontes/martianmono-var-latin.woff2') format('woff2-variations');
+  font-weight: 300 700;
+  font-stretch: 75% 112.5%;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Barlow';
+  src: url('../fontes/barlow-400-latin.woff2') format('woff2');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Barlow';
+  src: url('../fontes/barlow-700-latin.woff2') format('woff2');
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+
+
+/* ── 2. RESET E BASE ────────────────────────────────────────────────────── */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+* { margin: 0; }
+
+[hidden] { display: none !important; }
+
+html {
+  /* scroll-padding-top existe para o link âncora não parar com o título
+     debaixo da barra fixa. Sem ele, clicar em "roteiro" leva o visitante a um
+     título cortado pela metade. */
+  scroll-padding-top: calc(var(--altura-barra) + var(--e-6));
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--fundo);
+  color: var(--tinta);
+  font-family: var(--fonte-corpo);
+  font-size: var(--txt-corpo);
+  line-height: 1.6;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  /* A página inteira nunca rola de lado. É a falha mais comum em layout de
+     alta variância, e ela some sem ninguém perceber num monitor largo. */
+  overflow-x: clip;
+}
+
+/* E o corte de verdade é ESTE, não o do body.
+
+   overflow do body é PROPAGADO para a viewport quando o html está em visible, e
+   nessa propagação o body volta a se comportar como visible. Resultado medido
+   num aparelho de 390px, com as provas em voo: scrollWidth de 523 contra 390 de
+   tela, e window.scrollTo(200, y) parando em scrollX = 117. Ou seja, a página
+   rolava de lado de verdade, com o dedo arrastando tudo, apesar da declaração
+   acima.
+
+   main tem exatamente a largura da tela e não contém nenhum elemento fixo (a
+   barra, o mapa, o botão e o portão são irmãos dele, não filhos), então cortar
+   aqui corta na borda da tela, onde ninguém vê corte nenhum.
+
+   NÃO na seção da oferta, que foi onde este corte morou por um tempo: .oferta
+   tem 960px no desktop e é placa clara centrada numa página escura, e as provas
+   sobem até 1238px acima do topo dela. Uma foto flutuando lá em cima, sobre o
+   escuro, fatiada por uma linha vertical invisível a 240px da borda da tela é
+   exatamente o tipo de coisa que lê como defeito.
+
+   clip e não hidden: hidden criaria contêiner de rolagem, e contêiner de
+   rolagem no meio da página quebra âncora e position: sticky sem avisar. As
+   folhas do roteiro são sticky e ficam aqui dentro. */
+main {
+  overflow-x: clip;
+}
+
+img, svg, video { display: block; max-width: 100%; }
+img, video { height: auto; }
+
+a { color: inherit; }
+
+h1, h2, h3 {
+  font-family: var(--fonte-display);
+  font-weight: 800;
+  font-stretch: var(--largura-display);
+  line-height: 0.98;
+  letter-spacing: var(--tracking-display);
+  /* balance recalcula a quebra a cada largura e iguala as linhas sozinho.
+     Uma quebra fixa com <br> só funciona numa faixa estreita de larguras:
+     o que cabe em 1440 sobra em 1280. */
+  text-wrap: balance;
+}
+
+p { text-wrap: pretty; }
+
+ul, ol, dl, dd { padding: 0; margin: 0; list-style: none; }
+
+/* Toda figura de número usa algarismo tabular. No mapa a leitura muda durante
+   a rolagem, e figura proporcional faz a linha inteira dançar a cada troca. No
+   preço, a vírgula de "1.497,50" precisa cair no mesmo lugar de "5.690,50" para
+   os dois valores serem comparáveis de relance. */
+.folha__numero,
+.preco__figura,
+.preco__parcelas,
+.plano__linha dd,
+.plano__valor {
+  font-variant-numeric: tabular-nums;
+}
+
+
+/* ── 3. SUPERFÍCIES DO NAVEGADOR ────────────────────────────────────────
+   O que não desenhamos ainda carrega o design. Seleção, cursor, barra de
+   rolagem e anel de foco vêm com um padrão que não pertence a sistema de design
+   nenhum, e deixá-los como estão é o sinal mais barato de que uma página foi
+   montada em vez de construída. */
+
+::selection {
+  background: var(--laranja);
+  color: var(--sobre-marca);
+}
+
+/* O MARCADOR. Vem do navegador em amarelo de aviso e sai daqui como traço de
+   caneta marca-texto na cor da marca.
+
+   Ele existe por um motivo comercial, e não decorativo: o que a oferta tem de
+   melhor a dizer — os 10% já aplicados, os 5% do Pix — estava escrito na mesma
+   tinta média do aviso de vencimento do boleto. Desconto pintado de letra miúda
+   é desconto que o visitante não vê.
+
+   Laranja com alfa, e não laranja chapado com rótulo escuro: chapado ele vira
+   um segundo botão dentro do parágrafo, e a página inteira tem UM lugar onde o
+   laranja é sólido, que é a ação. Com alfa ele compõe contra a superfície que
+   estiver embaixo, papel ou tinta, sem precisar de par por superfície — a mesma
+   razão dos fios de --linha-sutil, por outro caminho.
+
+   E é nativo ao mundo da página: uma folha de dados impressa com o número que
+   importa marcado à caneta é exatamente o objeto que esta seção imita.
+
+   color explícito porque o padrão do navegador é preto, e porque a frase
+   marcada sobe de tinta média para tinta cheia: quem marca, marca para ler. */
+mark {
+  background: rgb(255 106 0 / 0.22);
+  color: var(--tinta);
+  font-weight: 700;
+  padding-inline: 0.28em;
+  /* O traço acompanha o texto quando ele quebra de linha, em vez de sumir na
+     segunda. */
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+html {
+  scrollbar-color: var(--tinta-fraca) var(--fundo);
+  scrollbar-width: thin;
+}
+
+/* outline: none nunca. O anel de foco é o único jeito de quem navega por
+   teclado saber onde está, e sólido em laranja tem contraste sobre qualquer
+   superfície desta página. offset para o anel não encostar na letra. */
+:focus-visible {
+  outline: 2px solid var(--acento);
+  outline-offset: 3px;
+}
+
+.folha-de-glifos { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+/* Duas famílias de glifo vivem na mesma folha de símbolos e precisam de
+   tratamentos opostos: as tulipas do roadbook são TRAÇO, as marcas de rede
+   social são PREENCHIMENTO. Por isso o estilo é declarado no ponto de USO e
+   nunca no <symbol>: uma regra em .folha-de-glifos symbol pegaria as duas
+   famílias e transformaria o WhatsApp num contorno vazado.
+
+   O <use> herda do <svg> que o hospeda, então estilizar o hospedeiro basta. */
+.folha__tulipa {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.botao__marca,
+.redes__marca {
+  fill: currentColor;
+  stroke: none;
+}
+
+
+/* ── 4. UTILITÁRIOS ─────────────────────────────────────────────────────── */
+
+.pular-para-conteudo {
+  position: absolute;
+  left: var(--e-4);
+  top: var(--e-4);
+  z-index: 100;
+  transform: translateY(-200%);
+  background: var(--laranja);
+  color: var(--sobre-marca);
+  font-family: var(--fonte-mono);
+  font-weight: 600;
+  font-stretch: 80%;
+  font-size: var(--txt-rotulo);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-caps-m);
+  text-decoration: none;
+  padding: var(--e-3) var(--e-5);
+  transition: transform var(--dur-estado) var(--ease-saida);
+}
+.pular-para-conteudo:focus-visible { transform: translateY(0); }
+
+/* Ritmo de seção. Mais espaço ACIMA de um título do que abaixo dele: o
+   espaço de cima separa a seção anterior, o de baixo agrupa o título com o
+   conteúdo que ele nomeia. Iguais, os dois brigam e o título fica órfão. */
+.secao__cabeca {
+  max-width: var(--medida-texto);
+  margin-bottom: var(--e-12);
+}
+.secao__titulo {
+  color: var(--acento);
+  font-size: var(--txt-secao);
+  line-height: var(--lh-secao);
+  margin-bottom: var(--e-4);
+}
+.secao__linha {
+  color: var(--tinta-media);
+  font-size: var(--txt-destaque);
+  max-width: 46ch;
+}
+
+
+/* ── 5. BOTÃO ───────────────────────────────────────────────────────────── */
+
+.botao {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--e-3);
+  border: 1px solid transparent;
+  border-radius: var(--raio);
+  font-family: var(--fonte-mono);
+  font-weight: 600;
+  font-stretch: 80%;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-caps-m);
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+  /* Nomear as propriedades, nunca "all": com all, qualquer propriedade que
+     mude por outro motivo passa a animar de graça, e o custo aparece como
+     travamento em telefone antigo. */
+  transition: background-color var(--dur-estado) var(--ease-saida),
+              color            var(--dur-estado) var(--ease-saida),
+              border-color     var(--dur-estado) var(--ease-saida),
+              transform        var(--dur-toque)  var(--ease-saida);
+}
+
+/* Texto ESCURO sobre o laranja, e a conta é o motivo: branco sobre #FF6A00
+   entrega 2,56:1 e reprova em qualquer tamanho. #0E0E0F sobre o mesmo laranja
+   entrega 6,6:1. O botão mais importante da página não pode ser o único
+   elemento ilegível dela. */
+/* SEM HALO NO BOTÃO, e a decisão vale a nota porque ela foi tentada e desfeita.
+
+   A tentativa foi uma sombra laranja sob o botão, para ele ler como peça acesa
+   dentro da placa apagada. Duas coisas mataram a ideia. A primeira é que este
+   mundo não brilha: a página é folha impressa e placa esmaltada, e halo colorido
+   é o verniz de interface genérica, não de instrumento de campo. A segunda é
+   aritmética, e já estava escrita na nota das superfícies: sobre #161B13 uma
+   elevação plausível entrega 1,08 de contraste, ou seja, sombra nenhuma se vê
+   aqui — foi por isso que a placa se separa por fio de 1px e não por sombra.
+
+   E o botão não precisava. Ele já é a barra de maior croma da página inteira,
+   chapada, de 60px, sobre quase preto. O que faltava não era brilho nele: era
+   o laranja aparecer em algum lugar ANTES dele. */
+.botao--primario {
+  background: var(--laranja);
+  color: var(--sobre-marca);
+}
+.botao--secundario {
+  background: transparent;
+  border-color: var(--acento);
+  color: var(--acento);
+}
+
+/* O padding lateral é FLUIDO em todo botão que ocupa a largura da caixa.
+   Fixo em 32px ele consumia 64 dos 280px úteis de uma tela de 320, e sobravam
+   180px para um rótulo que pede 190: TODOS os rótulos da página quebravam em
+   duas linhas no aparelho mais estreito ainda em uso.
+
+   Padding lateral generoso existe para dar respiro em volta de um rótulo curto
+   num botão que se ajusta ao conteúdo. Num botão que já ocupa a linha inteira
+   ele não dá respiro nenhum: só rouba largura do texto. */
+.botao--grande   { min-height: 56px;
+                   padding-block: var(--e-4);
+                   padding-inline: clamp(var(--e-4), 4vw, var(--e-8));
+                   font-size: var(--txt-apoio); }
+/* O rótulo do botão de bloco é fluido, e não fixo em --txt-destaque, porque
+   fixo ele QUEBRAVA EM DUAS LINHAS a 360px: 19px em caixa alta com tracking,
+   mais o ícone e o vão, pediam 335px numa caixa de 320. Rótulo de ação em duas
+   linhas é botão quebrado, e acontecia justamente no botão que fecha a venda.
+   Encolher a letra é a saída certa aqui: a alternativa seria encurtar o rótulo,
+   e ele já é o mais curto que a ação comporta. */
+/* Vão de 8px, e não 12: rótulo e marca do WhatsApp são UMA unidade (o que o
+   botão faz e por onde ele faz), e unidade se agrupa apertando. Os 4px que
+   sobram vão para o rótulo, que a 320px precisava exatamente deles. */
+/* font-stretch 96% neste botão, contra os 108% dos demais. Archivo é variável
+   no eixo de largura, e essa é a alavanca certa aqui: a 108% o rótulo pedia
+   205px numa caixa de 188 a 320px de tela, e quebrava em duas linhas. Encolher
+   a LETRA em vez da largura do traço mantém o peso e a altura da caixa alta
+   intactos, que é o que dá presença ao botão.
+   E é o movimento certo no mundo da página: instrução de roadbook é composta em
+   condensada. O botão que fecha a venda ler um pouco mais estreito que a
+   navegação é coerência, não concessão. */
+.botao--bloco    { min-height: 60px; gap: var(--e-2); font-stretch: 76%;
+                   padding-block: var(--e-4);
+                   padding-inline: clamp(var(--e-3), 3.5vw, var(--e-6));
+                   font-size: clamp(0.875rem, 0.45rem + 1.9vw, 1.1875rem); width: 100%; }
+.botao--secundario { min-height: 48px;
+                     padding-block: var(--e-3);
+                     padding-inline: clamp(var(--e-3), 3.5vw, var(--e-5));
+                     font-size: var(--txt-rotulo); }
+
+.botao__marca {
+  width: 1.25em;
+  height: 1.25em;
+  flex: none;
+}
+
+/* Ícone flutuante do WhatsApp: fixo no canto inferior direito, visível desde
+   o primeiro quadro, em qualquer largura de tela.
+
+   REDONDO E VERDE, e por isso ele não usa .botao--primario. Todo botão da
+   página é laranja de canto vivo, porque --raio é 0 e o canto reto é a régua
+   desta folha. Aqui a régua cede: o que se quer não é mais um botão da marca,
+   é o crachá do aplicativo, e ele só funciona se for o círculo verde que a
+   pessoa já reconhece sem ler. É o único ponto da página que empresta a
+   identidade de outra empresa, e é deliberado.
+
+   z-index acima da barra (40) e do mapa (30): nenhum dos dois pode cobri-lo,
+   porque ele é o único ponto de contato que nunca sai de cena.
+
+   Direito, e o mapa no esquerdo: os dois moram na borda de baixo do celular, em
+   cantos opostos, e por isso nenhum precisa desviar do outro.
+
+   56px de diâmetro, acima dos 44px de alvo mínimo de toque. O anel de 2px é o
+   que o mantém visível quando ele passa por cima da faixa de papel; a conta
+   está na nota dos tokens. */
+.botao--flutuante {
+  position: fixed;
+  z-index: 50;
+  right: var(--e-4);
+  bottom: var(--e-4);
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  border-radius: 50%;
+  background: var(--zap);
+  color: var(--sobre-zap);
+  border: 2px solid var(--zap-anel);
+  /* A sombra é reforço, não a garantia: quem separa o botão do fundo é o anel,
+     porque sombra não conta como contorno de controle. */
+  box-shadow: 0 6px 18px rgb(0 0 0 / 0.34);
+  transition: background-color var(--dur-estado) var(--ease-saida),
+              transform        var(--dur-toque)  var(--ease-saida);
+}
+.botao--flutuante .botao__marca { width: 28px; height: 28px; }
+
+/* Hover atrás de (hover: hover): no toque, o navegador dispara um hover falso
+   no tap e o botão fica preso no estado de hover depois que o dedo sai. */
+@media (hover: hover) and (pointer: fine) {
+  .botao--primario:hover   { background: var(--laranja-fundo); }
+  .botao--flutuante:hover  { background: var(--zap-toque); }
+
+  /* A logo levanta e ganha sombra no ponteiro: é o que diz que ela clica, sem
+     precisar de moldura nem de rótulo ao lado. */
+  .barra__marca:hover {
+    transform: translateY(-2px) scale(1.05);
+    filter: drop-shadow(0 6px 14px rgb(0 0 0 / 0.5));
+  }
+  .botao--secundario:hover { background: var(--laranja); color: var(--sobre-marca); }
+}
+
+/* O retorno físico da pressão vale no toque e no ponteiro. 120ms porque
+   feedback imediato acima disso já lê como latência. */
+.botao:active { transform: scale(0.98); }
+
+
+/* ── 6. PLACA DE MÍDIA ──────────────────────────────────────────────────
+   A caixa que carrega foto ou vídeo. Ela nasceu como espaço reservado, com a
+   especificação impressa dentro; agora carrega a mídia de verdade, e o que
+   sobrou dela é o que importava desde o começo: a proporção declarada.
+
+   aspect-ratio, e não altura fixa, e é o que garante CLS zero. A caixa já ocupa
+   a altura final antes de a imagem chegar, então nada empurra nada quando ela
+   chega. Todo <img> aqui também traz width e height no markup, que é o mesmo
+   seguro por outro caminho.
+
+   O fundo continua declarado: é o que aparece durante o carregamento, e ele sai
+   da superfície da seção em vez de ser um cinza solto. */
+
+.placa {
+  background: var(--fundo-3);
+  border: 1px solid var(--linha-sutil);
+  border-radius: var(--raio-placa);
+  overflow: hidden;
+  position: relative;
+}
+
+/* O seletor é de descendente, e não de filho direto: com <picture>, o <img>
+   deixa de ser filho da figura e passa a ser neto. Um seletor > aqui silencia
+   todas as fotos da página de uma vez. */
+.placa img,
+.placa video,
+.placa picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.placa--folha     { aspect-ratio: 3 / 2; }
+.placa--manifesto { aspect-ratio: 3 / 4; }
+.placa--dor       { aspect-ratio: 3 / 4; }
+.placa--quadro    { aspect-ratio: 1 / 1; }
+
+.placa--video-placa { aspect-ratio: 9 / 16; }
+
+/* ── 7. BARRA ───────────────────────────────────────────────────────────
+   64px de altura no celular, 76px no desktop. Barra de agência que come 15% da
+   viewport é espaço roubado do conteúdo, e no celular ela come a dobra inteira;
+   por isso quem cresce é só o desktop, onde 76px são 8% de uma tela de 900.
+
+   O interior NÃO é centralizado. Era: tinha max-width de 72rem com margem
+   automática, para alinhar com a coluna de leitura das seções. O efeito numa
+   tela de 1920 é a logo nascer a 384px da borda, boiando perto do meio em vez
+   de ancorar o canto. Marca mora no canto, e o canto aqui é o respiro lateral.
+
+   Sobrou um filho só depois que o CTA repetido saiu daqui, então o
+   space-between e o gap também foram embora: não havia mais nada para separar. */
+
+.barra {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 40;
+  height: var(--altura-barra);
+  background: rgb(14 14 15 / 0.82);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--linha-sutil);
+}
+.barra__interior {
+  height: 100%;
+  padding-inline: var(--respiro-lateral);
+  display: flex;
+  align-items: center;
+}
+
+/* A LOGO É O BOTÃO DE VOLTA AO TOPO.
+
+   Continua sendo <a href="#topo"> e não <button>, e isso é de propósito: sem
+   JavaScript ela ainda leva ao topo, só que num salto seco. O JavaScript não
+   cria a função, ele só troca o salto pela animação. Botão não teria esse chão.
+
+   O alvo é a própria logo, 44px no celular e 56px no desktop, os dois acima do
+   mínimo de 44px de toque. */
+.barra__marca {
+  display: inline-flex;
+  align-items: center;
+  border-radius: var(--raio);
+  /* Nomear as propriedades, nunca "all", pelo mesmo motivo do .botao. */
+  transition: transform var(--dur-estado) var(--ease-saida),
+              filter    var(--dur-estado) var(--ease-saida);
+}
+.barra__marca img {
+  display: block;
+  width: auto;
+  height: 44px;
+}
+/* O toque afunda, como em qualquer botão da página. */
+.barra__marca:active { transform: scale(0.94); }
+
+@media (min-width: 64rem) {
+  .barra__marca img { height: 56px; }
+}
+
+/* A ação da barra some no celular. Não é economia de espaço: no celular quem
+   carrega a ação permanente é o ícone flutuante, na zona do polegar, e dois botões
+   idênticos ao mesmo tempo na tela é o mesmo botão pedindo duas vezes. */
+@media (min-width: 48rem) {
+}
+
+
+/* ── 7b. O PORTÃO DE ENTRADA ────────────────────────────────────────────
+   A placa que cobre a página no primeiro instante e sobe revelando o herói.
+
+   ── POR QUE ELA EXISTE ────────────────────────────────────────────────
+
+   Não é abertura de agência. A página carrega Archivo com font-display: swap,
+   e o título do herói tem 100px: quando a fonte real chega, ele muda de altura
+   e a dobra inteira se reacomoda na cara de quem acabou de chegar. O portão
+   cobre exatamente essa janela. O ganho é impedir uma mudança brusca, e o
+   segundo ganho, o da marca, vem de graça em cima.
+
+   Ele custa tempo até a primeira leitura, e por isso é curto: 1,04s do
+   carregamento até o herói limpo, contra os quase dois segundos que uma
+   abertura de estúdio costuma cobrar.
+
+   ── POR QUE É CSS, E NÃO GSAP ─────────────────────────────────────────
+
+   Duas razões, e as duas são práticas.
+
+   Animação em CSS roda fora da thread principal. Este é justamente o momento
+   em que a thread está ocupada: parseando, baixando fonte, decodificando
+   imagem. Uma animação por requestAnimationFrame aqui perderia quadros
+   exatamente onde eles aparecem.
+
+   E ela precisa terminar mesmo que nada mais funcione. Portão que depende de
+   script é portão que tranca a página quando o script falha. Aqui não há
+   script: se o CSS carregou, ela sobe.
+
+   ── A BORDA RASGADA ───────────────────────────────────────────────────
+
+   A placa é mais alta que a tela e tem a borda de baixo irregular, recortada
+   por clip-path. O recorte é ESTÁTICO: quem se move é um translateY, que é
+   transform puro e não repinta nada. A referência anima o próprio clip-path
+   quadro a quadro; o resultado é parecido e o custo, não.
+
+   O tremido é o mesmo da divisa do herói e do laço do mapa: traço de mão. Uma
+   borda reta subindo leria como cortina de teatro, e esta página é guia de
+   campo, não palco. */
+
+.portao {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 100;              /* acima da barra (40), do mapa (30) e do zap (50) */
+  /* Mais alta que a tela para a borda rasgada nascer fora do quadro: no
+     primeiro instante o que se vê é uma placa inteira, e o rasgo só aparece
+     quando ela começa a subir. */
+  /* svh, e não vh, pela mesma razão do herói: vh ignora a barra de URL retrátil
+     do celular e mede a tela maior do que ela é neste instante. */
+  height: 108vh;
+  height: 108svh;
+  /* O respiro de baixo é a sobra da placa. Com box-sizing: border-box a caixa de
+     conteúdo volta a ter a altura da tela, e a marca centraliza NA TELA em vez
+     de centralizar na placa: sem isso ela nasce deslocada do centro visível. */
+  padding-bottom: 8vh;
+  padding-bottom: 8svh;
+  display: grid;
+  place-items: center;
+  /* O papel da própria página, não um branco qualquer: a placa é a folha do
+     guia, e o que ela descobre é a trilha no escuro. */
+  background: #DDE2E4;
+  pointer-events: none;
+  clip-path: polygon(0% 0%, 100% 0%, 100% 93%,
+                     88% 97.5%, 76% 94.2%, 63% 98.3%, 50% 95.1%,
+                     37% 99.2%, 25% 95.6%, 12% 98.8%, 0% 95.3%);
+  animation: portao-sobe 520ms var(--ease-saida) 520ms forwards;
+}
+
+/* A marca entra, segura e sai antes da placa: quem sobe é uma placa vazia, e
+   não um logotipo desfilando pela tela. */
+.portao__marca {
+  width: 96px;
+  height: auto;
+  animation: portao-marca 620ms var(--ease-saida) both;
+}
+
+@keyframes portao-sobe {
+  to { transform: translateY(-100%); visibility: hidden; }
+}
+
+@keyframes portao-marca {
+  0%   { opacity: 0; transform: scale(0.96); }
+  29%  { opacity: 1; transform: scale(1); }
+  77%  { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: translateY(-8px) scale(1); }
+}
+
+@media (min-width: 64rem) {
+  .portao__marca { width: 128px; }
+}
+
+/* O herói entra atrás da placa, escalonado. 60ms entre um e outro: abaixo
+   disso o escalonamento não se percebe, acima ele vira fila de espera.
+
+   O botão é o último de propósito. Ele é a ação, e ação que aparece antes do
+   argumento é ansiedade da página, não do visitante. */
+.heroi__titulo,
+.heroi__apoio,
+.heroi .botao {
+  /* backwards, e NÃO both. Com both a animação continua aplicando o transform
+     final depois de terminar, e valor de animação vence declaração normal na
+     cascata: o .botao:active { transform: scale(0.98) } ficaria morto para
+     sempre, e o botão perderia o retorno de toque. Com backwards o estado
+     inicial vale durante o atraso e, no fim, o elemento volta a ser governado
+     pelo CSS de sempre. */
+  animation: heroi-entra 460ms var(--ease-saida) backwards;
+}
+.heroi__titulo { animation-delay: 600ms; }
+.heroi__apoio  { animation-delay: 660ms; }
+.heroi .botao  { animation-delay: 720ms; }
+
+@keyframes heroi-entra {
+  from { opacity: 0; transform: translateY(14px); }
+}
+
+/* Movimento reduzido: a placa continua existindo, porque o reflow da fonte
+   continua existindo. O que sai é o deslocamento: ela se esvai no lugar, e o
+   herói aparece sem subir. Menos movimento, não menos informação. */
+@media (prefers-reduced-motion: reduce) {
+  .portao {
+    animation: portao-esvai 260ms linear 420ms forwards;
+  }
+  .portao__marca { animation: none; }
+  .heroi__titulo,
+  .heroi__apoio,
+  .heroi .botao {
+    animation: heroi-esvai 300ms linear 500ms backwards;
+  }
+  @keyframes portao-esvai { to { opacity: 0; visibility: hidden; } }
+  @keyframes heroi-esvai  { from { opacity: 0; } }
+}
+
+
+/* ── 8. HERÓI ───────────────────────────────────────────────────────────
+   svh, e não vh. vh ignora a barra de URL retrátil do celular: a seção nasce
+   mais alta que a tela e a ação cai para fora da dobra, que é exatamente o que
+   não pode acontecer no primeiro viewport.
+
+   min-height, e não height: com altura fixa, o texto que não coubesse estouraria
+   a caixa para os dois lados e a primeira linha do título subiria por baixo da
+   barra fixa.
+
+   ── A COMPOSIÇÃO ──────────────────────────────────────────────────────
+
+   Duas peças de mídia sangram das bordas e DISSOLVEM antes de chegar ao centro,
+   deixando um vão vertical no meio da tela. É a dissolução HORIZONTAL que faz o
+   efeito, e é só ela.
+
+   Na altura, a mídia vai de ponta a ponta. Já foi cortada no meio, para abrir
+   uma faixa limpa embaixo, e o resultado foi mídia virando tira: a foto do
+   grupo perdia justamente as motos, que estão na metade de baixo dela.
+
+   O título fica embaixo, na largura toda, POR CIMA da mídia. Quem garante a
+   leitura ali é um véu medido no pior quadro possível do vídeo, não a ausência
+   de imagem. Os números estão na nota do véu.
+
+   ── AS DUAS MÍDIAS, UMA POR LARGURA, SEM DOWNLOAD DESPERDIÇADO ────────
+
+   O material são duas peças de formatos opostos: um vídeo vertical de 9:16 e a
+   foto do grupo em 16:9.
+
+   No celular vale só o vídeo, sangrado: viewport vertical com material vertical
+   é encaixe nativo, e duas peças lado a lado em 390px dariam 190px cada, onde
+   nenhuma das duas leria.
+
+   No desktop entra a foto, e ela é background-image DENTRO do media query de
+   64rem. Background em media query que não casa não é buscado, então o celular
+   nunca baixa a foto. É por isso que ela não está no HTML: um <picture> lá
+   baixaria sempre. */
+
+.heroi {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  align-items: flex-end;
+  padding-top: calc(var(--altura-barra) + var(--e-8));
+  padding-bottom: var(--e-16);
+  background: var(--fundo);
+}
+
+.heroi__midia { position: absolute; inset: 0; overflow: hidden; }
+
+/* ── As peças ──────────────────────────────────────────────────────────
+   Cada peça tem DUAS máscaras, e elas vivem em elementos aninhados em vez de
+   empilhadas com mask-composite. Não é preciosismo: mask-composite tem sintaxe
+   própria no WebKit (-webkit-mask-composite usa outras palavras-chave), e é
+   exatamente aí que esse efeito quebra no Safari. Dois elementos, uma máscara
+   cada, funciona em todo lugar sem prefixo condicional.
+
+     .heroi__peca         -> máscara HORIZONTAL: opaca na borda da tela,
+                             transparente ao chegar no centro
+     .heroi__peca-interna -> máscara VERTICAL: dissolve no topo e no pé */
+
+.heroi__peca { position: absolute; inset: 0; }
+.heroi__peca-interna { position: absolute; inset: 0; overflow: hidden; }
+
+/* A lavagem. Dois passos baratos, e nenhum mix-blend-mode: blend sobre vídeo
+   custa caro e o resultado muda de navegador para navegador.
+     1. o filtro tira a saturação de catálogo
+     2. o véu por cima puxa a imagem para a cor da superfície
+   Calibrado em MÉDIO a pedido: ainda se vê moto, poeira e serra, que é o que a
+   página está vendendo. Abrir ou fechar é mexer nestes dois números. */
+.heroi__loop,
+.heroi__peca--foto .heroi__peca-interna {
+  filter: saturate(0.6) contrast(0.95) brightness(0.82);
+}
+.heroi__peca-interna::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--fundo);
+  opacity: 0.3;
+}
+
+.heroi__loop {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* No CELULAR existe só a peça do vídeo, e ela cobre a seção. */
+.heroi__peca--foto { display: none; }
+.heroi__divisa { display: none; }
+
+/* A máscara vertical, igual nas duas larguras, e em PIXELS.
+
+   Ela some só nas duas pontas: 96px em cima, que é a barra fixa mais uma folga
+   para a mídia não começar num corte reto embaixo dela, e 110px embaixo, para a
+   seção não emendar na próxima com uma costura visível.
+
+   Em px e não em %: a barra tem 64px em qualquer tela, então a dose necessária
+   é a mesma em qualquer tela. Em porcentagem, 18% seriam 146px num aparelho e
+   234px num monitor, apagando imagem que ninguém pediu para apagar.
+
+   E ela NÃO dissolve no meio. Já dissolveu, e foi o erro que motivou esta
+   revisão: com o degradê morrendo em 48% da altura, a mídia virava uma tira
+   fina no alto. Na foto do grupo o preço era alto, porque as motos estão na
+   metade de BAIXO dela: sobrava morro e céu, e o assunto da foto ia embora. */
+.heroi__peca .heroi__peca-interna {
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0px, #000 96px,
+                                      #000 calc(100% - 110px), transparent 100%);
+          mask-image: linear-gradient(to bottom, transparent 0px, #000 96px,
+                                      #000 calc(100% - 110px), transparent 100%);
+}
+
+/* O VÉU. É ele que garante a leitura do texto sobre a mídia, e por isso ele é
+   calculado, não estimado. Sai da cor de fundo da própria página, e não de um
+   preto solto, para o degradê morrer na cor da seção seguinte.
+
+   O pior fundo possível é o quadro mais claro que o vídeo consegue produzir
+   depois do tratamento: branco puro passa por saturate/contrast/brightness e
+   sai em 204, leva o véu de 30% da peça e chega em 149. Sobre 149 o apoio em
+   mono (#DDE2E4) daria 2,30:1 e reprovaria. Daí a necessidade.
+
+   O que cada texto aguenta de mídia, nesse pior quadro: 0,62 no apoio em mono,
+   que precisa de 4,5:1, e 0,90 no título em menta, que é grande e precisa de
+   3:1.
+
+   AS PARADAS ESTÃO EM PIXELS A PARTIR DO PÉ, e esse é o ponto da regra.
+
+   O bloco de texto tem altura quase fixa: respiro do pé, botão, apoio e título
+   somam mais ou menos o mesmo número de pixels em qualquer tela. Medido, o topo
+   do apoio cai a 222px do pé no celular e a 263px no desktop, e fica nesses
+   263px em telas de 600, 700, 800 e 900 de altura. Em porcentagem esse mesmo
+   ponto vira 27%, 37% ou 43% da altura, e um degradê em porcentagem chega nele
+   com força diferente em cada tela. Foi o que aconteceu numa primeira tentativa:
+   calibrado em 900, o apoio reprovava em 3,74:1 numa tela de 600.
+
+   Ancorado em pixels, uma régua só serve as duas larguras. Entregue: 5,6:1 no
+   apoio e 3,4:1 no título de duas linhas, os piores de uma varredura de 320 a
+   1920 de largura por 600 a 1080 de altura.
+
+   De 580px do pé para cima o véu não existe. */
+.heroi__midia::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top,
+                rgb(22 27 19 / 0.92) 0px,
+                rgb(22 27 19 / 0.82) 120px,
+                rgb(22 27 19 / 0.60) 230px,
+                rgb(22 27 19 / 0.42) 300px,
+                rgb(22 27 19 / 0.22) 400px,
+                rgb(22 27 19 / 0.10) 490px,
+                transparent 580px);
+}
+
+/* CAMADA PRÓPRIA, ACIMA DAS PROVAS EM VOO, e isto passou a ser necessário
+   quando o álbum veio parar logo abaixo do herói.
+
+   z-index era 1, o bastante enquanto o único vizinho era o retrato de fundo.
+   Com o álbum aqui em cima, as provas ganham z-index 1 a 7 inline do
+   roadbook.js, e .heroi não abre contexto de empilhamento nenhum (position
+   relative com z-index auto), então cada prova disputava DIRETO com este texto
+   — e ganhava. Medido: 4 sobreposições reais em 18 testáveis, por volta de 550
+   a 600px de rolagem, bem no pico do voo, com o título do herói ainda na tela.
+
+   10 é o mesmo número que .painel usa, e pela mesma razão: acima das sete
+   provas, abaixo da barra da página (40) e do botão flutuante (50).
+
+   Não é o mesmo caso de "as provas passam por cima das outras camadas", que é
+   decisão registrada em .album e continua valendo. Passar por cima do retrato é
+   o desenho; passar por cima do título é cobrir o que a página tem a dizer. */
+.heroi__texto {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: var(--largura-conteudo);
+  margin-inline: auto;
+  padding-inline: var(--respiro-lateral);
+}
+
+.heroi__titulo {
+  color: var(--acento);
+  font-size: var(--txt-heroi);
+  line-height: var(--lh-heroi);
+  font-stretch: var(--largura-display);
+  font-weight: 900;
+  margin-bottom: var(--e-5);
+  /* TETO DE MEDIDA, em em, que é o que acompanha o tamanho da fonte.
+
+     Sem ele o título usa a largura que houver: num monitor largo a fonte já
+     bateu no teto do clamp mas a caixa continua crescendo, e aí as 45 letras
+     cabem numa linha só de mil e quatrocentos pixels. Linha de display desse
+     tamanho não se lê de uma olhada, e ao lado de um parágrafo de apoio de 479px
+     o contraste de medida vira desalinho.
+
+     Onze em é a largura que o título tinha a 1440, onde ele já quebrava em duas
+     linhas por conta própria: o teto só mantém esse desenho nas telas maiores.
+     No celular a fonte encolhe junto e o teto nunca chega a valer, porque a
+     caixa é menor que ele. */
+  max-width: 11em;
+}
+
+/* O hífen de "Off-Road" é ponto de quebra para o navegador como qualquer outro,
+   e a 1440 a linha caía exatamente ali: "A Melhor Expedição Off-" numa linha e
+   "Road para a Sua Turma." na outra. Em tipo de cem pixels isso lê como erro de
+   revisão, e não como quebra.
+
+   nowrap num treçho, e não um <br> na largura: <br> escolhe uma quebra que vale
+   numa largura e mente em todas as outras, e não existe um <br> em toda esta
+   página. Aqui não se manda onde quebrar; só se proíbe o único lugar onde não
+   pode. */
+.nao-quebra { white-space: nowrap; }
+.heroi__apoio {
+  font-family: var(--fonte-mono);
+  font-stretch: 78%;
+  line-height: 1.5;
+  font-size: var(--txt-apoio);
+  color: var(--tinta);
+  max-width: 46ch;
+  margin-bottom: var(--e-8);
+}
+.heroi .botao { width: 100%; }
+
+@media (min-width: 48rem) {
+  .heroi .botao { width: auto; }
+  .heroi__apoio { font-size: var(--txt-corpo); }
+}
+
+@media (min-width: 64rem) {
+  .heroi { padding-bottom: var(--e-24); }
+
+  /* As duas peças aparecem, cada uma ocupando pouco mais da metade da tela e
+     se sobrepondo no centro, onde as duas já estão transparentes. */
+  .heroi__peca--foto { display: block; }
+
+  .heroi__peca--video { right: 42%; }
+  .heroi__peca--foto  { left: 42%; }
+
+  /* Máscara horizontal: opaca na borda da tela, some ao chegar no centro. */
+  .heroi__peca--video {
+    -webkit-mask-image: linear-gradient(to right, #000 30%, transparent 94%);
+            mask-image: linear-gradient(to right, #000 30%, transparent 94%);
+  }
+  .heroi__peca--foto {
+    -webkit-mask-image: linear-gradient(to left, #000 34%, transparent 96%);
+            mask-image: linear-gradient(to left, #000 34%, transparent 96%);
+  }
+
+  .heroi__peca--foto .heroi__peca-interna {
+    background-image: image-set(url('../media/heroi.avif') type('image/avif'),
+                                url('../media/heroi.jpg')  type('image/jpeg'));
+    background-size: cover;
+    background-position: center 42%;
+  }
+
+  /* A divisa entre as duas peças. Traço de mão, não de régua: reta, ela leria
+     como borda de tabela em vez de trilha.
+
+     Ela morre antes da faixa do título, e isso é obrigação e não estética: ela
+     corre em 42% da largura, e o título agora ocupa a largura toda. Descer até
+     o pé faria um fio vertical cruzar o título por trás das letras, que é o
+     tipo de encontro que lê como defeito.
+
+     O fim é o MENOR entre 46% da altura e 470px acima do pé. Os dois limites
+     existem: a porcentagem cuida das telas altas, onde 470px do pé ainda estão
+     no meio da imagem, e o valor em pixels cuida das baixas, onde 46% já caem
+     dentro do título. Medido, a linha para 32px acima do título numa tela de
+     900 e 63px acima numa de 768.
+
+     Abaixo de 45rem de altura ela nem aparece: o que sobraria seria um toco de
+     três dedos, e um traço curto demais lê como sujeira e não como trilha. */
+  .heroi__divisa {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 42%;
+    width: 12px;
+    height: 100%;
+    fill: none;
+    stroke: var(--tinta);
+    stroke-width: 1.5;
+    opacity: 0.4;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0px, #000 96px,
+                        #000 30%, transparent min(46%, calc(100% - 470px)));
+            mask-image: linear-gradient(to bottom, transparent 0px, #000 96px,
+                        #000 30%, transparent min(46%, calc(100% - 470px)));
+  }
+
+  /* Sangrado: sem max-width, o texto usa a tela e não o contêiner, e é isso que
+     faz o título caber em duas linhas em vez de quatro. Sem reserva à direita
+     também: a mídia corre por trás do texto até o pé da seção, e quem garante a
+     leitura é o véu medido lá em cima, não um vão vazio ao lado. */
+  .heroi__texto {
+    max-width: none;
+    margin-inline: 0;
+    padding-left: calc(var(--largura-mapa) + var(--respiro-lateral));
+    padding-right: var(--respiro-lateral);
+  }
+}
+
+
+/* A divisa pede as duas dimensões, e por isso mora numa consulta própria. */
+@media (min-width: 64rem) and (min-height: 45rem) {
+  .heroi__divisa { display: block; }
+}
+
+
+/* ── 9. ROTEIRO ─────────────────────────────────────────────────────────
+   UMA PLANILHA DE REGULARIDADE, e a navegação por ela.
+
+   A seção era uma tira de cartões que grudavam em tela cheia e escureciam por
+   brightness conforme o seguinte subia. Funcionava e era genérica: podia ser a
+   linha do tempo de qualquer produto.
+
+   Agora ela é o que a página já sabia ser. Os glifos de tulipa já existiam, cada
+   folha já declarava a sua, e a etapa já estava em data-etapa: a planilha não
+   inventou vocabulário nenhum, só passou a mostrar o que já estava lá.
+
+   O QUE ELA NÃO TEM É QUILOMETRAGEM, e isso é decisão e não esquecimento.
+   Planilha de regularidade é feita de KM parcial, KM total e média; aqui a
+   origem é a porta de cada cliente, então qualquer número seria inventado.
+   Sobram as colunas com dado real, e elas bastam: mono com algarismo tabular,
+   linhas regradas, numeração de referência, coluna de tulipa e a janela.
+
+   A JANELA É UMA BARRA CURTA QUE GRUDA, e não um pino de tela cheia. É a decisão
+   que faz isto valer no celular. A versão anterior era desktop-only por um
+   motivo declarado: prender a rolagem briga com a barra de URL retrátil, que
+   muda a altura da viewport no meio da sequência. Uma barra de três linhas não
+   depende de altura de viewport para nada, então o problema não existe.
+
+   E ela é sticky de CSS, não pin de GSAP: sem JavaScript a seção continua sendo
+   uma planilha inteira e legível, só sem o avanço. Estrutura com quem não falha,
+   efeito com quem pode falhar. */
+
+.roteiro {
+  padding-block: var(--e-24);
+  padding-inline: var(--respiro-lateral);
+  max-width: var(--largura-conteudo);
+  margin-inline: auto;
+}
+
+/* O REMATE DE AÇÃO, no pé do roteiro.
+
+   Centralizado para encerrar o roteiro como uma chamada de ação única: o aviso
+   de vagas e o botão formam um grupo, sem competir com a planilha acima.
+
+   O respiro de cima é --e-12 e não --e-24: ele PERTENCE ao roteiro, é o remate
+   dele. Com o respiro de seção inteiro ele descolaria da tira e passaria a ler
+   como bloco solto entre duas seções.
+
+   A largura do botão segue a mesma regra da .dor, que já existia: barra inteira
+   no celular, onde a coluna é estreita e o polegar é o alvo; largura do próprio
+   rótulo no desktop, onde um botão de 700px viraria faixa. */
+.remate-acao {
+  margin-top: var(--e-12);
+  display: grid;
+  gap: var(--e-5);
+  justify-items: center;
+  text-align: center;
+}
+
+/* Mono, e não Barlow, pela regra de divisão da casa: prosa é o que se lê em
+   sequência, chrome é o que se lê de relance. "São 15 vagas por saída" é
+   número lido de relance.
+
+   Sem caixa alta e sem tracking de rótulo: a página já tem rótulos de sobra na
+   régua da planilha logo acima, e mais um selo aqui empilharia dois chromes em
+   caixa alta a poucos pixels um do outro. */
+.remate-acao__linha {
+  font-family: var(--fonte-mono);
+  font-stretch: 78%;
+  font-size: var(--txt-corpo);
+  color: var(--tinta-media);
+}
+
+/* O BOTÃO LEVA .botao--grande, e a primeira versão não levava.
+
+   O .botao base não traz min-height, padding nem font-size: a escala inteira
+   mora nos modificadores. Sem um deles o botão fica com a altura da linha de
+   texto e nada mais, que foi o que aconteceu: nasceu o menor CTA primário da
+   página, no ponto de maior desejo dela.
+
+   --grande e não --bloco porque o papel aqui é o MESMO do CTA do herói, que é
+   ação solta rematando uma seção. --bloco tem width: 100% embutido e existe
+   para a coluna do painel de preço, onde o botão fecha uma caixa.
+
+   A hierarquia fica: herói 56px, remate 56px, painel 60px. O painel continua
+   sendo o maior, e deve continuar: é onde está o preço. */
+
+.remate-acao .botao { width: 100%; font-size: var(--txt-corpo); }
+
+@media (min-width: 48rem) {
+  .remate-acao .botao { width: auto; }
+}
+
+/* O papel da planilha. A borda vai em volta do CONJUNTO, e não de cada linha: é
+   uma folha atravessando a janela, e não quatro cartões soltos.
+
+   As medidas das colunas moram aqui, num lugar só, porque a régua de rótulos e
+   as linhas precisam usar exatamente as mesmas. Cabeçalho de tabela desalinha
+   quando alguém mexe numa medida e esquece a outra. */
+.roteiro__janela {
+  border: 1px solid var(--linha-media);
+  background: var(--fundo-2);
+  --planilha-colunas: 3.25rem 2rem minmax(0, 1fr);
+  --planilha-vao: var(--e-4);
+}
+
+/* ── A janela de leitura ───────────────────────────────────────────────── */
+
+/* NO CELULAR A BARRA NÃO GRUDA, e isso é pedido do usuário.
+
+   Numa tela de 390 ela ficava por cima do texto o tempo todo, e o que se ganhava
+   era um contador de referência, que é justamente a coluna que o celular já não
+   tem. Custava uma faixa permanente sobre a leitura para informar pouco.
+
+   A partir de 48rem ela volta a grudar, e aí desconta a altura da barra da
+   página. Isso foi medido uma vez e não pode voltar atrás: quando a regra do
+   desconto só valia acima de 48rem, a barra da página cobria 64 dos 84px da
+   janela em 135 de 135 posições. Aqui a barra da página está no cálculo desde a
+   primeira largura em que a janela gruda. */
+.planilha__topo {
+  position: static;
+  z-index: 2;
+  background: var(--fundo-2);
+  border-bottom: 2px solid var(--acento);
+  padding: var(--e-4) var(--e-5) 0;
+}
+
+.planilha__prova {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--e-4);
+  font-family: var(--fonte-mono);
+  font-size: var(--txt-rotulo);
+  font-stretch: 78%;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-caps-p);
+  color: var(--tinta-fraca);
+  padding-bottom: var(--e-3);
+}
+.planilha__selo { color: var(--tinta-media); }
+
+/* O CONTADOR é o odômetro da leitura: diz em que referência a janela está.
+   Algarismo tabular é global nesta folha, e aqui ele não é preferência: sem ele
+   a troca de 01 para 02 muda a largura e empurra a barra inteira. */
+.planilha__contagem {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.25em;
+  color: var(--tinta-media);
+}
+.planilha__ref {
+  color: var(--acento);
+  font-weight: 700;
+  font-size: var(--txt-apoio);
+}
+.planilha__de    { opacity: 0.5; }
+.planilha__total { opacity: 0.7; }
+
+.planilha__regua {
+  display: grid;
+  grid-template-columns: var(--planilha-colunas);
+  gap: var(--planilha-vao);
+  font-family: var(--fonte-mono);
+  font-size: 0.6875rem;
+  font-stretch: 76%;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-caps-p);
+  color: var(--tinta-fraca);
+  padding-bottom: var(--e-3);
+}
+
+/* NO CELULAR A LINHA NÃO TEM COLUNAS: ela é uma FICHA, com um cabeçalho em cima e
+   o corpo na largura toda. E régua de colunas sem coluna para rotular é cromo que
+   mente, então ela só aparece a partir de 48rem.
+
+   O motivo é medido, e não de gosto: com as colunas de ref e tulipa valendo
+   também no celular, elas comiam 108px dos 318 úteis e o corpo do texto ficava
+   com 192px de largura, ou seja 22 caracteres por linha, contra os 35 a 60 que
+   uma linha de texto pede. A prova ficava com os mesmos 192px, e cada folha
+   passava de 670px de altura numa tela de 844. */
+/* A régua não rotula mais as duas últimas colunas separadamente, e o motivo é a
+   alternância: o que está na coluna 4 é o texto numa linha e a prova na outra.
+   Um rótulo fixo ali passaria a mentir em metade das linhas. O rótulo de
+   referência cobre as duas.
+
+   E ele estava errado antes disso: dia e etapa dividem a coluna 3, então os
+   rótulos saíam deslocados de um, com "Etapa" em cima da descrição e
+   "Referência" em cima da foto. */
+.planilha__coluna--ref-texto { grid-column: 4 / span 2; }
+
+.planilha__regua { display: none; }
+.planilha__coluna--dia { display: none; }
+
+/* ── A linha de referência ─────────────────────────────────────────────── */
+
+.folha {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  padding: var(--e-6) var(--e-5);
+  border-bottom: 1px solid var(--linha-sutil);
+}
+.folha:last-child { border-bottom: 0; }
+
+/* No celular a caixa de leitura é o CABEÇALHO da ficha: ref, tulipa e dia à
+   esquerda, etapa empurrada para a direita, e um fio embaixo. A partir de 48rem
+   ela se dissolve com display: contents e entrega os quatro filhos direto ao grid
+   da linha, que é o que permite a coluna de referência alinhar com a régua lá em
+   cima; sem isso eles ficariam presos numa célula só.
+
+   preserve-3d aqui porque esta caixa fica ENTRE a folha e os planos de
+   profundidade dela: um elemento intermediário sem preserve-3d achata os filhos,
+   e a ref e a tulipa perderiam a saliência. */
+.folha__leitura {
+  display: flex;
+  align-items: center;
+  gap: var(--e-3);
+  padding-bottom: var(--e-3);
+  border-bottom: 1px solid var(--linha-sutil);
+  transform-style: preserve-3d;
+}
+
+.folha__ref {
+  grid-column: 1;
+  font-family: var(--fonte-mono);
+  font-size: var(--txt-apoio);
+  font-weight: 700;
+  font-stretch: 78%;
+  color: var(--tinta-fraca);
+  line-height: 1.1;
+  transition: color var(--dur-estado) linear;
+}
+.folha__tulipa {
+  grid-column: 2;
+  flex: none;
+  width: 1.75rem;
+  height: 1.75rem;
+  color: var(--tinta-fraca);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: color var(--dur-estado) linear;
+}
+
+/* A partir de 48rem tudo isto cai na terceira coluna do grid. No celular não há
+   terceira coluna: cada um ocupa a linha inteira, e a etapa é empurrada para a
+   direita do cabeçalho. */
+
+/* ── A ALTERNÂNCIA ─────────────────────────────────────────────────────────
+   Quatro linhas com a mesma ordem interna leem como quatro vezes a mesma linha.
+   Nas pares a prova vem ANTES do texto, e é só isso: uma alternância de dois
+   tempos, que é o ritmo de página dupla de revista, e não posição sorteada.
+
+   No celular a troca é de ordem na coluna única. O cabeçalho fica sempre em
+   cima, porque ele é o que identifica a linha, e identificação não alterna.
+
+   O surgimento segue essa mesma ordem: quem aparece primeiro na página aparece
+   primeiro no tempo. Quem decide isso é o roadbook.js, lendo a mesma paridade. */
+.folha:nth-child(even) .placa       { order: 1; }
+.folha:nth-child(even) .folha__corpo { order: 2; }
+
+.folha__dia {
+  font-family: var(--fonte-mono);
+  font-weight: 600;
+  font-stretch: 80%;
+  font-size: var(--txt-rotulo);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-caps-p);
+  color: var(--tinta-media);
+}
+.folha__numero {
+  color: var(--acento);
+  font-size: var(--txt-apoio);
+  font-weight: 900;
+  letter-spacing: 0;
+}
+
+/* A etapa é o nome curto que o mapa também usa. Numa planilha é a coluna que
+   diz ONDE a referência acontece. */
+.folha__etapa {
+  font-family: var(--fonte-mono);
+  /* --txt-micro, e não o 0.6875rem literal que estava aqui. O valor é o mesmo,
+     então nada se move na tela; o que muda é que este rótulo volta a acompanhar
+     a escala quando ela mudar. O bloco de tokens avisa que o site antigo tinha
+     32 tamanhos soltos, onze deles entre 11 e 16px, e é exatamente assim que se
+     chega lá: um literal de cada vez, cada um igual ao token no dia em que foi
+     escrito. Este é o papel "rótulo micro em caixa alta", e ele já tem token. */
+  font-size: var(--txt-micro);
+  font-stretch: 76%;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-caps-p);
+  color: var(--tinta-fraca);
+  margin-inline-start: auto;
+}
+
+.folha__corpo { margin-top: var(--e-4); }
+.folha__titulo {
+  color: var(--acento);
+  font-size: var(--txt-titulo);
+  line-height: 1.06;
+  font-stretch: 100%;
+  margin-bottom: var(--e-4);
+}
+.folha__corpo p + p { margin-top: var(--e-4); }
+.folha__corpo p {
+  color: var(--tinta-media);
+  max-width: var(--medida-texto);
+  text-wrap: pretty;
+}
+
+.folha .placa { margin-top: var(--e-5); }
+
+/* ── A referência ativa ────────────────────────────────────────────────────
+   A classe entra pelo JavaScript quando a linha cruza a janela. É troca de
+   ESTADO, não interpolação: ou a janela está nesta referência ou está na outra,
+   e contador de referência não tem meio-termo.
+
+   Sem JavaScript nenhuma linha fica ativa. E aí a planilha tem de aparecer
+   INTEIRA, todas legíveis do mesmo jeito, que é o que uma planilha impressa é.
+   Por isso o recuo das inativas não mora na linha: mora em
+   .movimento-ativo, a mesma trava que o resto da página usa. Sem script, sem
+   recuo, sem nada apagado.
+
+   A PROFUNDIDADE VEM DE LUZ, E NÃO DE POSIÇÃO. Nenhuma destas regras move a
+   linha, e isso é deliberado: a ScrollTrigger calcula as faixas de marcação a
+   partir do LAYOUT, então deslocar a linha desenhada faz o desenho discordar da
+   marcação. Foi exatamente assim que o avanço do papel morreu, com dez pixels
+   de transform gerando duas posições sem marcação e três com a errada. Aqui só
+   entram cor, opacidade e sombra. */
+
+.movimento-ativo .folha {
+  transition: background-color var(--dur-revelar) var(--ease-saida);
+}
+.movimento-ativo .folha--ativa {
+  background-color: var(--fundo-3);
+}
+
+/* ── O VÉU, que é o recuo contínuo ────────────────────────────────────────────
+   A linha que se afasta da janela entra na sombra do vidro. Antes isto era
+   estado discreto, com filter: brightness na folha, e as duas coisas eram
+   problema.
+
+   FILTER E OPACITY ACHATAM O 3D. Um elemento com filter ou com opacidade menor
+   que 1 vira plano: o transform-style: preserve-3d dele deixa de valer e os
+   planos de dentro da folha param de existir. Com brightness na folha, a prova
+   não descola do papel, e o efeito inteiro morre sem dar erro nenhum.
+
+   E o recuo era binario: ou a linha estava acesa ou apagada, e no caminho todo
+   entre uma e outra não acontecia nada. Medido: a folha entra na tela e só
+   depois de 688px de rolagem alguma coisa se mexe. É disso que vem a impressão
+   de animação atrasada.
+
+   Agora o véu é uma folha de tinta por cima do papel, com a opacidade em
+   --veu, que o roadbook.js escreve a cada quadro a partir da distância até a
+   linha de leitura. O PADRÃO É ZERO: sem script nenhuma linha aparece apagada, e
+   a planilha continua inteira e legível, que é a trava de sempre. */
+.folha::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: rgb(var(--halo-mapa) / var(--veu, 0));
+}
+
+/* ── OS PLANOS DE PROFUNDIDADE ─────────────────────────────────────────────
+   A folha é papel, e o que está grampeado nela fica ACIMA do papel. É isto que
+   faz a dobra revelar paralaxe em vez de parecer uma imagem inclinada: quando a
+   folha gira, a prova e o número da referência se deslocam mais do que o texto,
+   porque estão mais perto do olho.
+
+   Sem preserve-3d os filhos são achatados no plano da folha e o z não vale
+   nada. O giro e o recuo em si vivem no JavaScript, presos à rolagem. */
+.folha { transform-style: preserve-3d; }
+
+/* SÓ A PROVA SOBE, e a ref e a tulipa ficaram no plano do papel de propósito.
+
+   Elas chegaram a subir 14px, e a conta cobrou: sob perspectiva um elemento mais
+   perto do olho é desenhado maior, afastando-se do centro da folha. Medido com a
+   folha chapada, a coluna REF saía 6px fora do rótulo dela na régua, e alinhar
+   régua e linha ao pixel é invariante declarada desta seção. Seis pixels de
+   saliência não pagam um cabeçalho de tabela torto.
+
+   Na prova não custa nada: as colunas 4 e 5 trocam de lugar de uma linha para a
+   outra, e por isso o rótulo delas cobre as duas em vez de rotular cada uma. */
+.folha .placa { transform: translateZ(28px); }
+
+/* A prova recua junto, e por filter e não pelo véu: o véu fica no plano do papel
+   e a foto flutua acima dele, então o véu passaria por baixo da foto. Filter
+   numa folha achataria o 3D dela; numa foto não custa nada, porque foto não tem
+   plano dentro. Um passo mais forte que o texto, porque foto acesa puxa o olho
+   antes de qualquer palavra. */
+.folha .placa {
+  filter:
+    saturate(calc(1 - 0.45 * var(--veu, 0)))
+    brightness(calc(1 - 0.50 * var(--veu, 0)));
+}
+
+/* A camada de composição só existe enquanto a seção está em vista. Quatro
+   camadas vivas na página inteira é memória de vídeo parada à toa. */
+.roteiro__janela--voando .folha { will-change: transform; }
+.roteiro__janela--voando .folha__tulipa { will-change: transform, opacity; }
+
+/* O sulco da referência corrente. Cresce de cima para baixo quando a linha entra
+   na janela, que é o gesto de marcar com o dedo onde se está lendo.
+
+   A DURAÇÃO TEM DE OLHAR A ALTURA. Ela era var(--dur-estado), 200ms, que é a
+   medida certa para uma cor de botão trocar. Só que este sulco tem a altura da
+   folha inteira, e no celular isso são uns 600px: crescer 600px em 200ms dá três
+   mil pixels por segundo, e o que se vê não é uma régua sendo puxada, é um risco
+   que aparece. A mesma duração em coisas de tamanhos muito diferentes não produz
+   a mesma sensação.
+
+   Com var(--dur-revelar) a mesma régua sai a mil pixels por segundo, e aí ela
+   acompanha a leitura em vez de anunciar o próprio fim.
+
+   A SAÍDA É MAIS CURTA que a entrada, em 60%. Entrada é o que se olha; saída é o
+   que precisa sair da frente.
+
+   A OPACIDADE ENTRA JUNTO com a escala. Só com escala, a régua nasce e morre com
+   a cor cheia: o primeiro pixel dela já chega opaco, e é justamente esse degrau
+   que se lê como corte. Interpolando as duas, as duas pontas ficam macias.
+
+   A CURVA IMPORTA MAIS QUE A DURAÇÃO AQUI, e foi o que faltou perceber na
+   primeira tentativa. --ease-saida é cubic-bezier(0.23, 1, 0.32, 1): a tangente
+   inicial dela é 1 dividido por 0,23, ou seja quatro vezes e meia a velocidade
+   média. Numa régua de 600px em 600ms, isso são 1060 px/s de média e um PICO de
+   uns 4350 px/s no arranque, e o pico é o que se vê. Alongar a duração não
+   conserta arranque; só espalha o resto.
+
+   --ease-revelar é cubic-bezier(0.25, 0.46, 0.45, 0.94), tangente inicial de
+   0,46 sobre 0,25, menos de dois. Mesma duração, pico quase duas vezes e meia
+   menor, e a régua sai andando em vez de saltar.
+
+   AS PONTAS SÃO REDONDAS, E NÃO APAGADAS. A primeira versão desbotava os últimos
+   seis por cento de cada ponta num gradiente, e seis por cento de 600px são 36px:
+   não é ponta macia, é um quarto da régua lavado. O que se queria era ponta sem
+   quina, e isso é raio, não gradiente: a régua fica com a cor cheia de ponta a
+   ponta e as extremidades arredondam na própria largura. */
+/* A DURAÇÃO É POR FAIXA DE TELA, e não por gosto: é a mesma velocidade em folhas
+   de alturas diferentes.
+
+   A folha do celular tem uns 600px; a do desktop, uns 350. Com a mesma duração
+   para as duas, a régua do desktop anda 583 px/s contra 1060 do celular, ou seja
+   quase metade da velocidade, e o que era calmo num vira arrastado no outro. É a
+   mesma armadilha da dobra, onde grau fixo dava recuos diferentes conforme a
+   altura: quando o elemento muda de tamanho entre as faixas, a constante que
+   descreve a INTENÇÃO não é o tempo, é a velocidade.
+
+   55% de --dur-revelar sobre uma folha de 352px dão os mesmos 1060 px/s do
+   celular. A variável mora na .folha e o pseudo-elemento herda. */
+.folha {
+  position: relative;
+  --dur-sulco: var(--dur-revelar);
+  /* A borda em que o sulco fica ancorado. O roadbook.js troca isto a cada
+     mudança de estado, para o traço andar no sentido da rolagem. O padrão é o
+     topo, que é o sentido de quem está descendo a página. */
+  --sulco-origem: 0%;
+}
+.folha::before {
+  content: '';
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  width: 3px;
+  background: var(--acento);
+  border-radius: 999px;
+  opacity: 0;
+  transform: scaleY(0);
+  transform-origin: 50% var(--sulco-origem);
+  transition:
+    transform calc(var(--dur-sulco) * 0.6) var(--ease-revelar),
+    opacity   calc(var(--dur-sulco) * 0.6) var(--ease-revelar);
+}
+.folha--ativa::before {
+  opacity: 1;
+  transform: scaleY(1);
+  transition:
+    transform var(--dur-sulco) var(--ease-revelar),
+    opacity   var(--dur-sulco) var(--ease-revelar);
+}
+
+.folha--ativa .folha__ref    { color: var(--acento); }
+.folha--ativa .folha__tulipa { color: var(--acento); }
+
+/* ── A profundidade da janela ──────────────────────────────────────────────
+   O papel passa POR BAIXO do vidro, e é isso que estas duas regras dizem.
+
+   A sombra é do lábio da janela sobre o papel. O véu é o papel entrando na
+   sombra: as linhas não somem num corte seco na borda da barra, elas escurecem
+   ao entrar embaixo dela.
+
+   O véu é ::after da barra, e não um elemento no HTML, porque é desenho e não
+   conteúdo. pointer-events none para não roubar clique de nada. */
+.planilha__topo {
+  box-shadow:
+    0 1px 0 rgb(var(--halo-mapa) / 0.5),
+    0 10px 18px -10px rgb(var(--halo-mapa) / 0.85);
+}
+
+/* A folha tem espessura. A borda de baixo sozinha lê como divisória de tabela;
+   com o realce claro em cima dela, lê como papel empilhado. */
+.folha { box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.03); }
+
+/* O conjunto tem um pé. Sem isto a planilha flutua sobre o fundo da página como
+   um retângulo desenhado, e não como um objeto pousado nela. */
+.roteiro__janela {
+  box-shadow: 0 24px 48px -32px rgb(var(--halo-mapa) / 0.9);
+}
+
+@media (min-width: 48rem) {
+  /* A partir daqui a ficha volta a ser tabela: a caixa de leitura se dissolve, os
+     quatro filhos entram direto no grid da linha e a régua volta a ter coluna
+     para rotular. E a janela volta a ser janela: a barra gruda logo abaixo da
+     barra da página, e o papel passa por baixo dela. */
+  .roteiro__janela { --planilha-colunas: 4rem 3rem minmax(0, 1fr); }
+  .planilha__regua { display: grid; }
+
+  .planilha__topo {
+    position: sticky;
+    top: var(--altura-barra);
+    padding-inline: var(--e-8);
+  }
+  /* O véu é o papel entrando na sombra do lábio: as linhas não somem num corte
+     seco na borda da barra, elas escurecem ao entrar embaixo dela. Só faz sentido
+     com a barra grudada, e só existe onde ela gruda. É ::after e não elemento no
+     HTML porque é desenho, e não conteúdo. */
+  .planilha__topo::after {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    top: 100%;
+    height: var(--e-10);
+    pointer-events: none;
+    background: linear-gradient(
+      to bottom,
+      rgb(var(--halo-mapa) / 0.55),
+      rgb(var(--halo-mapa) / 0));
+  }
+
+  .folha {
+    grid-template-columns: var(--planilha-colunas);
+    gap: var(--planilha-vao);
+    padding: var(--e-8);
+  }
+  .folha__leitura {
+    display: contents;
+    border-bottom: 0;
+  }
+  .folha__tulipa { width: 3rem; height: 3rem; }
+
+  .folha__dia,
+  .folha__etapa,
+  .folha__corpo,
+  .folha .placa { grid-column: 3; }
+
+  .folha__etapa {
+    margin-top: var(--e-1);
+    margin-inline-start: 0;
+  }
+
+}
+
+@media (min-width: 64rem) {
+  /* No desktop a planilha abre as colunas que o celular empilha: dia e etapa
+     ganham coluna própria e a descrição divide a linha com a prova. Mesma
+     leitura, com o espaço que a tela oferece. */
+  .roteiro { max-width: 84rem; }
+  .roteiro__janela {
+    /* As duas últimas têm a mesma largura de propósito: elas TROCAM DE LUGAR de
+       uma linha para a outra, e com larguras diferentes a prova mudaria de
+       tamanho a cada linha. */
+    --planilha-colunas: 4.5rem 3.5rem 9rem minmax(0, 1fr) minmax(0, 1fr);
+  }
+  .planilha__coluna--dia { display: block; }
+
+  .folha { align-items: start; padding: var(--e-10) var(--e-8); }
+
+  /* Ref e tulipa atravessam as duas linhas do grid; dia e etapa empilham na
+     terceira coluna; descrição e prova ocupam a altura inteira. */
+  .folha__ref    { grid-row: 1 / span 2; }
+  .folha__tulipa { grid-row: 1 / span 2; }
+  .folha__dia    { grid-column: 3; grid-row: 1; }
+  .folha__etapa  { grid-column: 3; grid-row: 2; margin-top: var(--e-2); }
+  .folha__corpo  { grid-column: 4; grid-row: 1 / span 2; margin-top: 0; }
+  .folha .placa  { grid-column: 5; grid-row: 1 / span 2; margin-top: 0; }
+
+  /* Nas pares a prova vai para a coluna 4 e o texto para a 5. As duas colunas
+     têm a mesma largura, então a prova não muda de tamanho de uma linha para a
+     outra: muda de lado. */
+  .folha:nth-child(even) .placa       { grid-column: 4; }
+  .folha:nth-child(even) .folha__corpo { grid-column: 5; }
+
+  /* AQUI, E NÃO EM 48REM, é onde a folha encurta: é nesta faixa que a prova sai de
+     baixo do texto e vai para a coluna ao lado. Medido: 352px de altura aqui,
+     contra 729 a 784 na faixa de 48 a 64rem, que é MAIS alta que a do celular
+     porque a tabela estreita a coluna de texto sem tirar a foto de baixo dele.
+
+     Foi onde eu quase errei: pôr o encurtamento em 48rem daria 2376 px/s naquela
+     faixa, mais que o dobro do alvo. O sulco tem de encurtar junto com a folha, e
+     não junto com a mudança de colunas. */
+  .folha { --dur-sulco: calc(var(--dur-revelar) * 0.55); }
+}
+
+
+/* ── 10. ESCOPO (O MANIFESTO) ───────────────────────────────────────────
+   Um bloco dominante com mídia para a logística, três linhas compactas para o
+   resto. Os quatro entregáveis não têm o mesmo peso comercial, e quatro caixas
+   do mesmo tamanho fazem o visitante gastar atenção igual em coisas de valor
+   desigual. Aqui o peso visual é o peso do argumento. */
+
+.escopo {
+  padding-block: var(--e-24);
+  padding-inline: var(--respiro-lateral);
+  max-width: var(--largura-conteudo);
+  margin-inline: auto;
+  border-top: 1px solid var(--linha-sutil);
+}
+
+.manifesto__principal {
+  display: grid;
+  gap: var(--e-8);
+  margin-bottom: var(--e-12);
+}
+.manifesto__titulo {
+  font-size: var(--txt-secao);
+  line-height: var(--lh-secao);
+  color: var(--acento);
+  margin-bottom: var(--e-5);
+}
+.manifesto__texto p {
+  font-size: var(--txt-destaque);
+  max-width: 44ch;
+}
+
+/* Sem margem no pé: a lista virou o último elemento da seção quando o CTA
+   repetido saiu daqui, e os 48px que separavam um do outro viravam sobra
+   somada aos 96px de respiro da própria seção. */
+.manifesto__lista {
+  display: grid;
+  gap: var(--e-8);
+}
+.manifesto__item {
+  padding-top: var(--e-5);
+  border-top: 1px solid var(--linha-media);
+}
+.manifesto__item-titulo {
+  font-size: var(--txt-titulo);
+  line-height: 1.06;
+  font-stretch: 92%;
+  margin-bottom: var(--e-3);
+}
+.manifesto__item p { color: var(--tinta-media); }
+
+
+@media (min-width: 48rem) {
+  .manifesto__lista { grid-template-columns: repeat(3, 1fr); gap: var(--e-6); }
+}
+@media (min-width: 64rem) {
+  .manifesto__principal {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: center;
+    gap: var(--e-16);
+  }
+}
+
+
+/* ── 11. DOR ────────────────────────────────────────────────────────────
+   A respiração da página e a justificativa do preço. É a única seção com mídia
+   em retrato: o formato aperta a composição de propósito, porque o assunto
+   aqui é aperto. */
+
+.dor {
+  padding-block: var(--e-24);
+  padding-inline: var(--respiro-lateral);
+  max-width: var(--largura-conteudo);
+  margin-inline: auto;
+  display: grid;
+  gap: var(--e-12);
+  border-top: 1px solid var(--linha-sutil);
+}
+
+/* Lista de atrito. Cada item é uma frase curta e seca, com uma régua fina à
+   esquerda que os agrupa como um bloco. A régua tem 1px: acima disso ela vira
+   decoração colorida disputando atenção com o texto que deveria estar
+   carregando. */
+.dor__lista {
+  margin-block: var(--e-8);
+  display: grid;
+  gap: var(--e-4);
+}
+.dor__lista li {
+  font-family: var(--fonte-mono);
+  font-stretch: 78%;
+  line-height: 1.4;
+  padding-left: var(--e-5);
+  border-left: 1px solid var(--alerta);
+  color: var(--tinta-media);
+  font-size: var(--txt-destaque);
+}
+
+.dor__virada { max-width: var(--medida-texto); }
+/* Sem margem no pé, pelo mesmo motivo do .manifesto__lista: o remate virou o
+   fim da coluna quando o CTA repetido saiu, e os 40px que o separavam do botão
+   viravam sobra em cima dos 96px de respiro da seção. */
+.dor__remate {
+  margin-top: var(--e-6);
+  font-family: var(--fonte-display);
+  font-weight: 800;
+  font-stretch: 100%;
+  font-size: var(--txt-titulo);
+  /* 1.25 e não 1.15: a 30px em peso 800, as descidas de g, q e ç da primeira
+     linha quase encostavam nas maiúsculas da segunda. Continua sendo entrelinha
+     de display, só deixa o par de linhas respirar. */
+  line-height: 1.25;
+  letter-spacing: var(--tracking-display);
+  color: var(--acento);
+  max-width: 24ch;
+}
+.dor .botao { width: 100%; }
+
+@media (min-width: 48rem) {
+  .dor .botao { width: auto; }
+}
+@media (min-width: 64rem) {
+  .dor {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    align-items: center;
+    gap: var(--e-20);
+  }
+
+  }
+
+
+/* ── 11b. DEPOIMENTOS ───────────────────────────────────────────────────────
+   O estilo existe, o conteúdo não. O bloco correspondente em index.html está
+   comentado porque não há depoimento real, e inventar um seria fabricar
+   avaliação de cliente. Este CSS fica pronto para o dia em que a frase chegar:
+   descomentar o HTML basta, não há segundo passo.
+
+   SEM CARTÃO. A referência de campo não tem elevação, e a página inteira separa
+   bloco de bloco por fio de 1px e por espaço. Três caixas com fundo próprio
+   aqui seriam o único lugar da página com cartão, e cartão é justamente o que
+   faz depoimento parecer widget de plugin em vez de gente falando.
+
+   TRÊS COLUNAS NO DESKTOP, UMA NO CELULAR. É o único lugar da página onde três
+   itens iguais são certos: depoimentos TÊM peso igual entre si, ao contrário
+   dos entregáveis do escopo, onde o manifesto existe justamente porque o peso
+   era desigual. */
+
+.depoimentos {
+  padding-block: var(--e-24);
+  padding-inline: var(--respiro-lateral);
+  max-width: var(--largura-conteudo);
+  margin-inline: auto;
+  border-top: 1px solid var(--linha-sutil);
+}
+
+.depoimentos__lista {
+  display: grid;
+  gap: var(--e-10);
+}
+
+/* O fio à esquerda é o mesmo recurso da .dor__lista, e amarra os dois blocos de
+   voz da página. 1px: acima disso vira barra colorida disputando com a frase. */
+.depoimento {
+  padding-left: var(--e-5);
+  border-left: 1px solid var(--linha-media);
+}
+
+/* Barlow e não mono: depoimento é PROSA, lida em sequência, e é a regra de
+   divisão da casa. As aspas entram no conteúdo do HTML, tipográficas de
+   verdade, e não por ::before decorativo, para o leitor de tela também ouvi-las
+   como parte da citação. */
+.depoimento__fala {
+  font-family: var(--fonte-corpo);
+  font-size: var(--txt-destaque);
+  line-height: 1.5;
+  color: var(--tinta);
+  margin: 0;
+  max-width: 42ch;
+}
+
+/* A atribuição é chrome: lida de relance, nunca em sequência. Mono, portanto.
+   Nome e cidade em degraus diferentes de tinta, porque o nome é a credencial e
+   a cidade é o contexto dela. Sem travessão entre os dois: quebra de linha. */
+.depoimento__quem {
+  margin-top: var(--e-4);
+  font-family: var(--fonte-mono);
+  font-stretch: 78%;
+  font-size: var(--txt-rotulo);
+  color: var(--tinta-media);
+}
+
+.depoimento__onde {
+  display: block;
+  margin-top: var(--e-1);
+  color: var(--tinta-fraca);
+}
+
+@media (min-width: 48rem) {
+  .depoimentos__lista {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--e-8);
+  }
+}
+
+
+/* ── 12. OFERTA ─────────────────────────────────────────────────────────── */
+
+.oferta {
+  padding-block: var(--e-24);
+  padding-inline: var(--respiro-lateral);
+  max-width: 60rem;
+  margin-inline: auto;
+  border-top: 1px solid var(--linha-sutil);
+  /* SEM CORTE AQUI, e isso é decisão medida.
+
+     A seção teve overflow-x: clip por um tempo, contra a rolagem lateral que as
+     provas em voo criavam. Era redundante: o body já declara overflow-x: clip
+     justamente para isso, e o body é largo o quanto a tela é.
+
+     Redundante e nocivo. .oferta tem 960px no desktop e é placa clara centrada
+     numa página escura. Cortar nela é cortar na borda da placa, e as provas
+     sobem MUITO além dela: medido, 1238px acima do topo da seção. Uma foto
+     flutuando lá em cima, sobre o escuro, sendo fatiada por uma linha vertical
+     invisível a 240px da borda da tela é exatamente o tipo de coisa que lê como
+     defeito.
+
+     Sem corte aqui, quem corta é o body, na borda da tela, onde ninguém vê
+     corte nenhum. E as provas ganham o que foi pedido: passar por cima das
+     outras camadas da página. */
+}
+
+/* Três células para três fotos. Não quatro: uma grade tem exatamente tantas
+   células quantas houver conteúdo, e a quarta do rascunho existia para fechar a
+   simetria, não porque houvesse uma quarta coisa a mostrar. */
+/* O ÁLBUM, agora seção própria entre o herói e o roteiro.
+
+   Ele morava dentro de .oferta e herdava a caixa dela. Saiu de lá a pedido, e
+   esta regra existe para que a caixa NÃO MUDE junto: 60rem de largura máxima,
+   centrada, mesmo respiro lateral. Repetir a medida é deliberado — a pilha vale
+   62% desta caixa, e toda a geometria da órbita em roadbook.js é fração da
+   largura da pilha. Caixa diferente é órbita de outro tamanho, e as constantes
+   de lá foram afinadas contra 352px de pilha no desktop e 217 no celular.
+
+   SEM CORTE, e a razão é a mesma que .oferta registra: as provas sobem muito
+   além desta caixa, e cortar aqui seria fatiá-las numa linha vertical invisível
+   no meio da página. Quem corta é o body, na borda da tela, onde ninguém vê
+   corte nenhum.
+
+   SEM z-index E SEM position, também de propósito. Sem eles esta div não abre
+   contexto de empilhamento, e os z-index que o roadbook.js põe nos <li> valem
+   contra o resto da página — que é o que deixa as provas passarem por cima do
+   herói e do roteiro. O preço disso está na regra de .planilha__topo, que
+   precisou de camada própria para não ser coberta.
+
+   PADDING MENOR QUE O DA OFERTA. Lá eram --e-24 em cima e embaixo porque a
+   seção era uma placa clara com borda; aqui é uma faixa sem moldura, e a pilha
+   já carrega no rodapé a folga do voo (o margin-bottom de .album__grade--pilha,
+   que reserva um quarto da própria largura). --e-16 em cima e nada embaixo. */
+.album {
+  padding-block: var(--e-16) 0;
+  padding-inline: var(--respiro-lateral);
+  max-width: 60rem;
+  margin-inline: auto;
+}
+
+/* PROVA SOBRE MESA, e é o ÚNICO momento de rotação da página inteira.
+
+   Três provas fotográficas jogadas sobre a mesa: sobrepostas, levemente
+   desalinhadas, uma passando por cima da outra. A profundidade vem da
+   sobreposição das próprias fotos, não de sombra, que é como a referência
+   constrói camada.
+
+   Rotação de no máximo 2,5 graus, contra os 12 da referência. Doze graus é
+   Polaroid, é fantasia declarada. Dois e meio é foto que alguém pousou na mesa
+   com pressa, e é a diferença entre citar o princípio e copiar a roupa.
+
+   Uma vez só na página: rotação repetida vira maneirismo, e a seção seguinte
+   é a oferta, que precisa ler como séria. */
+.album__grade {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  margin-bottom: var(--e-16);
+  padding-inline: var(--e-2);
+}
+.album__grade li { position: relative; }
+.album__grade li:nth-child(1) { transform: rotate(-2.2deg); z-index: 1; }
+.album__grade li:nth-child(2) { transform: rotate(1.4deg);  z-index: 3; margin-inline: -6%; }
+.album__grade li:nth-child(3) { transform: rotate(2.5deg);  z-index: 2; }
+.album__grade li:nth-child(4) { transform: rotate(-1.6deg); z-index: 1; }
+.album__grade li:nth-child(5) { transform: rotate(2deg);    z-index: 2; }
+
+/* A BORDA SAIU A PEDIDO, e o que ela fazia era separar uma prova da outra onde
+   elas se cobrem — o risco registrado era três fotos sobrepostas virarem uma
+   mancha só.
+
+   O que segura a separação agora é o assunto de cada foto e a sobreposição ser
+   PARCIAL: nenhuma prova é coberta por inteiro, então cada uma mostra uma fatia
+   com conteúdo próprio. Se em alguma tela o monte fechar em mancha, o
+   substituto é sombra suave, e não a borda de volta: a referência que motivou o
+   pedido é sem moldura, e devolver a moldura desfaz o pedido.
+
+   border: 0 aqui vence também o `border: 1px solid var(--linha-sutil)` que
+   .placa veste por padrão, por especificidade. As duas bordas somem de uma vez,
+   e a caixa externa não muda de tamanho porque box-sizing é border-box. */
+.album__grade .placa {
+  border: 0;
+  border-radius: 0;
+}
+
+/* A PILHA. As três provas saem da grade e passam a ocupar a MESMA célula, uma
+   sobre a outra, giradas, e se revezam conforme a seção passa.
+
+   VALE NO CELULAR TAMBÉM, e essa foi uma troca deliberada. O argumento anterior
+   era que empilhar esconde duas das três provas numa página que precisa mostrar
+   o que está vendendo. O contra-argumento é mais forte: em grade, num aparelho
+   de 390px, cada prova fica com 110px de largura, ou seja, três miniaturas onde
+   nenhuma se lê. Empilhadas, cada uma ocupa a coluna inteira e aparece grande,
+   uma de cada vez. Elas não estão escondidas, estão em sequência.
+
+   A classe vem do JS porque a condição é a MESMA que liga a animação. Declarar
+   o empilhamento no CSS por media query e a animação no JS por matchMedia seria
+   manter duas condições em sincronia para sempre, e é assim que a pilha fica
+   empilhada e parada no dia em que o script falhar. */
+/* A CAIXA DA PILHA, que é o tamanho de UMA prova.
+
+   88% da largura dava 308px de foto num aparelho de 390px, e a prova ocupava a
+   tela quase inteira. 62% dá 217px, e o roadbook.js aplica escala de 0,72 a
+   0,94 por cima disso, então na tela a foto vive entre 156 e 204px.
+
+   Uma versão intermediária desceu isto a 40%, para acomodar um anel largo em
+   que nenhuma prova encostava na outra. Era resolver o problema errado: o
+   pedido não é anel, é ÁLBUM. Álbum se cobre, e é isso que faz cinco fotos
+   parecerem cinco fotos e não cinco quadrinhos.
+
+   No desktop o teto de 22rem corta em 352px.
+
+   Nenhuma folga reservada para o voo PARA CIMA: as provas atravessam a seção e
+   passam por cima do que estiver acima dela, que é licença explícita. Quem corta
+   é o main, na borda da tela.
+
+   PARA BAIXO É OUTRA HISTÓRIA, e a margem tem de crescer com a foto. A grade
+   mede uma prova; o álbum mede 302px no celular e 490 no desktop, porque cinco
+   fotos espalhadas ocupam mais que uma. O painel de preço tem camada própria e
+   fica por cima, então prova que chegue nele não fica atrás dele: fica CORTADA.
+   Medido com a margem fixa de 64px: 21px de folga no desktop, o suficiente para
+   um redimensionamento qualquer comer.
+
+   min(62%, 22rem) é a MESMA expressão do width acima, e porcentagem de margem
+   resolve contra a mesma largura de contêiner que porcentagem de largura. Ou
+   seja, o acréscimo é literalmente 12% da largura da pilha, seja ela qual for, e
+   as duas telas caem em 63px de folga. */
+.album__grade--pilha {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  padding-inline: 0;
+  width: 62%;
+  max-width: 22rem;
+  margin-inline: auto;
+  margin-bottom: calc(var(--e-16) + min(62%, 22rem) * 0.26);
+}
+/* :nth-child(n) casa com todos os filhos e existe aqui por ESPECIFICIDADE, não
+   por capricho. A grade declara .album__grade li:nth-child(2), que vale
+   (0,2,1); um .album__grade--pilha li vale (0,1,1) e perde, esteja onde
+   estiver no arquivo. O resultado era medível e feio: na pilha, o segundo item
+   mantinha o margin-inline: -6% da grade e ficava mais largo que os vizinhos.
+
+   As cinco dividem a MESMA célula. É daí que sai o centro comum do anel: o voo
+   é polar, e o polo é o centro desta célula.
+
+   z-index: auto, e agora isso basta. Enquanto as provas se cobriam, quem estava
+   na frente precisava ser declarado e trocado ao longo do percurso. Anel que
+   não se cobre não tem frente: a ordem do DOM resolve, e o que sobrava de
+   isolation e de numeração saiu junto. */
+.album__grade--pilha li:nth-child(n) {
+  grid-area: 1 / 1;
+  margin-inline: 0;
+  z-index: auto;
+  will-change: transform;
+}
+
+/* Seis imagens dão respiro real entre as passagens no celular. A última é uma
+   vista de guidão e sai apenas desta faixa; no desktop o álbum continua com as
+   sete imagens. */
+@media (max-width: 47.999rem) {
+  .album__grade li:nth-child(7) { display: none; }
+}
+
+/* Nenhuma posição de repouso aqui, e isso mudou. A versão de órbita declarava
+   um raio fixo em translate por foto, porque quem girava era o <li> e o filho
+   deslocado descrevia um círculo. O voo não tem raio fixo: o raio CRESCE ao
+   longo da rolagem, e quem calcula cos e sen a cada quadro é o roadbook.js.
+   Deixar meio deslocamento aqui e meio lá é a receita para o GSAP ler a matriz
+   do CSS e congelar porcentagem em pixel no primeiro redimensionamento. */
+
+/* O PAINEL TEM DE CABER NUMA TELA DE CELULAR.
+
+   Não é preferência: é o único bloco da página em que o visitante precisa
+   comparar números entre si. Se metade dele está fora da tela, comparar vira
+   rolar para cima e para baixo guardando cifra na memória, e é aí que a pessoa
+   desiste.
+
+   Medido num aparelho de 375x667, que é o menor celular ainda comum: o painel
+   tinha 662px contra 603 de tela útil depois da barra. Todo o aperto abaixo
+   existe para fechar esses 59px, e some acima de 48rem, onde a altura deixa de
+   ser o problema. */
+.painel {
+  /* O ÁLBUM SAIU DAQUI, e este z-index ficou. Vale dizer por quê, porque o
+     comentário antigo descrevia uma vizinhança que não existe mais.
+
+     As sete provas moravam nesta seção e passavam por cima do preço no meio do
+     voo: a pilha NÃO forma contexto de empilhamento — .album__grade--pilha não
+     declara z-index nem position — e os <li> recebem z-index 7 a 1 inline do
+     roadbook.js, então cada prova disputava sozinha com o painel e as de
+     z-index maior que 1 ganhavam. Medida, a prova de índice 4 pintava sobre o
+     preço aos 75% do voo. Subir para 10 resolveu.
+
+     O álbum agora abre a página, entre o herói e o roteiro, e nenhuma prova
+     chega mais perto deste painel — medido, ZERO sobreposições testáveis em 43
+     posições de rolagem. O 10 fica assim mesmo, por dois motivos: uma placa de
+     preço merece camada declarada em vez de depender da ordem do documento, e a
+     lição que o defeito ensinou continua valendo para quem editar isto depois —
+     **a pilha não isola nada, cada prova disputa sozinha com o resto da
+     página**. Foi exatamente essa a falha que reapareceu no texto do herói
+     quando o álbum mudou de lugar; ver .heroi__texto. */
+  position: relative;
+  z-index: 10;
+
+  background: var(--fundo-2);
+  border: 1px solid var(--linha-media);
+  border-top: 1px solid var(--acento);
+  padding-block: var(--e-6) var(--e-8);
+  padding-inline: clamp(var(--e-4), 5vw, var(--e-10));
+}
+.painel__titulo {
+  color: var(--acento);
+  font-size: var(--txt-secao);
+  line-height: var(--lh-secao);
+  margin-bottom: var(--e-3);
+}
+/* A frase do desconto é qualificador, e não argumento: ela explica que os 10%
+   já estão dentro do número de baixo. No celular ela desce para 13px, o mesmo
+   corpo da condição do boleto, que é informação da mesma natureza. A 15px ela
+   ocupava quatro linhas e 93px de altura para dizer uma frase. */
+.painel__condicao {
+  font-family: var(--fonte-mono);
+  font-stretch: 78%;
+  line-height: 1.45;
+  color: var(--tinta-media);
+  font-size: var(--txt-rotulo);
+  padding-bottom: var(--e-5);
+  border-bottom: 1px solid var(--linha-sutil);
+}
+
+/* ── OS DOIS PLANOS ─────────────────────────────────────────────────────
+   O painel oferece duas formas de pagar, e a estrutura precisa dizer isso antes
+   de qualquer número ser lido.
+
+   Estava montado como "um preço grande" mais "uma tabela de totais" de dois
+   pares. Os dois pares pareciam irmãos e não eram: "Total a prazo" é a SOMA do
+   plano de cima, e "À vista no Pix" é outro plano inteiro. Lado a lado na mesma
+   tabela, cabia ao leitor descobrir qual número pertencia a qual forma de pagar,
+   e é exatamente esse trabalho que um painel de preço existe para poupar.
+
+   Agora são dois blocos fechados. O parcelado abre no sinal e FECHA no próprio
+   total; o à vista tem bloco próprio. Os dois começam com o MESMO tipo de
+   rótulo, em mono maiúsculo, e é essa repetição que os faz lerem como
+   alternativas em vez de como continuação um do outro.
+
+   A hierarquia sai de tamanho e espaço, não de cor: 45px no sinal, 21px nos
+   dois totais, 15px no apoio e 13px em rótulo e letra miúda. As três cifras são
+   menta porque as três são preço; quem diz qual manda é o corpo da fonte. */
+
+/* Respiro ASSIMÉTRICO, e é o que resolve o vão entre os dois planos.
+
+   Era 32px em cima e 32 embaixo. Embaixo, esses 32 encontravam a margem de 16
+   do bloco à vista: 48px de nada entre a linha do total e o fio que abre o
+   próximo plano, mais 25 até o rótulo. Setenta e três pixels de ar num painel
+   que precisa caber numa tela de celular.
+
+   Quem separa os dois planos é o FIO, não o vazio. Com 20px de cada lado dele o
+   corte continua evidente e o painel recupera altura. */
+.plano { padding-block: var(--e-6) var(--e-5); }
+
+/* O rótulo é o mesmo nos dois blocos, e é ele que os declara irmãos. */
+.plano__rotulo {
+  font-family: var(--fonte-mono);
+  font-weight: 600;
+  font-stretch: 80%;
+  font-size: var(--txt-rotulo);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-caps-p);
+  color: var(--tinta-media);
+  margin-bottom: var(--e-2);
+}
+
+.preco__figura {
+  font-family: var(--fonte-display);
+  font-weight: 900;
+  font-stretch: 105%;
+  font-size: var(--txt-preco);
+  line-height: 1;
+  letter-spacing: var(--tracking-display);
+  color: var(--acento);
+}
+.preco__moeda   { font-size: 0.42em; font-weight: 700; vertical-align: 0.55em; margin-right: 0.12em; }
+.preco__centavos{ font-size: 0.52em; }
+
+/* As parcelas são apoio, não manchete. Estavam em 19px, o segundo maior
+   elemento do painel, em mono de peso 700 e quebrando em duas linhas: mono é
+   largo, negrito é pesado e duas linhas são um bloco. A 15px a frase cabe em
+   uma linha, e o contraste interno passa a vir da cor, com a frase em tinta
+   média e o valor em tinta cheia. */
+.preco__parcelas{ margin-top: var(--e-4); font-size: var(--txt-apoio);
+                  color: var(--tinta-media);
+                  font-family: var(--fonte-mono); font-stretch: 78%; line-height: 1.45; }
+.preco__parcelas strong { font-weight: 700; color: var(--tinta); }
+.preco__condicao{ margin-top: var(--e-2); color: var(--tinta-media); font-size: var(--txt-rotulo);
+                  font-family: var(--fonte-mono); font-stretch: 78%; line-height: 1.45; }
+
+/* O fecho do plano parcelado: a conta do que foi dito acima. Fica DENTRO do
+   bloco, separado por um fio fino, porque é conclusão e não item novo. */
+.plano__fecho {
+  margin-top: var(--e-4);
+  padding-top: var(--e-3);
+  border-top: 1px solid var(--linha-sutil);
+}
+/* Rótulo EM CIMA do valor, nos dois planos, e é essa repetição que os deixa
+   comparáveis.
+
+   O fecho já foi space-between e depois virou rótulo e valor lado a lado. Lado
+   a lado ele ainda dependia de o total caber no que sobrasse da linha, e o
+   total é o número mais importante do bloco: ele não pode ser dimensionado
+   pelo resto que sobra. Empilhado, ele ganha a coluna inteira, que é o que
+   permite o corpo de 21px — e passa a ter exatamente a mesma forma do plano à
+   vista, rótulo miúdo em caixa alta sobre a cifra.
+
+   Duas formas de pagar, dois blocos, a mesma anatomia. É assim que o leitor vê
+   que são alternativas antes de ler qualquer palavra. */
+.plano__linha {
+  font-family: var(--fonte-mono);
+  font-stretch: 78%;
+  font-size: var(--txt-rotulo);
+}
+.plano__linha dt { color: var(--tinta-media); }
+
+/* O plano à vista. Bloco próprio, aberto por um fio mais presente que o do
+   fecho: ali termina uma forma de pagar e começa outra.
+
+   Ele empilha rótulo sobre valor em vez de alinhar nas pontas. Alinhado nas
+   pontas ele voltaria a parecer mais uma linha de tabela, que é justamente a
+   leitura errada que esta mudança existe para desfazer. */
+.plano--avista {
+  margin-top: 0;
+  padding-top: var(--e-5);
+  padding-bottom: var(--e-4);
+  border-top: 1px solid var(--linha-media);
+}
+
+/* OS DOIS TOTAIS, NO MESMO DEGRAU.
+
+   Aqui estava o erro de hierarquia do painel. As duas cifras que o visitante
+   precisa comparar — R$ 5.990,00 a prazo e R$ 5.690,50 à vista — estavam em
+   degraus diferentes: a do parcelado a 13px, em tinta branca, do mesmo corpo do
+   aviso sobre o vencimento do boleto, e a do à vista a 17px, em menta. A escala
+   dizia que uma era letra miúda e a outra era texto, quando as duas são a mesma
+   coisa: o preço da viagem em duas formas de pagar.
+
+   Pior: "mais 10 parcelas de R$ 449,25", que é apoio, vinha a 15px, dois
+   pixels ACIMA do total que ela decompõe. Uma parcela derivada mandava mais que
+   a soma.
+
+   Agora os dois totais compartilham corpo, peso, família e cor. Menta porque as
+   duas são preço, 21px porque são o segundo assunto do painel, atrás só do
+   sinal. A escala do bloco de preço fica em quatro degraus legíveis:
+   45px no sinal, 21px nos totais, 15px no apoio, 13px em rótulo e letra miúda.
+   O 15 e o 13 continuam próximos porque ali quem separa é a cor e a caixa. */
+.plano__fecho dd,
+.plano--avista .plano__valor {
+  margin-top: var(--e-1);
+  font-family: var(--fonte-mono);
+  font-weight: 700;
+  font-stretch: 78%;
+  font-size: var(--txt-total);
+  line-height: 1.25;
+  color: var(--acento);
+}
+
+/* Acima de 48rem a altura deixa de ser o problema e o respiro volta ao normal:
+   o aperto existe para o painel caber numa tela de celular, não porque menos ar
+   seja melhor. */
+@media (min-width: 48rem) {
+  /* O respiro do próprio .painel não entra aqui: ele já é restaurado mais
+     abaixo, por uma regra que existia antes desta e que põe 48px nos dois
+     lados. Declarar de novo seria uma segunda regra perdendo em silêncio para
+     a primeira. */
+  .painel__titulo   { margin-bottom: var(--e-4); }
+  .painel__condicao { font-size: var(--txt-apoio); line-height: 1.5;
+                      padding-bottom: var(--e-8); }
+  .plano            { padding-block: var(--e-8) var(--e-6); }
+  .plano__fecho     { margin-top: var(--e-6); padding-top: var(--e-4); }
+  .plano--avista    { padding-top: var(--e-6); padding-bottom: var(--e-8); }
+}
+
+
+/* A nota do quórum é subordinada, não irmã. Lado a lado com o painel, ela
+   obrigava o visitante a comparar duas coisas que não são comparáveis, bem no
+   ponto em que ele só precisava decidir uma. */
+.nota-quorum {
+  margin-top: var(--e-6);
+  padding: var(--e-6) var(--e-5);
+  border: 1px solid var(--linha-sutil);
+}
+.nota-quorum__titulo {
+  color: var(--acento);
+  font-size: var(--txt-titulo);
+  line-height: 1.06;
+  font-stretch: 92%;
+  margin-bottom: var(--e-3);
+}
+.nota-quorum p {
+  color: var(--tinta-media);
+  font-size: var(--txt-apoio);
+  margin-bottom: var(--e-5);
+  max-width: 52ch;
+}
+
+/* As regras ficam legíveis. Cinza de 11px no pé de uma oferta de R$ 5.990 lê
+   como algo que se quis esconder, e é justamente o que mais constrói confiança
+   quando está visível. */
+.regras { margin-top: var(--e-16); }
+.regras__titulo {
+  font-family: var(--fonte-mono);
+  font-weight: 600;
+  font-stretch: 80%;
+  font-size: var(--txt-rotulo);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-caps-p);
+  color: var(--tinta-media);
+  padding-bottom: var(--e-4);
+  border-bottom: 1px solid var(--linha-media);
+  margin-bottom: var(--e-6);
+}
+.regras__lista { display: grid; gap: var(--e-5); }
+.regras__item { display: grid; gap: var(--e-1); }
+.regras__item dt {
+  font-family: var(--fonte-mono);
+  font-weight: 600;
+  font-stretch: 80%;
+  font-size: var(--txt-apoio);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-caps-m);
+  color: var(--tinta);
+}
+.regras__item dd { color: var(--tinta-media); font-size: var(--txt-apoio); }
+.regras__item--atencao dt,
+.regras__item--atencao dd { color: var(--alerta); }
+
+@media (min-width: 48rem) {
+  .painel      { padding-block: var(--e-12); }
+  .nota-quorum { padding: var(--e-8); display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: center; column-gap: var(--e-8); }
+  .nota-quorum__titulo { grid-column: 1; }
+  .nota-quorum p { grid-column: 1; margin-bottom: 0; }
+  .nota-quorum .botao { grid-column: 2; grid-row: 1 / 3; }
+  .regras__lista { grid-template-columns: repeat(2, 1fr); gap: var(--e-8); }
+}
+
+
+/* ── 13. REDES E RODAPÉ ─────────────────────────────────────────────────── */
+
+.redes {
+  padding-block: var(--e-20);
+  padding-inline: var(--respiro-lateral);
+  max-width: var(--largura-conteudo);
+  margin-inline: auto;
+  border-top: 1px solid var(--linha-sutil);
+  text-align: center;
+}
+.redes__titulo {
+  font-family: var(--fonte-mono);
+  font-weight: 600;
+  font-stretch: 80%;
+  font-size: var(--txt-rotulo);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-caps-p);
+  color: var(--tinta-media);
+  margin-bottom: var(--e-6);
+}
+.redes__lista { display: grid; gap: 0; }
+.redes__lista a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--e-4);
+  padding-block: var(--e-4);
+  border-top: 1px solid var(--linha-sutil);
+  text-decoration: none;
+  font-family: var(--fonte-mono);
+  font-weight: 600;
+  font-stretch: 80%;
+  font-size: var(--txt-apoio);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-caps-m);
+  transition: color var(--dur-estado) var(--ease-saida);
+}
+.redes__marca { width: 22px; height: 22px; flex: none; }
+@media (hover: hover) and (pointer: fine) {
+  .redes__lista a:hover { color: var(--acento); }
+}
+@media (min-width: 48rem) {
+  /* A GRADE NÃO SABE QUANTAS REDES EXISTEM, e é assim que ela deve ficar.
+
+     Estava em repeat(4, 1fr), fixo, porque na época eram quatro. O YouTube
+     saiu, e três itens numa grade de quatro colunas deixam a quarta vazia: as
+     três marcas encolhem para 3/4 da linha e a régua de fios para no meio do
+     nada. Grade que conta itens na mão desalinha no dia em que a contagem muda,
+     e contagem de rede social muda.
+
+     grid-auto-flow: column com grid-auto-columns: 1fr resolve sem número: os
+     filhos que existirem entram na MESMA linha, dividindo a largura em partes
+     iguais, sejam dois, três ou cinco. Voltar com o YouTube um dia é acrescentar
+     o <li> e mais nada.
+
+     No celular a regra não vale: lá a lista continua empilhada, uma rede por
+     linha, separadas pelo fio de cima. */
+  .redes__lista {
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+  }
+  .redes__lista a { border-top: 1px solid var(--linha-media); }
+}
+
+.rodape {
+  padding-block: var(--e-12);
+  padding-inline: var(--respiro-lateral);
+  padding-bottom: var(--reserva-flutuante);
+  border-top: 1px solid var(--linha-sutil);
+  display: grid;
+  gap: var(--e-5);
+  justify-items: center;
+  text-align: center;
+  max-width: var(--largura-conteudo);
+  margin-inline: auto;
+}
+.rodape__marca { width: auto; height: 56px; opacity: 0.85; }
+.rodape__linha { color: var(--tinta-fraca); font-size: var(--txt-apoio);
+                 font-family: var(--fonte-mono); font-stretch: 78%; }
+
+@media (min-width: 64rem) {
+  .rodape { padding-bottom: var(--e-12); }
+}
+
+
+/* ── 14. O MAPA DO PERCURSO ─────────────────────────────────────────────
+   Peça fixa que acompanha a página inteira e desenha a rota do Rio Grande do
+   Sul até a Serra da Canastra conforme a rolagem avança.
+
+   Substituiu o trilho, que fazia o mesmo trabalho com menos informação.
+
+   pointer-events: none no conjunto: ele é leitura, não controle. Sem isso ele
+   engoliria cliques numa faixa da tela e o visitante não entenderia por quê. */
+
+/* No CELULAR ele mora no canto SUPERIOR DIREITO, abaixo da barra.
+
+   Estava embaixo à esquerda, e o pé da tela já é do botão do WhatsApp: dois
+   elementos fixos disputando a mesma borda, com o polegar passando por cima dos
+   dois. Em cima ele fica fora do caminho do polegar e longe do único controle
+   flutuante da página.
+
+   Fundo nenhum, nos dois cantos e nas duas larguras. O mapa flutua sobre o que
+   estiver embaixo. */
+/* O MAPA NO CELULAR: MESMA ÂNCORA DE SEMPRE, 76px EM VEZ DE 92.
+
+   Este bloco já tentou ser duas outras coisas, e as duas foram medidas e
+   desfeitas. Fica registrado para ninguém repetir.
+
+   PRIMEIRO ele foi REMOVIDO do celular. O motivo era real: varrendo a rolagem
+   de 200 em 200px numa tela de 375, ele cobre 66 elementos de TEXTO, 15 deles
+   títulos. pointer-events: none e aria-hidden protegem o toque e quem ouve a
+   página, e nenhum dos dois faz nada por quem lê com os olhos.
+
+   DEPOIS ele voltou EMBAIXO À ESQUERDA, na hipótese de que sair da faixa dos
+   títulos resolvesse. Não resolveu, e a medição é direta:
+
+     alto-direita 92 (o original)  66 sobreposições, 15 títulos, rodapé livre
+     alto-direita 76               64 sobreposições, 14 títulos, rodapé livre
+     baixo-esquerda 76             65 sobreposições, 15 títulos, COLIDE
+     baixo-esquerda 64             61 sobreposições, 13 títulos, COLIDE
+     baixo-direita 64              67 sobreposições, 16 títulos, COLIDE
+
+   Tudo entre 61 e 67. A posição não muda a conta, e o motivo é geométrico: numa
+   tela de 375 a coluna de leitura vai de borda a borda menos 20px, então
+   qualquer peça fixa cai sobre texto em qualquer altura da rolagem. Não existe
+   canto vazio para achar.
+
+   E toda âncora de baixo colide com o rodapé, porque o rodapé alinha o conteúdo
+   à esquerda e o botão flutuante mora à direita. Trocar 5 sobreposições
+   transitórias por uma colisão permanente com o logo e o copyright é troca
+   ruim.
+
+   Então fica onde sempre esteve, e o que mudou foi o TAMANHO: 120px.
+
+   Quem pagou por esse crescimento foi a legenda. Ver a nota do .mapa__leitura:
+   escondê-la no celular tira 57px de altura da peça e derruba as sobreposições
+   de 64 para 50. Esse troco foi gasto em largura.
+
+     76 com legenda (o que era)   64 sobreposições, 14 títulos, 20% da tela
+     76 sem legenda               50 sobreposições,  8 títulos, 20%
+     100 sem legenda              58 sobreposições, 11 títulos, 27%
+     120 sem legenda              64 sobreposições, 14 títulos, 32%
+     140 sem legenda              67 sobreposições, 15 títulos, 37%
+     160 sem legenda              69 sobreposições, 15 títulos, 43%
+
+   120 é o ponto de EQUILÍBRIO: custa exatamente o que a versão anterior já
+   custava, 64 e 14, e entrega um desenho 58% maior. Acima disso a conta piora
+   de verdade, e 160 come 43% da largura da tela para ganhar pouco.
+
+   O rodapé NÃO reserva nada para o mapa, e não deve: com âncora no alto, quem
+   ocupa o pé da tela é só o botão flutuante. É isso que --reserva-flutuante
+   mede. */
+.mapa {
+  position: fixed;
+  z-index: 30;
+  right: var(--e-4);
+  top: calc(var(--altura-barra) + var(--e-4));
+  width: 120px;
+  pointer-events: none;
+}
+
+/* O CONTORNO É SÓ DO TRAÇO, e não do conjunto.
+
+   Ele ficava no .mapa inteiro, e filter desce por toda a subárvore: a leitura
+   em mono saía contornada, com aquele ar de letra vazada que não combina com
+   nenhuma outra tipografia da página. Aqui ele fica no SVG, onde uma linha de
+   2,6px sobre foto realmente precisa de casca.
+
+   O texto resolve o próprio contraste trocando de cor com a superfície, que é
+   o que já fazia antes de eu inventar o halo. */
+.mapa__svg {
+  filter: drop-shadow(0 0 1.5px rgb(var(--halo-mapa) / 0.96))
+          drop-shadow(0 0 4px   rgb(var(--halo-mapa) / 0.65));
+}
+
+/* Sobre superfície escura a leitura pode cair em cima de uma foto, e aí ela
+   ganha um assentamento suave. UMA sombra só, curta e deslocada, do tipo que
+   qualquer legenda sobre imagem usa.
+
+   Eram duas, e a segunda tinha 8px de raio sem deslocamento: isso não é sombra,
+   é brilho em volta da letra, e brilho em volta da letra é o efeito vazado que
+   não combina com nenhuma outra tipografia desta página. Sobre papel ela não
+   existe, porque ali a tinta já é escura e a sombra só engrossaria a letra. */
+.mapa:not([data-superficie="papel"]) .mapa__leitura {
+  text-shadow: 0 1px 2px rgb(var(--halo-mapa) / 0.85);
+}
+
+/* O ESTADO DE REPOUSO SÓ EXISTE SE O JAVASCRIPT VAI ANIMAR.
+
+   É a mesma trava das placas, e pelo mesmo motivo. Por padrão, o CSS entrega o
+   mapa PRONTO: visível, com a rota inteira desenhada e as cinco paradas
+   cravadas. Sem JavaScript, ou sob movimento reduzido, é isso que se vê, e é um
+   mapa completo em vez de uma moldura vazia.
+
+   Só depois que roadbook.js confirma que existe GSAP e que ninguém pediu
+   movimento reduzido é que .movimento-ativo entra no <html> e o mapa recua para
+   o começo, esperando a rolagem desenhá-lo. Ou os dois rodam, o esconder e o
+   desenhar, ou nenhum roda. */
+.movimento-ativo .mapa {
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 420ms var(--ease-saida),
+              transform 420ms var(--ease-saida),
+              visibility 0s linear 420ms;
+}
+.movimento-ativo .mapa--visivel {
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 420ms var(--ease-saida),
+              transform 420ms var(--ease-saida),
+              visibility 0s;
+}
+
+.mapa__svg { width: 100%; height: auto; display: block; overflow: visible; }
+
+/* A rota inteira, o caminho que ainda falta. Sem ela o mapa fica vazio no começo
+   da página e não se lê como mapa: lê como um risco solto crescendo do nada. É
+   ela que diz "existe um caminho, e você está aqui". */
+.mapa__fantasma {
+  fill: none;
+  stroke: var(--percurso-adiante);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  /* A rota passou de 4 curvas longas para 18 segmentos com cotovelo, e sem
+     linejoin cada cotovelo vira uma farpa. A rota já tinha; esta não. */
+  stroke-linejoin: round;
+}
+
+/* O traçado. stroke-dasharray igual ao comprimento total e stroke-dashoffset
+   indo do comprimento a zero: é assim que uma linha se desenha em SVG, e é
+   exatamente o mecanismo do site de referência.
+   O comprimento real é medido em JavaScript com getTotalLength, porque ele
+   depende da curva e não dá para escrever à mão sem errar. */
+.mapa__rota {
+  fill: none;
+  stroke: var(--percurso-feito);
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Tracejado, e no destino: é a trilha na Canastra, contra a estrada que vem
+   até lá. A distinção é informação real, não textura. */
+.mapa__trilha {
+  fill: none;
+  stroke: var(--percurso-feito);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-dasharray: 3 3.5;
+}
+
+/* Cada parada crava quando a linha chega nela, e QUEM ANIMA É O CSS.
+
+   Era um gsap.to por pino, e ele quebrava. O GSAP escreve a própria origem de
+   transformação para SVG: zera transform-origin e embute a compensação dentro
+   da matriz, assumindo o transform-box padrão. Com transform-box: fill-box
+   ligado aqui, essa compensação passa a ser lida em outro sistema, e o que
+   saía era matrix(1,0,0,1,-12,-148) num pino que está em (12,148). Ou seja,
+   cada parada era empurrada exatamente para o canto do SVG. As cinco iam para o
+   mesmo ponto e empilhavam, e o que se via era um círculo solto no canto,
+   longe da linha, sem função aparente. Medido, não deduzido.
+
+   Em CSS puro o transform-origin: center respeita o fill-box e o pino cresce do
+   próprio centro. O JavaScript volta a fazer só o que o comentário dele sempre
+   disse que fazia: marcar estado.
+
+   A curva é --ease-saida, a mesma do resto da folha, e não o back.out que o
+   tween usava. O overshoot foi tentado e descartado por medida: o pino tem 11px
+   de diâmetro, então passar de 1,1 e voltar são cerca de UM PIXEL de percurso.
+   A esta escala o repique não chega a ler como cravada, só introduz uma quarta
+   curva fora do sistema de três que o arquivo declara lá em cima. Quem faz o
+   pino parecer cravar é a escala saindo de zero com freada forte no fim, que é
+   exatamente o que esta curva entrega. */
+.mapa__parada {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.movimento-ativo .mapa__parada {
+  transform: scale(0);
+  opacity: 0;
+  transition: transform 420ms var(--ease-saida),
+              opacity   var(--dur-estado) linear;
+}
+.movimento-ativo .mapa__parada[data-cravado="1"] {
+  transform: scale(1);
+  opacity: 1;
+}
+.mapa__parada circle { fill: none; stroke: var(--percurso-feito); stroke-width: 2; }
+.mapa__parada .mapa__miolo { fill: var(--percurso-feito); stroke: none; }
+.mapa__parada--destino circle { stroke-width: 2.4; }
+
+/* A LEITURA NÃO EXISTE NO CELULAR, e é o que deixa o desenho crescer.
+
+   Ela é o bloco mais ALTO da peça: duas linhas de mono somam 57 dos 158px do
+   mapa inteiro em 76px de largura. Medindo a rolagem de 200 em 200px numa tela
+   de 375, tirar só o texto derruba as sobreposições em texto de 64 para 50, e
+   os títulos cobertos de 14 para 8. Nenhum outro ajuste desta peça chegou perto
+   disso.
+
+   E o que ela diz é o que o desenho já mostra: o pino aceso na curva é a parada
+   atual. O nome da cidade é legenda de uma coisa visível, e legenda custa
+   altura, que aqui é o recurso escasso.
+
+   No desktop ela fica: lá a peça mora numa calha própria de 220px, o texto não
+   disputa com nada, e a 13px ele lê de longe.
+
+   AVISO PARA QUEM MEXER NO data-superficie: roadbook.js calcula centroDaLeitura
+   a partir do getBoundingClientRect DESTE elemento. Escondido, esse retângulo é
+   zero, e a detecção de superfície passa a medir o topo da janela em vez do
+   centro do mapa. Hoje isso é inofensivo, porque data-superficie só pinta este
+   texto e mais nada. Se algum dia ele passar a mudar o TRAÇO, a conta precisa
+   sair daqui e ir para o próprio .mapa. */
+.mapa__leitura {
+  display: none;
+  margin-top: var(--e-3);
+  font-family: var(--fonte-mono);
+  font-stretch: 78%;
+  font-weight: 600;
+  font-size: var(--txt-micro);
+  line-height: 1.35;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-caps-p);
+  color: var(--tinta);
+  transition: opacity var(--dur-estado) var(--ease-saida);
+}
+.mapa__uf {
+  display: block;
+  color: var(--acento);
+}
+.mapa__local { display: block; color: var(--tinta-media); }
+
+/* A LEITURA EM MONO TROCA DE COR COM A SUPERFÍCIE. As linhas não; só ela.
+
+   O halo resolve o traço e não resolve o texto. Sobre a faixa de papel, tinta
+   clara com contorno escuro vira letra vazada: legível na conta e ruim de ler
+   de verdade, ainda mais em 11px de mono. Texto pede 4,5:1, e nenhuma cor do
+   espectro alcança 4,5:1 contra #161B13 e #DDE2E4 ao mesmo tempo. A conta fecha
+   vazia: a primeira exige luminância acima de 0,221 e a segunda abaixo de
+   0,129. Para linha dá, porque gráfico pede 3:1 e aí a janela existe. */
+/* E ELA SÓ VALE ABAIXO DE 64rem. O motivo continua válido; a ARITMÉTICA que
+   estava escrita aqui não, e ficou o registro para ninguém confiar nela de novo.
+
+   A detecção de superfície é só VERTICAL, porque a leitura mora num elemento
+   fixo e comparar uma faixa de rolagem por quadro é barato. No celular isso
+   basta, porque as faixas claras ocupam a largura da tela. No desktop não: ela
+   diz "papel" enquanto a maior parte do texto está sobre o fundo escuro, e
+   ligar a troca ali pintaria tinta ESCURA sobre ESCURO. É por isso que ela é
+   desligada no desktop, e isso segue certo.
+
+   O QUE ESTAVA ERRADO. Esta nota afirmava que "a leitura ocupa de 64 a 214px de
+   uma tela de 1440, e as faixas claras começam em 139 e 235, logo a leitura fica
+   FORA das faixas claras, sempre sobre o escuro". Essa conta valia quando
+   --largura-mapa era 150px. Hoje o token vale 220px, e a caixa da leitura vai de
+   64 a 284. Medido no navegador a 1440:
+
+     .mapa__uf     ("RS")            tinta de 64 a  83   termina 56px ANTES de 139
+     .mapa__local  ("Porto Alegre")  tinta de 64 a 177   INVADE 139 em 38px
+
+   Ou seja, a cauda do nome da cidade cai sobre a faixa clara do .escopo, que
+   começa em 139. A do .oferta começa em 235 e continua livre. Sobre papel,
+   --tinta-media entrega 1,66:1 ali.
+
+   NÃO FOI CORRIGIDO AQUI de propósito, porque toda saída custa uma decisão de
+   desenho que não cabe a este bloco tomar: ligar a troca no desktop apaga os
+   64-139 que estão sobre escuro; estreitar a leitura quebra "Florianópolis" em
+   duas linhas; voltar --largura-mapa para 150 encolhe o mapa do desktop. É
+   defeito estreito, pré-existente, e está anotado para escolha. */
+@media (max-width: 63.999rem) {
+  .mapa[data-superficie="papel"] {
+    --tinta:      #2D3329;
+    --tinta-media:#4E5849;
+    --acento:     #A03F00;
+  }
+}
+
+/* No desktop o assentamento da leitura é incondicional, pelo mesmo motivo: lá
+   ela está sempre sobre superfície escura, então a sombra curta vale sempre. */
+@media (min-width: 64rem) {
+  .mapa .mapa__leitura {
+    text-shadow: 0 1px 2px rgb(var(--halo-mapa) / 0.85);
+  }
+}
+
+@media (min-width: 64rem) {
+  /* No DESKTOP ele volta para a esquerda, no meio da altura: lá a coluna do
+     mapa é reservada no layout do herói por padding, e o polegar não existe. */
+  .mapa {
+    left: var(--respiro-lateral);
+    right: auto;
+    top: 50%;
+    translate: 0 -50%;
+    /* O MESMO TOKEN QUE RESERVA A COLUNA. Antes eram dois 150px soltos, um aqui
+       e um no token, e mudar o mapa de tamanho pedia lembrar dos dois. */
+    width: var(--largura-mapa);
+  }
+  /* translate separado do transform: assim a entrada continua animando o
+     transform sem brigar com a centralização vertical, que é posição e não
+     movimento. */
+  .movimento-ativo .mapa--visivel { transform: translateY(0); }
+  /* A leitura volta a existir aqui, na calha própria, onde ela não custa
+     altura de coluna de texto porque não há coluna de texto embaixo dela. */
+  .mapa__leitura { display: block; font-size: var(--txt-rotulo); }
+}
+
+
+/* ── 15. ESTADOS DE MOVIMENTO ───────────────────────────────────────────
+   O CSS mantém TUDO visível por padrão. O JavaScript só adiciona o estado
+   animado, e por isso um script que falha não pode apagar a página.
+
+   O estado escondido só existe depois que roadbook.js confirma que vai
+   animar, adicionando .movimento-ativo no <html>. É a mesma trava do site
+   institucional: ou os dois rodam (o esconder e o revelar), ou nenhum roda. */
+
+/* A REVELAÇÃO DAS IMAGENS SAIU.
+
+   As placas entravam com um clip-path de baixo para cima. A ideia era papel
+   saindo do rolo, e a execução era uma imagem que só aparecia depois de o
+   visitante já estar olhando para o lugar onde ela deveria estar. Numa página
+   com nove fotos, isso é nove esperas para ver o que já estava carregado.
+
+   Foto é prova, e prova não se atrasa. Elas ficam. */
+
+.movimento-ativo .dor__lista li {
+  /* clip-path, e não opacity com translate: a lista de atrito é um bloco de
+     texto que avança linha a linha, e o corte diz "papel avançando" onde um
+     fade diria apenas "algo apareceu". */
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path var(--dur-revelar) var(--ease-revelar);
+}
+
+/* A lista de atrito entra escalonada, e o escalonamento mora AQUI, não no
+   JavaScript. O gatilho é um só, na própria lista, e cada item herda o próprio
+   atraso: quatro linhas de CSS no lugar de quatro gatilhos mais um setTimeout
+   por item. 70ms de passo mantém os quatro somando 210ms, curto o bastante para
+   o bloco continuar lendo como um bloco. */
+.movimento-ativo .dor__lista li { transition-duration: 420ms; }
+.movimento-ativo .dor__lista[data-revelado] li { clip-path: inset(0 0 0 0); }
+.movimento-ativo .dor__lista li:nth-child(2) { transition-delay:  70ms; }
+.movimento-ativo .dor__lista li:nth-child(3) { transition-delay: 140ms; }
+.movimento-ativo .dor__lista li:nth-child(4) { transition-delay: 210ms; }
+
+
+/* ── 16. MOVIMENTO REDUZIDO ─────────────────────────────────────────────
+   Menos e mais suave, nunca desligado. O retorno que confirma uma ação
+   continua legível: quem pediu movimento reduzido pediu para não enjoar, não
+   para deixar de saber que o botão registrou o toque.
+
+   Movimento reduzido nunca esconde conteúdo. Todo clip-path volta a inset(0). */
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  /* A logo continua respondendo ao ponteiro, só que pelo brilho e não pelo
+     deslocamento: quem pediu menos movimento não quer um elemento saltando sob
+     o cursor. */
+  .barra__marca,
+  .barra__marca:hover,
+  .barra__marca:active { transform: none; transition: filter var(--dur-estado) linear; }
+
+  .movimento-ativo .dor__lista li {
+    clip-path: inset(0 0 0 0);
+    transition: none;
+    transition-delay: 0s;
+  }
+
+  /* O mapa continua informando: aparece inteiro, sem deslizar nem desenhar. */
+  .mapa { transition: none; }
+  .mapa__rota { stroke-dashoffset: 0 !important; }
+  .mapa__parada { transform: scale(1); opacity: 1; }
+
+  /* Sem grude no desktop: a folha empilhada é movimento espacial, e é
+     justamente o tipo que embrulha o estômago de quem desativou movimento. */
+  @media (min-width: 64rem) {
+    .folha { position: static; min-height: 0; padding-block: var(--e-16); }
+    .folha + .folha { margin-top: var(--e-6); }
+  }
+
+  .botao { transition: background-color var(--dur-estado) linear, color var(--dur-estado) linear; }
+  .botao:active { transform: none; opacity: 0.82; }
+}
+
+/* ── LENIS ──────────────────────────────────────────────────────────────
+   As regras que a biblioteca exige. Ela distribui um lenis.css próprio; em vez
+   de carregar um segundo arquivo por quatro regras, elas vivem aqui.
+
+   height: auto nos dois. O Lenis mede o documento, e se html ou body tiverem
+   altura de viewport a conta do comprimento rolável sai errada e a rolagem
+   termina antes do fim da página.
+
+   scroll-behavior: auto com !important é a trava do conflito descrito logo
+   abaixo: mesmo que alguém reintroduza smooth em qualquer lugar da cascata, o
+   Lenis vence e a âncora não rola em dois tempos.
+
+   iframe sem ponteiro durante a rolagem: sem isso o cursor entra no iframe no
+   meio do movimento e a rolagem trava na metade. */
+html.lenis,
+html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: clip; }
+.lenis.lenis-smooth iframe { pointer-events: none; }
+
+/* scroll-behavior NÃO é declarado nesta página, e é decisão, não esquecimento.
+   Quem faz a rolagem suave agora é o Lenis, em JavaScript. Com os dois ligados,
+   um link de âncora rola DUAS vezes: o navegador faz o percurso suave dele e o
+   Lenis faz o seu por cima, e o resultado é um solavanco no meio do caminho.
+
+   Sob movimento reduzido o Lenis não é instanciado, e aí a rolagem volta a ser
+   a do navegador, instantânea. É o comportamento certo: quem desligou movimento
+   não quer nem inércia nem deslize. */

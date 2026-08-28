@@ -1,0 +1,53 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "broken-image",
+        "value": "*",
+        "files": [
+          "assets/css/estilo.css"
+        ],
+        "createdAt": "2026-08-23T03:02:06.531Z",
+        "reason": "Claude: broken-image nao tem valor extraivel (extractFindingIgnoreValue so cobre regras de fonte/cor/raio/easing), entao o curinga com escopo de arquivo e a forma que o proprio codigo documenta. Os dois achados sao prosa dentro de comentario CSS que menciona <img> nas linhas 625 e 639, nao markup. Os 10 <img> reais vivem em index.html e todos tem src existente, conferido arquivo a arquivo."
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "index.html"
+        ],
+        "createdAt": "2026-08-25T23:57:12.682Z",
+        "reason": "O detector nao resolve os tokens var(--e-N) de espacamento desta base, entao le como zero todo padding de secao. Medido no navegador: section.papel 96px topo/40px laterais, section.dor 96px/40px, section.redes 80px/40px. Nenhuma das tres encosta em nada. Escopo limitado a index.html e ao padrao de secao com border-top."
+      },
+      {
+        "rule": "gray-on-color",
+        "value": "*",
+        "files": [
+          "index.html"
+        ],
+        "createdAt": "2026-08-25T23:58:26.321Z",
+        "reason": "Medido no navegador: 9,74:1. O extrator so produz valor para regras de fonte/cor/raio/easing, entao curinga com escopo de arquivo e a forma disponivel. #DDE2E4 e a tinta clara da pagina, nao cinza, e sobre o composto do marcador (#161B13 + laranja 22%) ela SOBE de contraste contra o texto ao redor, que corre a 8,05:1."
+      },
+      {
+        "rule": "undersized-ui-text",
+        "value": "*",
+        "files": [
+          "index.html"
+        ],
+        "createdAt": "2026-08-25T23:58:29.417Z",
+        "reason": "Falso positivo aritmetico: o detector nao resolve em contra pai nao-raiz. .preco__moeda (0.42em) e .preco__centavos (0.52em) foram lidos como 6,72px e 8,32px multiplicando por 16px de raiz. Medidos no navegador: 18,99/23,51px em 390px e 25,22/31,22px em 780px."
+      },
+      {
+        "rule": "tight-leading",
+        "value": "*",
+        "files": [
+          "index.html"
+        ],
+        "createdAt": "2026-08-25T23:58:38.283Z",
+        "reason": "Os dois unicos sitios de 1.25 sao tipo de DISPLAY, nao prosa. .dor__remate e manchete Archivo peso 800 em 26-42px, e o 1.25 ja foi escolhido POR CIMA de 1.15 para dar folga as descidas. Os totais do painel sao cifras de uma linha so, verificadas em 320/390/780/1280px. A regra mira texto corrido multilinha; a prosa desta pagina corre em 1.45-1.5."
+      }
+    ]
+  }
+}

@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+<title>Trilha Certa | Expedição off-road na Serra da Canastra</title>
+<meta name="description" content="Seis dias de trilha na Serra da Canastra em formato all-inclusive. Buscamos a sua moto na porta de casa, ônibus executivo, pousada, guias locais e tour de lancha em Furnas.">
+<meta name="theme-color" content="#161B13">
+<link rel="icon" href="assets/media/favicon.png" sizes="any">
+
+<!--
+   PREENCHER: substituir SEU-DOMINIO-AQUI pelo domínio real de produção antes
+   do lançamento. og:url e canonical exigem URL absoluta, e o robô do WhatsApp
+   e do Facebook não resolve caminho relativo para gerar a prévia do link. Sem
+   o domínio certo aqui, a prévia mais compartilhada da página, que é o próprio
+   link mandado no WhatsApp, sai quebrada.
+-->
+<link rel="canonical" href="https://SEU-DOMINIO-AQUI.com.br/">
+
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:url" content="https://SEU-DOMINIO-AQUI.com.br/">
+<meta property="og:site_name" content="Trilha Certa">
+<meta property="og:title" content="Trilha Certa | Expedição off-road na Serra da Canastra">
+<meta property="og:description" content="Seis dias de trilha na Serra da Canastra em formato all-inclusive. Você só pilota.">
+<meta property="og:image" content="https://SEU-DOMINIO-AQUI.com.br/assets/media/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Grupo da Trilha Certa com as motos na Serra da Canastra">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Trilha Certa | Expedição off-road na Serra da Canastra">
+<meta name="twitter:description" content="Seis dias de trilha na Serra da Canastra em formato all-inclusive. Você só pilota.">
+<meta name="twitter:image" content="https://SEU-DOMINIO-AQUI.com.br/assets/media/og.jpg">
+
+<!--
+   A fonte de display é o LCP tipográfico: o h1 do herói é a primeira coisa
+   grande a pintar. Ela entra por preload porque, sem isso, o navegador só
+   descobre que precisa dela depois de parsear o @font-face lá dentro do CSS.
+
+   Barlow NÃO recebe preload de propósito: o corpo pinta abaixo da dobra, e
+   disputar prioridade com o display atrasaria justamente o que o olho procura
+   primeiro.
+-->
+<link rel="preload" href="assets/fontes/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/media/heroi-loop-poster.jpg" as="image" fetchpriority="high">
+<link rel="stylesheet" href="assets/css/estilo.css">
+
+<!--
+   DADOS ESTRUTURADOS
+
+   Só entra aqui o que a página já afirma por extenso: preço, moeda, duração,
+   local, capacidade. Nada é inferido e nada é arredondado.
+
+   NÃO HÁ CAMPO DE DATA, e a ausência é deliberada. TouristTrip aceita
+   startDate e endDate, e um Offer aceita validFrom e priceValidUntil. Enquanto
+   a data real da saída não existir, preencher qualquer um desses campos é
+   entregar dado estruturado falso direto ao Google, que é pior que não ter
+   dado nenhum: o resultado rico passa a anunciar uma data que a operação não
+   vai cumprir.
+
+   PREENCHER, junto com o domínio: startDate, endDate e priceValidUntil.
+-->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TouristTrip",
+  "name": "Expedição Canastra all-inclusive",
+  "description": "Seis dias de trilha off-road na Serra da Canastra em formato all-inclusive, com coleta da moto porta a porta, ônibus executivo, pousada com café e jantar, guias locais e tour de lancha na Represa de Furnas.",
+  "url": "https://SEU-DOMINIO-AQUI.com.br/",
+  "image": "https://SEU-DOMINIO-AQUI.com.br/assets/media/og.jpg",
+  "touristType": "Motociclistas de trilha",
+  "maximumAttendeeCapacity": 15,
+  "provider": {
+    "@type": "Organization",
+    "name": "Trilha Certa",
+    "url": "https://SEU-DOMINIO-AQUI.com.br/",
+    "sameAs": [
+      "https://www.instagram.com/trilhacertaturismo/",
+      "https://www.facebook.com/profile.php?id=61561486201708"
+    ]
+  },
+  "itinerary": {
+    "@type": "ItemList",
+    "numberOfItems": 4,
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Embarque e chegada" },
+      { "@type": "ListItem", "position": 2, "name": "Trilha cheia na Canastra" },
+      { "@type": "ListItem", "position": 3, "name": "Furnas e confraternização" },
+      { "@type": "ListItem", "position": 4, "name": "Última dose e volta para casa" }
+    ]
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "5990.00",
+    "priceCurrency": "BRL",
+    "description": "Total a prazo por pessoa: sinal de R$ 1.497,50 mais 10 parcelas de R$ 449,25. À vista no Pix, R$ 5.690,50 por pessoa."
+  }
+}
+</script>
+</head>
+
+<body>
+
+<a class="pular-para-conteudo" href="#conteudo">Pular para o conteúdo</a>
+
+<!--
+   NOTAÇÃO DO ROADBOOK
+
+   Seis glifos desenhados na mesma grade de 24, traço de 2px, ponta arredondada.
+   É essa uniformidade que os faz ler como um sistema, e não como seis desenhos
+   avulsos que por acaso caíram na mesma página.
+
+   Por que autorais e não de biblioteca: nenhuma biblioteca de ícones tem
+   "travessia de água" ou "curvas fechadas" na gramática do roadbook de rally,
+   que é o círculo de entrada embaixo, o traçado no meio e a seta de saída em
+   cima. Um pino de mapa genérico no lugar diria "lugar", quando a informação
+   que a seção carrega é "o que a estrada faz aqui".
+
+   O <svg> pai tem largura e altura zero e não pinta nada. Isso não impede
+   <use> de referenciar os símbolos: o símbolo é definição, não desenho.
+-->
+<svg class="folha-de-glifos" aria-hidden="true" focusable="false" width="0" height="0">
+  <symbol id="tulipa-origem" viewBox="0 0 24 24">
+    <circle cx="12" cy="19" r="2.6"></circle>
+    <circle cx="12" cy="19" r="6"></circle>
+    <path d="M12 11V4"></path>
+    <path d="M8.5 7.5 12 4l3.5 3.5"></path>
+  </symbol>
+
+  <symbol id="tulipa-reta" viewBox="0 0 24 24">
+    <circle cx="12" cy="21" r="1.8"></circle>
+    <path d="M12 19V4"></path>
+    <path d="M8.5 7.5 12 4l3.5 3.5"></path>
+  </symbol>
+
+  <symbol id="tulipa-curvas" viewBox="0 0 24 24">
+    <circle cx="12" cy="21" r="1.8"></circle>
+    <!-- Dois grampos e uma saída reta. A saída PRECISA ser reta: a farpa da
+         seta ocupa 7 unidades de largura entre y=4 e y=7,5, e qualquer perna do
+         ziguezague nessa faixa encosta nela. Com traço de 2, encostar é fundir.
+         Antes o ziguezague subia até a ponta e a farpa esquerda passava a 0,40
+         da perna de cima: as duas viravam um borrão. Agora passa a 3,16.
+
+         O ziguezague também abriu. Duas pernas vizinhas ficavam a 1,49 uma da
+         outra, medido a 2,5 unidades do vértice que elas dividem, ou seja
+         sobrepostas. Agora 2,04, que é o mínimo para dois traços de 2 se
+         tocarem sem invadir um ao outro. Mais que isso o grampo deixa de ser
+         grampo e a curva deixa de ser fechada. -->
+    <path d="M12 19 6.5 16.5 17.5 12 12 9.3V4"></path>
+    <path d="M8.5 7.5 12 4l3.5 3.5"></path>
+  </symbol>
+
+  <symbol id="tulipa-agua" viewBox="0 0 24 24">
+    <circle cx="12" cy="21" r="1.8"></circle>
+    <path d="M12 19V4"></path>
+    <path d="M8.5 7.5 12 4l3.5 3.5"></path>
+    <!-- As duas ondas iam de x=3 a x=18, ou seja centro em 10,5, enquanto o
+         pino, o mastro e a seta deste mesmo glifo estão todos em 12. A água
+         ficava 1,5 unidade à esquerda da estrada que ela atravessa. Mesma
+         onda, deslocada 1,5: agora vai de 4,5 a 19,5, com 4,5 de margem dos
+         dois lados. -->
+    <path d="M4.5 15c1.7-1.6 3.3-1.6 5 0s3.3 1.6 5 0 3.3-1.6 5 0"></path>
+    <path d="M4.5 11.4c1.7-1.6 3.3-1.6 5 0s3.3 1.6 5 0 3.3-1.6 5 0"></path>
+  </symbol>
+
+  <symbol id="tulipa-retorno" viewBox="0 0 24 24">
+    <circle cx="12" cy="21" r="1.8"></circle>
+    <path d="M12 19V9a4 4 0 0 1 4-4h4"></path>
+    <path d="M16.5 1.5 20 5l-3.5 3.5"></path>
+  </symbol>
+
+  <symbol id="tulipa-chegada" viewBox="0 0 24 24">
+    <circle cx="12" cy="21" r="1.8"></circle>
+    <path d="M12 19V5"></path>
+    <path d="M12 5h8v5.5h-8"></path>
+    <path d="M16 5v5.5"></path>
+  </symbol>
+
+  <symbol id="marca-whatsapp" viewBox="0 0 24 24">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"></path>
+  </symbol>
+  <symbol id="marca-instagram" viewBox="0 0 24 24">
+    <path d="M7.0301.084c-1.2768.0602-2.1487.264-2.911.5634-.7888.3075-1.4575.72-2.1228 1.3877-.6652.6677-1.075 1.3368-1.3802 2.127-.2954.7638-.4956 1.6365-.552 2.914-.0564 1.2775-.0689 1.6882-.0626 4.947.0062 3.2586.0206 3.6671.0825 4.9473.061 1.2765.264 2.1482.5635 2.9107.308.7889.72 1.4573 1.388 2.1228.6679.6655 1.3365 1.0743 2.1285 1.38.7632.295 1.6361.4961 2.9134.552 1.2773.056 1.6884.069 4.9462.0627 3.2578-.0062 3.668-.0207 4.9478-.0814 1.28-.0607 2.147-.2652 2.9098-.5633.7889-.3086 1.4578-.72 2.1228-1.3881.665-.6682 1.0745-1.3378 1.3795-2.1284.2957-.7632.4966-1.636.552-2.9124.056-1.2809.0692-1.6898.063-4.948-.0063-3.2583-.021-3.6668-.0817-4.9465-.0607-1.2797-.264-2.1487-.5633-2.9117-.3084-.7889-.72-1.4568-1.3876-2.1228C21.2982 1.33 20.628.9208 19.8378.6165 19.074.321 18.2017.1197 16.9244.0645 15.6471.0093 15.236-.005 11.977.0014 8.718.0076 8.31.0215 7.0301.0839m.1402 21.6932c-1.17-.0509-1.8053-.2453-2.2287-.408-.5606-.216-.96-.4771-1.3819-.895-.422-.4178-.6811-.8186-.9-1.378-.1644-.4234-.3624-1.058-.4171-2.228-.0595-1.2645-.072-1.6442-.079-4.848-.007-3.2037.0053-3.583.0607-4.848.05-1.169.2456-1.805.408-2.2282.216-.5613.4762-.96.895-1.3816.4188-.4217.8184-.6814 1.3783-.9003.423-.1651 1.0575-.3614 2.227-.4171 1.2655-.06 1.6447-.072 4.848-.079 3.2033-.007 3.5835.005 4.8495.0608 1.169.0508 1.8053.2445 2.228.408.5608.216.96.4754 1.3816.895.4217.4194.6816.8176.9005 1.3787.1653.4217.3617 1.056.4169 2.2263.0602 1.2655.0739 1.645.0796 4.848.0058 3.203-.0055 3.5834-.061 4.848-.051 1.17-.245 1.8055-.408 2.2294-.216.5604-.4763.96-.8954 1.3814-.419.4215-.8181.6811-1.3783.9-.4224.1649-1.0577.3617-2.2262.4174-1.2656.0595-1.6448.072-4.8493.079-3.2045.007-3.5825-.006-4.848-.0608M16.953 5.5864A1.44 1.44 0 1 0 18.39 4.144a1.44 1.44 0 0 0-1.437 1.4424M5.8385 12.012c.0067 3.4032 2.7706 6.1557 6.173 6.1493 3.4026-.0065 6.157-2.7701 6.1506-6.1733-.0065-3.4032-2.771-6.1565-6.174-6.1498-3.403.0067-6.156 2.771-6.1496 6.1738M8 12.0077a4 4 0 1 1 4.008 3.9921A3.9996 3.9996 0 0 1 8 12.0077"></path>
+  </symbol>
+  <symbol id="marca-facebook" viewBox="0 0 24 24">
+    <path d="M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036 26.805 26.805 0 0 0-.733-.009c-.707 0-1.259.096-1.675.309a1.686 1.686 0 0 0-.679.622c-.258.42-.374.995-.374 1.752v1.297h3.919l-.386 2.103-.287 1.564h-3.246v8.245C19.396 23.238 24 18.179 24 12.044c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.628 3.874 10.35 9.101 11.647Z"></path>
+  </symbol>
+</svg>
+
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     O PORTÃO DE ENTRADA
+
+     A placa que cobre a página no primeiro instante e sobe revelando o herói.
+
+     Ela não é enfeite. A página carrega Archivo com font-display: swap, e o
+     título do herói tem 100px: quando a fonte real chega, ele reflui de altura
+     e a dobra inteira se reacomoda na cara do visitante. O portão cobre
+     exatamente essa janela. É o mesmo motivo pelo qual roadbook.js dá um
+     ScrollTrigger.refresh() no document.fonts.ready.
+
+     Ela vem antes de todo conteúdo visível de propósito, logo depois do atalho
+     de teclado: precisa pintar antes do herói, senão o que ela deveria esconder
+     aparece por um quadro.
+
+     A logo aqui é o mesmo arquivo da barra, então não é uma requisição a mais.
+
+     aria-hidden e pointer-events: none: para quem ouve a página, ela não
+     existe, e o conteúdo já está no DOM desde o primeiro byte. Nenhum leitor de
+     tela espera a animação terminar.
+
+     Sem JavaScript ela sobe do mesmo jeito: quem anima é o CSS, e é de
+     propósito. Portão que depende de script é portão que tranca a página
+     quando o script falha.
+     ══════════════════════════════════════════════════════════════════════════ -->
+<div class="portao" aria-hidden="true">
+  <img class="portao__marca" src="assets/media/logo-nav.png" alt=""
+       width="170" height="170" decoding="sync">
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     A BARRA
+
+     Uma coisa só: a logo, ancorada no canto, e ela é o botão de volta ao topo.
+
+     Continua sendo <a> e não <button>: sem JavaScript ela ainda leva ao topo,
+     num salto seco. O script não cria a função, só troca o salto pela animação.
+     Um <button> perderia esse chão.
+
+     O DESTINO É #top, E NÃO #topo, e a diferença é que um funciona.
+
+     O href apontava para o id desta mesma barra, que é position: fixed. Saltar
+     para um elemento fixo não rola nada: ele já está em vista, sempre, então o
+     navegador não tem para onde ir. Ou seja, o chão que este comentário
+     prometia não existia, e a logo dependia inteira do script.
+
+     "#top" é âncora da especificação de HTML: fragmento vazio ou "top" quer
+     dizer o topo do documento, sem precisar de elemento nenhum com esse id. Com
+     ela, script quebrado ainda deixa a logo levando ao topo.
+
+     width e height são 170x170, que é o tamanho real do arquivo. Estavam
+     declarados como 120x40, e o navegador reserva a caixa por essa proporção
+     antes de a imagem chegar: nascia um retângulo deitado que virava quadrado
+     no instante do carregamento, empurrando a barra inteira. Atributo errado
+     não é detalhe, é deslocamento de layout.
+     ══════════════════════════════════════════════════════════════════════════ -->
+<header class="barra" id="topo">
+  <div class="barra__interior">
+    <a class="barra__marca" href="#topo" aria-label="Trilha Certa, voltar ao topo da página">
+      <img src="assets/media/logo-nav.png" alt="Trilha Certa" width="170" height="170" decoding="async">
+    </a>
+  </div>
+</header>
+
+
+<main id="conteudo">
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     HERÓI
+
+     Mídia sangrada com a tipografia ancorada embaixo à esquerda. Não é 50/50 e
+     não é centralizado: o vídeo precisa da largura toda para provar o produto, e
+     o texto ancorado embaixo deixa livre o alto da imagem, que é onde a ação
+     acontece nela.
+
+     Três elementos de texto, e é o teto: título, apoio, ação. O selo "Expedição
+     Exclusiva" do rascunho saiu porque rótulo acima de título rouba o primeiro
+     olhar do próprio título, que é a peça que precisava dele.
+     ══════════════════════════════════════════════════════════════════════════ -->
+<section class="heroi" aria-labelledby="heroi-titulo">
+  <!-- DUAS PEÇAS QUE SANGRAM DAS BORDAS E DISSOLVEM NO MEIO.
+
+       O vídeo entra pela esquerda, a foto do grupo pela direita, e as duas se
+       desfazem antes de chegar ao centro, abrindo um vão vertical no meio. Na
+       altura elas vão inteiras, de ponta a ponta: cortá-las no meio transformava
+       a mídia em tira e apagava o assunto da foto, que são as motos na metade
+       de baixo dela.
+
+       A foto da direita NÃO está aqui no markup, e é de propósito. Ela é fundo
+       em CSS dentro do media query de 64rem, e background em media query que não
+       casa não é baixado. Um <picture> aqui baixaria a foto no celular, que é
+       justamente onde ela nunca aparece.
+
+       No celular existe só a peça do vídeo, sangrada de borda a borda. Duas
+       peças lado a lado num aparelho de 390px dariam 190px cada, e nenhuma das
+       duas leria. -->
+  <div class="heroi__midia">
+    <div class="heroi__peca heroi__peca--video">
+      <div class="heroi__peca-interna">
+        <video class="heroi__loop" width="720" height="1280"
+               poster="assets/media/heroi-loop-poster.jpg"
+               muted loop playsinline preload="none"
+               aria-label="Pilotos da Trilha Certa em trecho de rocha na Serra da Canastra">
+          <source src="assets/media/heroi-loop.webm" type="video/webm">
+          <source src="assets/media/heroi-loop.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+
+    <div class="heroi__peca heroi__peca--foto" aria-hidden="true">
+      <div class="heroi__peca-interna"></div>
+    </div>
+
+    <!-- A divisa. Não é enfeite solto: é a fronteira entre as duas peças, e é
+         onde a referência põe a linha dela. O tremido é de mão, não de régua:
+         reta ela leria como borda de tabela. -->
+    <svg class="heroi__divisa" viewBox="0 0 12 600" preserveAspectRatio="none"
+         aria-hidden="true" focusable="false">
+      <path d="M6 0c-2.1 22 2.4 41-.6 63-2.6 19 1.9 36 .2 55-1.8 20-2.4 38 .8 58 3 19-1.4 36-.9 55 .5 20 2.6 38-.4 58-2.8 19 1.6 36 .3 55-1.4 20-2.9 38-.2 58 2.7 19-1.1 36-.5 55 .6 20 2.2 38-.9 58-2.4 15 .9 30 1.2 45"></path>
+    </svg>
+  </div>
+
+  <div class="heroi__texto">
+        <!-- O título é o do rascunho original, restaurado a pedido. Vem de lá sem
+         quebra manual e sem duas cores: aquele arquivo separava "para a Sua
+         Turma." num <br> de faixa e numa cor de destaque, e aqui nem uma coisa
+         nem outra existe. Não há um <br> em toda a página, porque quebra de mão
+         mente em alguma largura, e o título inteiro já é da cor de acento. -->
+    <h1 class="heroi__titulo" id="heroi-titulo">A Melhor Expedição <span class="nao-quebra">Off-Road</span> para a Sua Turma.</h1>
+    <p class="heroi__apoio">Expedição off-road all-inclusive. Buscamos a sua moto na porta de casa e cuidamos de todo o resto.</p>
+
+    <a class="botao botao--primario botao--grande"
+       href="https://wa.me/5500000000000?text=Ol%C3%A1%21%20Quero%20garantir%20minha%20vaga%20na%20Expedi%C3%A7%C3%A3o%20Canastra."
+       target="_blank" rel="noopener">
+      <span>Garantir minha vaga</span>
+      <svg class="botao__marca" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#marca-whatsapp"></use></svg>
+    </a>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     O ÁLBUM
+
+     Sete fotos que atravessam a tela em órbita, e que até aqui viviam DENTRO da
+     seção de oferta, onde eram "as provas" — o material que sustentava o preço.
+     Foram trazidas para cá a pedido: elas passam a abrir a página, entre o
+     herói e o roteiro, e o que provam agora é outra coisa. Antes de o visitante
+     ler o que a expedição inclui, ele vê como ela é.
+
+     O NOME MUDOU JUNTO, de oferta__grade para album__grade. Classe com prefixo
+     de uma seção usada em outra é comentário falso escrito em CSS, e a página
+     inteira depende de os nomes não mentirem.
+
+     A CAIXA REPETE A DA OFERTA de propósito: 60rem de largura máxima, centrada,
+     com o mesmo respiro lateral. Não é preguiça — a largura da pilha é 62%
+     dessa caixa, e toda a geometria do voo é fração da largura da pilha. Caixa
+     diferente seria órbita de outro tamanho, e as constantes de roadbook.js
+     foram afinadas contra estes 352px de desktop e 217 de celular.
+
+     SEM CORTE E SEM CAMADA PRÓPRIA, como era na oferta: as provas precisam
+     passar por cima do que estiver em volta, e quem corta é o body, na borda da
+     tela. Ver o comentário de .album em estilo.css.
+     ══════════════════════════════════════════════════════════════════════════ -->
+<div class="album">
+    <ul class="album__grade">
+      <li>
+        <figure class="placa placa--quadro" data-slot="12">
+          <picture>
+        <source srcset="assets/media/turma.avif" type="image/avif">
+        <source srcset="assets/media/turma.webp" type="image/webp">
+        <img src="assets/media/turma.jpg" alt="A turma inteira em cima das motos no capim alto, com os braços erguidos"
+             width="560" height="560" loading="lazy" decoding="async">
+      </picture></figure>
+      </li>
+      <li>
+        <figure class="placa placa--quadro" data-slot="8">
+          <picture>
+        <source srcset="assets/media/grade-comida.avif" type="image/avif">
+        <source srcset="assets/media/grade-comida.webp" type="image/webp">
+        <img src="assets/media/grade-comida.jpg" alt="Panela de madeira com a comida servida na pousada"
+             width="560" height="560" loading="lazy" decoding="async">
+      </picture></figure>
+      </li>
+      <li>
+        <figure class="placa placa--quadro" data-slot="9">
+          <picture>
+        <source srcset="assets/media/grade-lancha.avif" type="image/avif">
+        <source srcset="assets/media/grade-lancha.webp" type="image/webp">
+        <img src="assets/media/grade-lancha.jpg" alt="Churrasco na popa da lancha, com as águas da Represa de Furnas ao redor"
+             width="560" height="560" loading="lazy" decoding="async">
+      </picture></figure>
+      </li>
+      <li>
+        <figure class="placa placa--quadro" data-slot="10">
+          <picture>
+        <source srcset="assets/media/grade-por-do-sol.avif" type="image/avif">
+        <source srcset="assets/media/grade-por-do-sol.webp" type="image/webp">
+        <img src="assets/media/grade-por-do-sol.jpg" alt="Silhuetas do grupo sobre a casa de pedra vendo o pôr do sol na serra"
+             width="560" height="560" loading="lazy" decoding="async">
+      </picture></figure>
+      </li>
+      <!-- ESTAS DUAS ERAM AS MESMAS FOTOS DO ROTEIRO, e o comentário que estava
+           aqui explicava por quê: o leque de cinco precisa de cinco corpos, e não
+           havia material novo para gastar em decoração de seção. Era dívida
+           declarada, não descuido.
+
+           O material chegou, e a dívida foi paga. As duas provam o mesmo que as
+           emprestadas provavam, moto de verdade e serra aberta, agora sem repetir
+           nada de outra seção. O leque continua com cinco corpos, então nenhuma
+           constante da geometria do voo mudou. -->
+      <li>
+        <figure class="placa placa--quadro" data-slot="11">
+          <picture>
+        <source srcset="assets/media/serra-motos.avif" type="image/avif">
+        <source srcset="assets/media/serra-motos.webp" type="image/webp">
+        <img src="assets/media/serra-motos.jpg" alt="Duas motos de trilha paradas sobre a rocha, com os campos altos da Canastra atrás"
+             width="560" height="560" loading="lazy" decoding="async">
+      </picture></figure>
+      </li>
+      <li>
+        <figure class="placa placa--quadro" data-slot="14">
+          <picture>
+        <source srcset="assets/media/cachoeira.avif" type="image/avif">
+        <source srcset="assets/media/cachoeira.webp" type="image/webp">
+        <img src="assets/media/cachoeira.jpg" alt="O grupo de camisa da Trilha Certa na praia de areia diante da cachoeira"
+             width="560" height="560" loading="lazy" decoding="async">
+      </picture></figure>
+      </li>
+      <li>
+        <figure class="placa placa--quadro" data-slot="15">
+          <picture>
+        <source srcset="assets/media/guidao.avif" type="image/avif">
+        <source srcset="assets/media/guidao.webp" type="image/webp">
+        <img src="assets/media/guidao.jpg" alt="Vista do guidão da moto sobre o vale de arrozais e a serra ao fundo"
+             width="560" height="560" loading="lazy" decoding="async">
+      </picture></figure>
+      </li>
+    </ul>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     O ROTEIRO
+
+     O momento autoral da página. Uma tira de roadbook não é folheada: ela
+     avança. No desktop a janela prende e as folhas atravessam sob a rolagem; no
+     celular a rolagem continua nativa e quem conta a etapa é o trilho no rodapé.
+     O porquê dessa diferença está por extenso em roadbook.js.
+
+     A seção é uma PLANILHA DE REGULARIDADE, e entra pela FORMA, não por número
+     fabricado. Planilha de verdade é feita de KM parcial, KM total e velocidade
+     média, e nada disso existe aqui: a origem é a porta de cada cliente, então
+     qualquer quilometragem seria inventada. Numa página que vende a expedição,
+     inventar distância e velocidade é afirmar o que ninguém conferiu.
+
+     Então as colunas são só as que têm dado real: o número da referência, que é
+     a posição na sequência; o dia; a tulipa, que cada folha já declarava em
+     data-tulipa; a etapa, que já estava em data-etapa; e a descrição. A
+     identidade de planilha vem do resto, que é de sobra: mono com algarismo
+     tabular, linhas regradas, coluna de tulipa, a janela de leitura que não sai
+     do topo e o contador de referência que avança.
+     ══════════════════════════════════════════════════════════════════════════ -->
+<section class="roteiro" id="roteiro" aria-labelledby="roteiro-titulo">
+  <div class="secao__cabeca">
+    <h2 class="secao__titulo" id="roteiro-titulo">O roteiro, dia a dia</h2>
+    <p class="secao__linha">Seis dias, do embarque na sua porta até a devolução da moto no mesmo lugar.</p>
+  </div>
+
+  <!-- A JANELA DE LEITURA.
+
+       Num porta-planilha o papel corre atrás de uma janela e o piloto lê sempre
+       na mesma altura. Aqui ela é uma BARRA CURTA que gruda no topo, e não um
+       pino de tela cheia, e essa diferença é o que faz a peça funcionar no
+       celular: pino de tela cheia depende de 100svh, e a barra de URL retrátil
+       muda essa altura no meio da rolagem. Foi por isso que a versão anterior
+       desta seção era desktop-only. Uma barra de três linhas não depende de
+       altura de viewport para nada.
+
+       aria-hidden nos rótulos de coluna: eles são cromo de tabela e rotulam
+       visualmente o que o conteúdo abaixo já diz por extenso. Lidos em voz alta
+       viravam "REF DIA ETAPA REFERÊNCIA" solto antes de cada bloco. -->
+  <div class="roteiro__janela">
+    <div class="planilha__topo">
+      <p class="planilha__prova">
+        <span class="planilha__selo">Planilha</span>
+        <span class="planilha__contagem"><span class="planilha__ref" data-ref-ativa>01</span><span class="planilha__de">/</span><span class="planilha__total">04</span></span>
+      </p>
+      <div class="planilha__regua" aria-hidden="true">
+        <span class="planilha__coluna planilha__coluna--ref">Ref</span>
+        <span class="planilha__coluna planilha__coluna--tulipa">Tulipa</span>
+        <span class="planilha__coluna planilha__coluna--dia">Dia</span>
+        <span class="planilha__coluna planilha__coluna--ref-texto">Referência</span>
+      </div>
+    </div>
+
+    <ol class="roteiro__tira">
+
+      <li class="folha" data-etapa="Embarque" data-tulipa="tulipa-reta" data-ref="01">
+        <div class="folha__leitura">
+          <span class="folha__ref" aria-hidden="true">01</span>
+          <svg class="folha__tulipa" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#tulipa-reta"></use></svg>
+          <p class="folha__dia">Dias <span class="folha__numero">1</span> e <span class="folha__numero">2</span></p>
+          <p class="folha__etapa">Embarque</p>
+        </div>
+        <div class="folha__corpo">
+          <h3 class="folha__titulo">Embarque e chegada</h3>
+          <p>Coleta porta a porta das motos e embarque unificado no ônibus executivo, com Starlink, ar-condicionado e USB. Open bar e open food liberados desde a saída.</p>
+          <p>No dia 2, check-in na Pousada Pai &amp; Filho, descarregamento das motos, briefing técnico de segurança e a primeira aceleração nas trilhas. Jantar incluso.</p>
+        </div>
+        <figure class="placa placa--folha" data-slot="2">
+          <picture>
+      <source srcset="assets/media/dia-1-2.avif" type="image/avif">
+      <source srcset="assets/media/dia-1-2.webp" type="image/webp">
+      <img src="assets/media/dia-1-2.jpg" alt="Operador da Trilha Certa ao lado do ônibus da empresa, com a marca pintada na lateral"
+           width="950" height="633" loading="lazy" decoding="async">
+    </picture></figure>
+      </li>
+
+      <li class="folha" data-etapa="Canastra" data-tulipa="tulipa-curvas" data-ref="02">
+        <div class="folha__leitura">
+          <span class="folha__ref" aria-hidden="true">02</span>
+          <svg class="folha__tulipa" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#tulipa-curvas"></use></svg>
+          <p class="folha__dia">Dia <span class="folha__numero">3</span></p>
+          <p class="folha__etapa">Canastra</p>
+        </div>
+        <div class="folha__corpo">
+          <h3 class="folha__titulo">Trilha cheia na Canastra</h3>
+          <p>Café da manhã e saída para o primeiro circuito intenso. Progressão técnica o dia inteiro nos melhores traçados da Serra da Canastra, com guias locais experientes na frente do grupo.</p>
+          <p>Retorno para a base no fim da tarde e jantar incluso.</p>
+        </div>
+        <figure class="placa placa--folha" data-slot="3">
+          <picture>
+      <source srcset="assets/media/dia-3.avif" type="image/avif">
+      <source srcset="assets/media/dia-3.webp" type="image/webp">
+      <img src="assets/media/dia-3.jpg" alt="Grupo de pilotos com as motos numa trilha de lama dentro da mata fechada"
+           width="950" height="633" loading="lazy" decoding="async">
+    </picture></figure>
+      </li>
+
+      <li class="folha" data-etapa="Furnas" data-tulipa="tulipa-agua" data-ref="03">
+        <div class="folha__leitura">
+          <span class="folha__ref" aria-hidden="true">03</span>
+          <svg class="folha__tulipa" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#tulipa-agua"></use></svg>
+          <p class="folha__dia">Dia <span class="folha__numero">4</span></p>
+          <p class="folha__etapa">Furnas</p>
+        </div>
+        <div class="folha__corpo">
+          <h3 class="folha__titulo">Furnas e confraternização</h3>
+          <p>A janela de recuperação. As motos descansam e o grupo desce até o píer para um tour exclusivo de lancha pela Represa de Furnas, navegando entre os cânions e parando nos bares flutuantes.</p>
+          <p>Noite de confraternização na base.</p>
+        </div>
+        <figure class="placa placa--folha" data-slot="4">
+          <picture>
+      <source srcset="assets/media/dia-4.avif" type="image/avif">
+      <source srcset="assets/media/dia-4.webp" type="image/webp">
+      <img src="assets/media/dia-4.jpg" alt="Lancha navegando dentro de um cânion estreito de paredões de rocha na Represa de Furnas"
+           width="950" height="633" loading="lazy" decoding="async">
+    </picture></figure>
+      </li>
+
+      <li class="folha" data-etapa="Retorno" data-tulipa="tulipa-retorno" data-ref="04">
+        <div class="folha__leitura">
+          <span class="folha__ref" aria-hidden="true">04</span>
+          <svg class="folha__tulipa" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#tulipa-retorno"></use></svg>
+          <p class="folha__dia">Dias <span class="folha__numero">5</span> e <span class="folha__numero">6</span></p>
+          <p class="folha__etapa">Retorno</p>
+        </div>
+        <div class="folha__corpo">
+          <h3 class="folha__titulo">Última dose e volta para casa</h3>
+          <p>Última sessão de trilhas no Vale da Babilônia. Check-out, carregamento das motos e embarque de volta no ônibus, com o open bar reativado.</p>
+          <p>O dia 6 marca a chegada à noite e a entrega oficial das motos e dos pilotos, porta a porta.</p>
+        </div>
+        <figure class="placa placa--folha" data-slot="5">
+          <picture>
+      <source srcset="assets/media/crista.avif" type="image/avif">
+      <source srcset="assets/media/crista.webp" type="image/webp">
+      <img src="assets/media/crista.jpg" alt="A turma alinhada com as motos na crista da serra, com o vale e a represa ao fundo"
+           width="950" height="633" loading="lazy" decoding="async">
+    </picture></figure>
+      </li>
+
+    </ol>
+  </div>
+
+  <!-- O REMATE DE AÇÃO.
+
+       Aqui, e em nenhum outro lugar novo. Os CTAs da página estavam a 7%, 82% e
+       85% da rolagem: entre o botão do herói e o do painel havia 7.281px de
+       celular sem uma única chamada em linha. O botão flutuante cobre a lacuna,
+       mas ele é o mesmo em toda a página, e por isso não sabe onde está.
+
+       Este ponto é o fim do roteiro, que é o pico de desejo: o visitante acabou
+       de ler os seis dias inteiros. E ele parte a lacuna quase ao meio.
+
+       NÃO existe um segundo remate no fim da .dor, e o CSS de lá guarda a
+       explicação: já houve um, e ele saiu por ser repetido. Quem tirou estava
+       certo. A .dor termina a ~1000px do botão do painel, e dois botões iguais
+       a mil pixels um do outro não são insistência, são ruído.
+
+       O rótulo é o MESMO das outras chamadas de compra, "Garantir minha vaga".
+       Um rótulo por intenção: inventar "Quero essa trilha" aqui faria o
+       visitante achar que é outro destino.
+
+       A linha acima do botão carrega um fato que ainda não apareceu na rolagem,
+       que é o tamanho da turma. Ela vem de .regras, não é número novo. -->
+  <div class="remate-acao">
+    <p class="remate-acao__linha">São 15 vagas por saída.</p>
+    <a class="botao botao--primario botao--grande"
+       href="https://wa.me/5500000000000?text=Ol%C3%A1%21%20Quero%20garantir%20minha%20vaga%20na%20Expedi%C3%A7%C3%A3o%20Canastra."
+       target="_blank" rel="noopener">
+      <span>Garantir minha vaga</span>
+      <svg class="botao__marca" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#marca-whatsapp"></use></svg>
+    </a>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     O QUE ESTÁ INCLUSO
+
+     Manifesto de carga, não quatro cartões iguais. Os quatro entregáveis não
+     têm o mesmo peso comercial: coleta porta a porta mais ônibus executivo é o
+     que separa esta empresa de qualquer grupo de trilha, e o passeio de lancha
+     é um bônus. Quatro caixas do mesmo tamanho achatam essa diferença e fazem o
+     visitante gastar atenção igual em coisas de valor desigual.
+
+     Um bloco dominante com mídia para a logística, três linhas compactas para o
+     resto. O peso visual passa a ser o peso do argumento.
+     ══════════════════════════════════════════════════════════════════════════ -->
+<section class="papel escopo" id="escopo" aria-labelledby="escopo-titulo">
+  <div class="secao__cabeca">
+    <h2 class="secao__titulo" id="escopo-titulo">O que está incluso</h2>
+    <p class="secao__linha">Toda a infraestrutura em um único investimento, para você não precisar resolver nada.</p>
+  </div>
+
+  <article class="manifesto__principal">
+    <div class="manifesto__texto">
+      <h3 class="manifesto__titulo">Logística de ponta a ponta</h3>
+      <p>Transporte especializado da moto e vaga garantida no ônibus executivo unificado, com Starlink, ar-condicionado e USB. Coleta e devolução porta a porta. O transporte local no destino também é por nossa conta.</p>
+    </div>
+    <figure class="placa placa--video-placa" data-slot="6">
+      <video class="placa__video" width="608" height="1080"
+           poster="assets/media/escopo-loop-poster.jpg"
+           muted loop playsinline preload="none" aria-label="Pilotos e motos em trechos de rocha e crista na Serra da Canastra">
+      <source src="assets/media/escopo-loop.webm" type="video/webm">
+      <source src="assets/media/escopo-loop.mp4" type="video/mp4">
+    </video></figure>
+  </article>
+
+  <ul class="manifesto__lista">
+    <li class="manifesto__item">
+      <h3 class="manifesto__item-titulo">Hospedagem e alimentação</h3>
+      <p>Pousada com café da manhã e jantar servidos todos os dias, mais open bar e open food de estrada dentro do ônibus.</p>
+    </li>
+    <li class="manifesto__item">
+      <h3 class="manifesto__item-titulo">Operação off-road</h3>
+      <p>Guias locais do começo ao fim, traçados técnicos mapeados na Serra da Canastra e suporte em tempo real na trilha.</p>
+    </li>
+    <li class="manifesto__item">
+      <h3 class="manifesto__item-titulo">Turismo e lazer</h3>
+      <p>Passeio de lancha garantido na Represa de Furnas, com navegação pelos cânions e parada nos bares flutuantes.</p>
+    </li>
+  </ul>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     A DOR
+
+     A respiração da página, e a justificativa do preço. É a única seção em que a
+     mídia é vertical: o retrato aperta a composição de propósito, porque o
+     assunto aqui é aperto.
+     ══════════════════════════════════════════════════════════════════════════ -->
+<section class="dor" id="dor" aria-labelledby="dor-titulo">
+  <div class="dor__texto">
+    <h2 class="secao__titulo" id="dor-titulo">O desgaste fica de fora</h2>
+
+    <ul class="dor__lista">
+      <li>Organizar carretinha.</li>
+      <li>Dirigir exausto por horas depois de dias inteiros de trilha.</li>
+      <li>Calcular combustível e pedágio no meio do caminho.</li>
+      <li>Descobrir a rota errada no pior momento possível.</li>
+    </ul>
+
+    <p class="dor__virada">Na Trilha Certa nada disso é problema seu. Montamos a operação inteira para que você saia de casa e chegue direto no off-road com os amigos.</p>
+    <p class="dor__remate">Você investe no lazer. A gente entrega a operação.</p>
+  </div>
+
+  <figure class="placa placa--dor" data-slot="7">
+    <picture>
+      <source srcset="assets/media/dor.avif" type="image/avif">
+      <source srcset="assets/media/dor.webp" type="image/webp">
+      <img src="assets/media/dor.jpg" alt="Piscina da pousada ao pôr do sol, com o grupo na água e a serra ao fundo"
+           width="750" height="1000" loading="lazy" decoding="async">
+    </picture></figure>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     DEPOIMENTOS - SEÇÃO PRONTA, CONTEÚDO PENDENTE
+
+     A seção está desenhada e o CSS existe. Ela está comentada porque NÃO HÁ
+     depoimento real, e depoimento inventado numa página de venda é review
+     fabricada apresentada como genuína. Isso não é licença de design, é falsa
+     afirmação sobre clientes que existem. Nome fictício com cidade fictícia
+     debaixo de uma frase de elogio é exatamente o que a lei e a plataforma
+     tratam como propaganda enganosa. Fica vazia até ter frase de gente real.
+
+     POR QUE ELA PRECISA EXISTIR: a varredura contou 635 palavras, 13 fotos e 2
+     vídeos, e zero validação de terceiro. A página pede R$ 5.990 e pede que o
+     cliente entregue a própria moto para um desconhecido transportar, e a única
+     voz que garante qualquer coisa é a da própria empresa.
+
+     POR QUE AQUI: prova social imediatamente ANTES do preço, não depois. E o
+     ritmo de superfície continua: a página alterna tinta e papel em T,T,P,T,P,T,
+     e uma seção de TINTA neste ponto devolve a figura T,T,P repetida. Se um dia
+     ela virar papel, a alternância quebra e a seção passa a brigar com a oferta.
+
+     COMO PREENCHER: três depoimentos, no máximo. Cada frase com no máximo 3
+     linhas, cortada se o original for maior: depoimento de landing é recorte,
+     não avaliação inteira. Nome e cidade sempre, nunca só o primeiro nome, e
+     nunca inicial. Se houver foto real do cliente na trilha, ela vale mais que
+     qualquer aspas; se não houver, o bloco funciona sem foto.
+
+     Aspas tipográficas de verdade nas pontas da frase, e nenhum travessão na
+     atribuição: a página não tem um travessão em lugar nenhum.
+
+<section class="depoimentos" aria-labelledby="depoimentos-titulo">
+  <div class="secao__cabeca">
+    <h2 class="secao__titulo" id="depoimentos-titulo">Quem já foi</h2>
+  </div>
+
+  <ul class="depoimentos__lista">
+    <li class="depoimento">
+      <blockquote class="depoimento__fala">FRASE REAL DO CLIENTE, ATÉ 3 LINHAS.</blockquote>
+      <p class="depoimento__quem">NOME COMPLETO<span class="depoimento__onde">CIDADE, UF</span></p>
+    </li>
+    <li class="depoimento">
+      <blockquote class="depoimento__fala">FRASE REAL DO CLIENTE, ATÉ 3 LINHAS.</blockquote>
+      <p class="depoimento__quem">NOME COMPLETO<span class="depoimento__onde">CIDADE, UF</span></p>
+    </li>
+    <li class="depoimento">
+      <blockquote class="depoimento__fala">FRASE REAL DO CLIENTE, ATÉ 3 LINHAS.</blockquote>
+      <p class="depoimento__quem">NOME COMPLETO<span class="depoimento__onde">CIDADE, UF</span></p>
+    </li>
+  </ul>
+</section>
+     ══════════════════════════════════════════════════════════════════════════ -->
+
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     A OFERTA
+
+     Painel único dominante. O cartão "meu grupo tem menos de 10" deixou de ser
+     coluna irmã e virou nota subordinada logo abaixo, porque não é um plano
+     concorrente disputando a escolha: é a saída para quem não fecha quórum.
+     Lado a lado, ele obrigava o visitante a comparar duas coisas que não são
+     comparáveis, bem no ponto em que ele só precisava decidir uma.
+
+     As regras operacionais ficam legíveis. Cinza de 11px no rodapé de uma
+     oferta de R$ 5.990 lê como algo que se quis esconder, e é justamente o que
+     mais constrói confiança quando está visível.
+     ══════════════════════════════════════════════════════════════════════════ -->
+<section class="papel oferta" id="oferta" aria-labelledby="oferta-titulo">
+
+  <article class="painel tinta">
+    <h2 class="painel__titulo" id="oferta-titulo">Expedição Canastra all-inclusive</h2>
+    <!-- O que a oferta tem de melhor a dizer vai MARCADO, e não na tinta média
+         do resto da frase. <mark> é o elemento certo aqui pelo significado, e
+         não pela cor: ele existe para sinalizar relevância dentro de um texto
+         corrido, que é exatamente o papel de "10% de desconto" nesta linha. O
+         traço de marca-texto está em .estilo, na seção de superfícies. -->
+    <p class="painel__condicao">Turma fechada, com os <mark>10% de desconto</mark> já aplicados no valor abaixo.</p>
+
+    <!-- DOIS PLANOS, E NÃO UM PREÇO MAIS UMA TABELA.
+
+         Antes o painel tinha o valor grande de um lado e um <dl class="totais">
+         de dois pares do outro. Os dois pares pareciam irmãos e não eram: "Total
+         a prazo" é a SOMA do plano de cima (1.497,50 + 10 x 449,25 = 5.990,00),
+         enquanto "À vista no Pix" é outro plano inteiro. Empilhados na mesma
+         tabela, obrigavam o leitor a descobrir sozinho qual número pertencia a
+         qual forma de pagar.
+
+         Agora cada plano é um bloco fechado: o parcelado abre com o sinal e
+         FECHA com o próprio total; o à vista tem bloco próprio, com o mesmo tipo
+         de rótulo do outro, que é o que faz os dois lerem como alternativas.
+
+         Nenhuma palavra mudou de lugar dentro das frases. O que mudou foi a
+         qual bloco cada frase pertence. -->
+    <div class="plano plano--parcelado">
+      <p class="plano__rotulo">Sinal para garantir a vaga</p>
+      <p class="preco__figura"><span class="preco__moeda">R$</span> 1.497<span class="preco__centavos">,50</span></p>
+      <p class="preco__parcelas">mais <strong>10 parcelas de R$ 449,25</strong></p>
+      <p class="preco__condicao">No boleto, com vencimento no dia 7, 14 ou 21. Você escolhe.</p>
+
+      <dl class="plano__fecho">
+        <div class="plano__linha">
+          <dt>Total a prazo</dt>
+          <dd>R$ 5.990,00 por pessoa</dd>
+        </div>
+      </dl>
+    </div>
+
+    <dl class="plano plano--avista">
+      <div class="plano__linha">
+        <dt class="plano__rotulo">À vista no Pix, <mark>5% de desconto</mark></dt>
+        <dd class="plano__valor">R$ 5.690,50 por pessoa</dd>
+      </div>
+    </dl>
+
+    <a class="botao botao--primario botao--bloco"
+       href="https://wa.me/5500000000000?text=Ol%C3%A1%21%20Quero%20garantir%20minha%20vaga%20na%20Expedi%C3%A7%C3%A3o%20Canastra."
+       target="_blank" rel="noopener">
+      <span>Garantir minha vaga</span>
+      <svg class="botao__marca" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#marca-whatsapp"></use></svg>
+    </a>
+  </article>
+
+  <aside class="nota-quorum" aria-labelledby="nota-quorum-titulo">
+    <h3 class="nota-quorum__titulo" id="nota-quorum-titulo">Meu grupo tem menos de 10 pessoas</h3>
+    <p>A expedição sai com 10 confirmados. Se o seu grupo é menor, conectamos turmas para fechar o quórum e viabilizar a saída.</p>
+    <a class="botao botao--secundario"
+       href="https://wa.me/5500000000000?text=Ol%C3%A1%21%20Meu%20grupo%20tem%20menos%20de%2010%20pessoas.%20Quero%20montar%20uma%20turma%20mista."
+       target="_blank" rel="noopener">
+      <span>Montar turma mista</span>
+      <svg class="botao__marca" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#marca-whatsapp"></use></svg>
+    </a>
+  </aside>
+
+  <section class="regras" aria-labelledby="regras-titulo">
+    <h3 class="regras__titulo" id="regras-titulo">Regras da operação</h3>
+    <dl class="regras__lista">
+      <div class="regras__item">
+        <dt>Vagas</dt>
+        <dd>15 no total, para manter a experiência personalizada e segura. O grupo é restrito e fechado.</dd>
+      </div>
+      <div class="regras__item">
+        <dt>Quórum</dt>
+        <dd>A saída do ônibus e a ativação de toda a logística exigem 10 integrantes confirmados.</dd>
+      </div>
+      <div class="regras__item">
+        <dt>Não incluso</dt>
+        <dd>Almoço diário, feito durante as paradas nas trilhas. Consumo pessoal em paradouros de estrada e postos. Bebidas consumidas dentro da pousada.</dd>
+      </div>
+      <div class="regras__item regras__item--atencao">
+        <dt>Hospitalidade</dt>
+        <dd>Não é permitido entrar na pousada com bebida comprada fora.</dd>
+      </div>
+
+      <!-- AS TRÊS OBJEÇÕES QUE A PÁGINA AINDA NÃO RESPONDE.
+
+           Os rótulos estão escritos; as respostas não, porque são fatos da
+           operação e não decisões de design. Chutar "seguro total incluso" aqui
+           é prometer cobertura em nome da empresa.
+
+           Ficam comentadas e não em branco de propósito: <dd> vazio renderia
+           uma regra muda no meio de uma tabela de regras, que é pior que a
+           ausência. Descomentar e preencher é um passo só.
+
+           POR QUE ESTAS TRÊS: a seção responde vagas, quórum, o que não está
+           incluso e bebida. São as regras da EMPRESA. Nenhuma delas responde o
+           que trava a compra do lado do CLIENTE, e a varredura não achou essas
+           respostas em nenhum outro ponto da página. Quem vai entregar a própria
+           moto para um terceiro levar a 400km de casa pergunta as três antes de
+           pagar o sinal, e hoje precisa abrir o WhatsApp para perguntar. Cada
+           pergunta que só o WhatsApp responde é uma conversa que pode não
+           começar.
+
+      <div class="regras__item">
+        <dt>Seguro da moto</dt>
+        <dd>COMO A MOTO ESTÁ COBERTA DURANTE O TRANSPORTE E NA TRILHA, E POR QUEM.</dd>
+      </div>
+      <div class="regras__item">
+        <dt>Nível e motos aceitas</dt>
+        <dd>QUE EXPERIÊNCIA DE TRILHA A EXPEDIÇÃO EXIGE E QUE CILINDRADAS E MODELOS ENTRAM.</dd>
+      </div>
+      <div class="regras__item">
+        <dt>Cancelamento</dt>
+        <dd>O QUE ACONTECE COM O SINAL SE O CLIENTE DESISTIR, E O QUE ACONTECE SE O QUÓRUM DE 10 NÃO FECHAR.</dd>
+      </div>
+      -->
+    </dl>
+  </section>
+</section>
+
+
+<section class="redes" aria-labelledby="redes-titulo">
+  <h2 class="redes__titulo" id="redes-titulo">Acompanhe a Trilha Certa</h2>
+  <ul class="redes__lista">
+    <li><a href="https://wa.me/5500000000000" target="_blank" rel="noopener"><svg class="redes__marca" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#marca-whatsapp"></use></svg><span>WhatsApp</span></a></li>
+    <li><a href="https://www.instagram.com/trilhacertaturismo/" target="_blank" rel="noopener"><svg class="redes__marca" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#marca-instagram"></use></svg><span>Instagram</span></a></li>
+    <li><a href="https://www.facebook.com/profile.php?id=61561486201708" target="_blank" rel="noopener"><svg class="redes__marca" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#marca-facebook"></use></svg><span>Facebook</span></a></li>
+  </ul>
+</section>
+
+</main>
+
+
+<footer class="rodape">
+  <img class="rodape__marca" src="assets/media/logo-rodape.png" alt="Trilha Certa" width="180" height="72" loading="lazy" decoding="async">
+  <p class="rodape__linha">&copy; 2026 Trilha Certa. Todos os direitos reservados.</p>
+  <p class="rodape__linha">Feito por Fernando Sozo Marcolin</p>
+</footer>
+
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     ÍCONE FLUTUANTE DO WHATSAPP
+
+     Fixo no canto inferior direito, em qualquer largura de tela, desde o
+     primeiro quadro. Diferente de todo outro botão da página, ele NÃO depende
+     de chegar a uma seção nem de passar do herói: é o único ponto de contato
+     que nunca sai de cena.
+
+     Ícone puro, sem rótulo de texto ao lado: o círculo verde com o glifo do
+     WhatsApp já é reconhecido de cor por quem usa o aplicativo todo dia, e
+     escrever "Falar no WhatsApp" ao lado só repetiria o que a cor e o desenho
+     já dizem sozinhos. O nome da ação continua disponível pelo aria-label,
+     para quem navega por leitor de tela.
+
+     Ele NÃO usa .botao--primario. O laranja da marca é o que dá o tom em todo
+     botão da página; aqui o que se quer é o oposto, o crachá do aplicativo, no
+     verde e no redondo que a pessoa já reconhece antes de ler. É o único
+     elemento da página que empresta a identidade de outra marca, e é de
+     propósito: ele não vende a expedição, ele abre a conversa.
+     ══════════════════════════════════════════════════════════════════════════ -->
+<a class="botao botao--flutuante"
+   href="https://wa.me/5500000000000?text=Ol%C3%A1%21%20Quero%20garantir%20minha%20vaga%20na%20Expedi%C3%A7%C3%A3o%20Canastra."
+   target="_blank" rel="noopener" aria-label="Falar no WhatsApp">
+  <svg class="botao__marca" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#marca-whatsapp"></use></svg>
+</a>
+
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     O MAPA DO PERCURSO
+
+     Substitui o trilho que ficava aqui. Os dois faziam o mesmo trabalho, dizer
+     em que ponto da expedição o visitante está, e o mapa faz melhor: em vez de
+     um rótulo de etapa, ele mostra o caminho inteiro e o quanto dele já passou.
+     Dois elementos fixos disputando a mesma função era um a mais.
+
+     A GEOMETRIA É REAL. As cinco paradas entram por coordenada projetada de
+     latitude e longitude, então a curva é a curva verdadeira da viagem. O que
+     prova isso é o trecho de Florianópolis para Curitiba: ele volta para OESTE
+     enquanto sobe, porque Curitiba (-49,27) fica mesmo a oeste de Florianópolis
+     (-48,55). Esse recuo é o que faz o traçado ler como rota e não como rabisco,
+     e ele só existe porque os números são reais.
+
+     Sólido é estrada, tracejado é trilha. Não é decoração: são as duas coisas
+     que a expedição faz, e elas se distinguem no desenho como se distinguem no
+     roadbook.
+
+     A trilha é um laço FECHADO E CONCÊNTRICO em volta do destino, com raio maior
+     que o do pino. Era um lacinho de raio menor, e o resultado é que ele sumia
+     atrás do pino: sobrava um arco tracejado escapando por um lado, que lia como
+     desenho quebrado e não como trilha. Agora ela circunda a chegada, com folga
+     de 1,5 unidade entre o traço dela e a borda do pino, e o raio irregular
+     mantém o traço de mão em vez de virar alvo de compasso.
+
+     aria-hidden no conjunto: a rota é redundante para quem ouve a página, que já
+     está lendo o roteiro em texto logo abaixo. Anunciar "Curitiba" a cada
+     rolagem seria interrupção, não informação.
+     ══════════════════════════════════════════════════════════════════════════ -->
+<aside class="mapa" aria-hidden="true">
+  <svg class="mapa__svg" viewBox="0 0 120 160" fill="none" focusable="false">
+    <path class="mapa__fantasma" d="M12.0,148.0 C13.2,146.5 18.8,136.6 22.3,135.1 C25.9,133.6 38.1,137.6 41.3,135.6 C44.5,133.6 46.1,121.0 48.9,118.4 C51.7,115.8 63.7,115.4 64.8,114.2 C65.9,113.0 57.9,110.5 57.7,108.3 C57.6,106.2 64.4,98.2 63.6,96.4 C62.8,94.5 52.8,94.5 51.2,93.0 C49.7,91.5 49.8,86.0 50.6,84.1 C51.4,82.2 55.5,77.3 58.0,77.1 C60.4,76.8 69.3,83.3 71.3,82.0 C73.2,80.7 72.2,67.4 74.3,66.3 C76.4,65.3 86.2,73.7 88.5,73.0 C90.7,72.2 91.3,62.1 93.0,60.3 C94.7,58.5 101.9,59.7 102.7,58.0 C103.5,56.3 99.2,48.7 100.0,46.0 C100.8,43.3 108.9,38.2 109.2,35.4 C109.5,32.7 102.6,25.8 102.5,23.0 C102.3,20.2 107.3,13.3 108.0,12.0"></path>
+    <path class="mapa__rota"     d="M12.0,148.0 C13.2,146.5 18.8,136.6 22.3,135.1 C25.9,133.6 38.1,137.6 41.3,135.6 C44.5,133.6 46.1,121.0 48.9,118.4 C51.7,115.8 63.7,115.4 64.8,114.2 C65.9,113.0 57.9,110.5 57.7,108.3 C57.6,106.2 64.4,98.2 63.6,96.4 C62.8,94.5 52.8,94.5 51.2,93.0 C49.7,91.5 49.8,86.0 50.6,84.1 C51.4,82.2 55.5,77.3 58.0,77.1 C60.4,76.8 69.3,83.3 71.3,82.0 C73.2,80.7 72.2,67.4 74.3,66.3 C76.4,65.3 86.2,73.7 88.5,73.0 C90.7,72.2 91.3,62.1 93.0,60.3 C94.7,58.5 101.9,59.7 102.7,58.0 C103.5,56.3 99.2,48.7 100.0,46.0 C100.8,43.3 108.9,38.2 109.2,35.4 C109.5,32.7 102.6,25.8 102.5,23.0 C102.3,20.2 107.3,13.3 108.0,12.0"></path>
+    <path class="mapa__trilha"   d="M108.0,1.2 C110.4,1.3 113.0,3.3 114.9,5.1 C116.7,6.9 119.0,9.7 119.0,12.0 C119.0,14.3 117.0,17.3 115.1,19.1 C113.3,21.0 110.4,22.9 108.0,22.9 C105.6,22.9 102.8,20.8 101.0,19.0 C99.2,17.2 97.0,14.4 97.0,12.0 C97.0,9.6 98.9,6.5 100.7,4.7 C102.6,2.9 105.6,1.1 108.0,1.2 Z"></path>
+
+    <g class="mapa__parada" data-parada="0"><circle cx="12.0"  cy="148.0" r="4.5"></circle><circle class="mapa__miolo" cx="12.0"  cy="148.0" r="1.8"></circle></g>
+    <g class="mapa__parada" data-parada="1"><circle cx="64.8"  cy="114.2" r="4.5"></circle><circle class="mapa__miolo" cx="64.8"  cy="114.2" r="1.8"></circle></g>
+    <g class="mapa__parada" data-parada="2"><circle cx="50.6"  cy="84.1"  r="4.5"></circle><circle class="mapa__miolo" cx="50.6"  cy="84.1"  r="1.8"></circle></g>
+    <g class="mapa__parada" data-parada="3"><circle cx="102.7" cy="58.0"  r="4.5"></circle><circle class="mapa__miolo" cx="102.7" cy="58.0"  r="1.8"></circle></g>
+    <g class="mapa__parada mapa__parada--destino" data-parada="4"><circle cx="108.0" cy="12.0" r="7"></circle><circle class="mapa__miolo" cx="108.0" cy="12.0" r="2.6"></circle></g>
+  </svg>
+
+  <p class="mapa__leitura"><span class="mapa__uf">RS</span><span class="mapa__local">Porto Alegre</span></p>
+</aside>
+
+
+<script src="assets/js/lenis.min.js" defer></script>
+<script src="assets/js/gsap.min.js" defer></script>
+<script src="assets/js/ScrollTrigger.min.js" defer></script>
+<script src="assets/js/roadbook.js" defer></script>
+</body>
+</html>
