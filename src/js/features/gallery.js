@@ -25,7 +25,7 @@ var mmPilha = gsap.matchMedia();
 
 
     var VEL_MIN = 1.0;
-    var VEL_MAX = celular ? 2.4 : 2.2;
+    var VEL_MAX = celular ? 2.6 : 2.2;
 
 
 
@@ -57,9 +57,9 @@ var mmPilha = gsap.matchMedia();
     var linha = gsap.timeline({
       scrollTrigger: {
         trigger: pilha,
-        start: celular ? 'center 135%' : 'center 127%',
-        end:   celular ? 'bottom -85%'  : 'bottom -125%',
-        scrub: 0.1
+        start: celular ? 'center 155%' : 'center 180%',
+        end:   celular ? 'bottom -145%' : 'bottom -190%',
+        scrub: celular ? 0.2 : 0.1
       }
     });
 

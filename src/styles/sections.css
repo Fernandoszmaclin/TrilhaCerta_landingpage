@@ -435,9 +435,11 @@
   font-size: var(--txt-apoio);
   text-transform: uppercase;
   letter-spacing: var(--tracking-caps-m);
-  transition: color var(--dur-estado) var(--ease-saida);
+  transition: color     var(--dur-estado) var(--ease-saida),
+              transform var(--dur-toque)  var(--ease-saida);
 }
 .redes__marca { width: 22px; height: 22px; flex: none; }
+.redes__lista a:active { transform: scale(0.98); }
 @media (hover: hover) and (pointer: fine) {
   .redes__lista a:hover { color: var(--acento); }
 }

@@ -118,6 +118,7 @@ var mm = gsap.matchMedia();
     var RECUO       = 90;
     var VEU         = 0.42;
     var PERSPECTIVA = 1400;
+    var PROFUNDIDADE_PROVA = 28;
 
 
     var ALCANCE     = 320;
@@ -134,7 +135,14 @@ var mm = gsap.matchMedia();
     var topoUtil = 0;
 
     function medirCaixas() {
-      DOBRA_LONGE = window.innerWidth < 768 ? 88 : 66;
+      var celular = window.innerWidth < 768;
+
+      DOBRA_LONGE = celular ? 120 : 66;
+      ANGULO_MAX  = celular ? 14  : 11;
+      RECUO       = celular ? 150 : 90;
+      VEU         = celular ? 0.50 : 0.42;
+      PERSPECTIVA = celular ? 1000 : 1400;
+      PROFUNDIDADE_PROVA = celular ? 42 : 28;
 
 
       var barraPagina = parseFloat(getComputedStyle(document.documentElement)
@@ -264,7 +272,11 @@ var mm = gsap.matchMedia();
         gsap.set(c.cabeca, { opacity: vFolha });
         gsap.set(c.corpo, { opacity: vFolha, y: (1 - vFolha) * ALCA });
 
-        gsap.set(c.prova, { opacity: vFolha, y: (1 - vFolha) * ALCA, z: 28 });
+        gsap.set(c.prova, {
+          opacity: vFolha,
+          y: (1 - vFolha) * ALCA,
+          z: PROFUNDIDADE_PROVA
+        });
       }
     }
 
