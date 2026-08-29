@@ -1,0 +1,162 @@
+.heroi {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  align-items: flex-end;
+  padding-top: calc(var(--altura-barra) + var(--e-8));
+  padding-bottom: var(--e-16);
+  background: var(--fundo);
+}
+
+.heroi__midia { position: absolute; inset: 0; overflow: hidden; }
+
+
+
+.heroi__peca { position: absolute; inset: 0; }
+.heroi__peca-interna { position: absolute; inset: 0; overflow: hidden; }
+
+
+.heroi__loop,
+.heroi__peca--foto .heroi__peca-interna {
+  filter: saturate(0.6) contrast(0.95) brightness(0.82);
+}
+.heroi__peca-interna::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--fundo);
+  opacity: 0.3;
+}
+
+.heroi__loop {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+
+.heroi__peca--foto { display: none; }
+.heroi__divisa { display: none; }
+
+
+.heroi__peca .heroi__peca-interna {
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0px, #000 96px,
+                                      #000 calc(100% - 110px), transparent 100%);
+          mask-image: linear-gradient(to bottom, transparent 0px, #000 96px,
+                                      #000 calc(100% - 110px), transparent 100%);
+}
+
+
+.heroi__midia::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top,
+                rgb(22 27 19 / 0.92) 0px,
+                rgb(22 27 19 / 0.82) 120px,
+                rgb(22 27 19 / 0.60) 230px,
+                rgb(22 27 19 / 0.42) 300px,
+                rgb(22 27 19 / 0.22) 400px,
+                rgb(22 27 19 / 0.10) 490px,
+                transparent 580px);
+}
+
+
+.heroi__texto {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: var(--largura-conteudo);
+  margin-inline: auto;
+  padding-inline: var(--respiro-lateral);
+}
+
+.heroi__titulo {
+  color: var(--acento);
+  font-size: var(--txt-heroi);
+  line-height: var(--lh-heroi);
+  font-stretch: var(--largura-display);
+  font-weight: 900;
+  margin-bottom: var(--e-5);
+
+  max-width: 11em;
+}
+
+
+.nao-quebra { white-space: nowrap; }
+.heroi__apoio {
+  font-family: var(--fonte-mono);
+  font-stretch: 78%;
+  line-height: 1.5;
+  font-size: var(--txt-apoio);
+  color: var(--tinta);
+  max-width: 46ch;
+  margin-bottom: var(--e-8);
+}
+.heroi .botao { width: 100%; }
+
+@media (min-width: 48rem) {
+  .heroi .botao { width: auto; }
+  .heroi__apoio { font-size: var(--txt-corpo); }
+}
+
+@media (min-width: 64rem) {
+  .heroi { padding-bottom: var(--e-24); }
+
+
+  .heroi__peca--foto { display: block; }
+
+  .heroi__peca--video { right: 42%; }
+  .heroi__peca--foto  { left: 42%; }
+
+
+  .heroi__peca--video {
+    -webkit-mask-image: linear-gradient(to right, #000 30%, transparent 94%);
+            mask-image: linear-gradient(to right, #000 30%, transparent 94%);
+  }
+  .heroi__peca--foto {
+    -webkit-mask-image: linear-gradient(to left, #000 34%, transparent 96%);
+            mask-image: linear-gradient(to left, #000 34%, transparent 96%);
+  }
+
+  .heroi__peca--foto .heroi__peca-interna {
+    background-image: image-set(url('../media/heroi.avif') type('image/avif'),
+                                url('../media/heroi.jpg')  type('image/jpeg'));
+    background-size: cover;
+    background-position: center 42%;
+  }
+
+
+  .heroi__divisa {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 42%;
+    width: 12px;
+    height: 100%;
+    fill: none;
+    stroke: var(--tinta);
+    stroke-width: 1.5;
+    opacity: 0.4;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0px, #000 96px,
+                        #000 30%, transparent min(46%, calc(100% - 470px)));
+            mask-image: linear-gradient(to bottom, transparent 0px, #000 96px,
+                        #000 30%, transparent min(46%, calc(100% - 470px)));
+  }
+
+
+  .heroi__texto {
+    max-width: none;
+    margin-inline: 0;
+    padding-left: calc(var(--largura-mapa) + var(--respiro-lateral));
+    padding-right: var(--respiro-lateral);
+  }
+}
+
+
+
+@media (min-width: 64rem) and (min-height: 45rem) {
+  .heroi__divisa { display: block; }
+}

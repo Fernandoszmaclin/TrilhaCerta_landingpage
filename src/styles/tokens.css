@@ -1,0 +1,192 @@
+:root {
+
+
+
+  --fundo:       #161B13;
+
+
+  --fundo-2:     #161B13;
+  --fundo-3:     #1A2017;
+
+  --tinta:       #DDE2E4;
+  --tinta-media: #A9B3A3;
+  --tinta-fraca: #84907F;
+
+  --laranja:       #FF6A00;
+  --laranja-fundo: #E85D00;
+
+
+  --sobre-marca: #0E0E0F;
+
+
+  --zap:        #25D366;
+  --zap-anel:   #128C7E;
+  --zap-toque:  #1DA851;
+  --sobre-zap:  #FFFFFF;
+
+
+  --acento: #E2FFCC;
+
+
+
+  --percurso-feito:    #FEF200;
+  --percurso-adiante:  #7D7D7D;
+  --halo-mapa:         20 26 17;
+
+  --alerta: #FF8A6B;
+
+
+  --linha-sutil: rgb(221 226 228 / 0.10);
+  --linha-media: rgb(221 226 228 / 0.18);
+
+
+  --fonte-display: 'Archivo', system-ui, sans-serif;
+  --fonte-corpo:   'Barlow', system-ui, sans-serif;
+
+  --fonte-mono:    'Martian Mono', ui-monospace, monospace;
+
+
+  --txt-micro:    0.6875rem;
+  --txt-rotulo:   0.8125rem;
+  --txt-apoio:    0.9375rem;
+  --txt-corpo:    1.0625rem;
+  --txt-destaque: 1.1875rem;
+
+
+  --txt-titulo: clamp(1.625rem, 1.2rem + 1.9vw, 2.625rem);
+  --txt-secao:  clamp(2.25rem,  6.6vw,         5.5rem);
+  --txt-heroi:  clamp(2.5rem,   7vw,           6.25rem);
+  --txt-preco:  clamp(2.75rem,  1.9rem + 3.8vw, 4.25rem);
+
+
+  --txt-total:  clamp(1.0625rem, -0.08rem + 5.71vw,
+                clamp(1.3125rem, 0.8821rem + 1.7641vw, 1.973rem));
+
+
+  --lh-heroi: 0.88;
+  --lh-secao: 0.92;
+
+
+  --largura-display: 74%;
+
+
+  --tracking-display:  -0.03em;
+  --tracking-caps-m:    0.06em;
+  --tracking-caps-p:    0.11em;
+
+
+  --e-1:   4px;  --e-2:   8px;  --e-3:  12px;  --e-4:  16px;
+  --e-5:  20px;  --e-6:  24px;  --e-8:  32px;  --e-10: 40px;
+  --e-12: 48px;  --e-16: 64px;  --e-20: 80px;  --e-24: 96px;
+  --e-32: 128px;
+
+
+  --raio:       0;
+  --raio-placa: 2px;
+
+
+  --largura-conteudo: 72rem;
+  --medida-texto:     68ch;
+  --altura-barra:     64px;
+
+  --reserva-flutuante: 96px;
+  --largura-mapa:    150px;
+  --respiro-lateral:  var(--e-5);
+
+
+  --ease-saida:     cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-movimento: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-revelar:   cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+  --dur-toque:   120ms;
+  --dur-estado:  200ms;
+  --dur-revelar: 600ms;
+}
+
+@media (min-width: 48rem) {
+  :root { --respiro-lateral: var(--e-10); }
+}
+@media (min-width: 64rem) {
+  :root {
+    --respiro-lateral: var(--e-16);
+
+    --altura-barra: 76px;
+
+
+    --largura-mapa: 220px;
+  }
+}
+
+
+
+
+.papel {
+  --fundo:       #DDE2E4;
+  --fundo-2:     #DDE2E4;
+  --fundo-3:     #CDD4D6;
+
+  --tinta:       #2D3329;
+  --tinta-media: #4E5849;
+  --tinta-fraca: #5A6455;
+
+
+  --acento:      #A03F00;
+  --alerta:      #8C2A14;
+
+
+  --linha-sutil: rgb(45 51 41 / 0.14);
+  --linha-media: rgb(45 51 41 / 0.26);
+
+  background: var(--fundo);
+  color: var(--tinta);
+}
+
+
+.tinta {
+  --fundo:       #161B13;
+  --fundo-2:     #161B13;
+  --fundo-3:     #1A2017;
+  --tinta:       #DDE2E4;
+  --tinta-media: #A9B3A3;
+  --tinta-fraca: #84907F;
+  --acento:      #E2FFCC;
+  --alerta:      #FF8A6B;
+  --linha-sutil: rgb(221 226 228 / 0.10);
+  --linha-media: rgb(221 226 228 / 0.18);
+
+  background: var(--fundo);
+  color: var(--tinta);
+}
+
+
+
+
+
+
+@font-face {
+  font-family: 'Archivo';
+  src: url('../fontes/archivo-var-latin.woff2') format('woff2-variations');
+  font-weight: 400 900;
+  font-stretch: 62% 125%;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Martian Mono';
+  src: url('../fontes/martianmono-var-latin.woff2') format('woff2-variations');
+  font-weight: 300 700;
+  font-stretch: 75% 112.5%;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Barlow';
+  src: url('../fontes/barlow-400-latin.woff2') format('woff2');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Barlow';
+  src: url('../fontes/barlow-700-latin.woff2') format('woff2');
+  font-weight: 700; font-style: normal; font-display: swap;
+}

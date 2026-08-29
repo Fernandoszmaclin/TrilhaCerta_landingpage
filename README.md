@@ -1,9 +1,13 @@
 # Trilha Certa - Landing Expedição Canastra
 
-Landing page estática. Sem build, sem dependência externa em tempo de execução:
-abrir `index.html` por um servidor HTTP já é a página final.
+Landing page estática, com fontes em `src/` e artefato otimizado em `dist/`.
+As dependências são empacotadas localmente: não há dependência externa em tempo
+de execução.
 
 ```bash
+npm ci
+npm run build
+cd dist
 python -m http.server 5173
 ```
 
@@ -24,7 +28,7 @@ Antes de publicar, faltam dados comerciais que não devem ser inventados:
 3. **Datas confirmadas** — exibir a saída e preencher `startDate`, `endDate` e
    `priceValidUntil` no JSON-LD somente após a confirmação da operação.
 
-`assets/media/og.jpg` já tem 1200×630 e é a imagem de compartilhamento.
+`src/assets/media/og.jpg` já tem 1200×630 e é a imagem de compartilhamento.
 
 ### Rastreamento
 
@@ -33,22 +37,22 @@ rastreadores sem os IDs de propriedade e uma decisão de consentimento LGPD.
 
 ---
 
-## Não publique a pasta `originais/`
+## Não publique a pasta `source-media/`
 
-`originais/` guarda os `.mov` de origem, os JPG de 3000x4000 e o render do ônibus.
-Nada ali é usado pela página. Publique `index.html` mais `assets/`, e só.
+`source-media/` guarda os `.mov` de origem, os JPG de 3000x4000 e o render do ônibus.
+Nada ali é usado pela página. Publique somente o conteúdo gerado em `dist/`.
 
-Agora há um `.gitignore` com `originais/` dentro. Antes não havia nenhum, e a
+Agora há um `.gitignore` com `source-media/` dentro. Antes não havia nenhum, e a
 pasta entrava no commit seguinte por descuido.
 
 **Chegaram sete arquivos novos e eles nasceram no lugar errado**, soltos dentro de
-`assets/media/`, somando 9,4MB de JPG de celular e um PNG de 4,7MB. Tudo que está
-em `assets/` é publicado, então eles foram convertidos e os originais voltaram
-para `originais/`. Três dessas fotos entraram na página e uma virou o og:image.
+`src/assets/media/`, somando 9,4MB de JPG de celular e um PNG de 4,7MB. Tudo que está
+em `src/assets/` é publicado no build, então eles foram convertidos e os originais voltaram
+para `source-media/`. Três dessas fotos entraram na página e uma virou o og:image.
 O render do ônibus também fica arquivado: não há slot ativo para ele. **Duas
 fotos continuam sem uso**, e ficam registradas aqui para não se perderem:
 
-| Arquivo em `originais/` | O que é | Onde caberia |
+| Arquivo em `source-media/` | O que é | Onde caberia |
 |---|---|---|
 | `IMG-20240722-WA0139.jpg` | grupo na cachoeira, de camisa da marca | prova de operação, se algum dia abrir slot |
 | `IMG-20240724-WA0104.jpg` | grupo na lancha, coletes, cânion | alternativa para a referência 03 do roteiro |
@@ -878,7 +882,7 @@ elemento fixo não rola nada, porque ele já está em vista. Medido, partindo de
 sem script, que o comentário do HTML prometia desde sempre, não existia.
 
 O bloco que troca o salto pela viagem com inércia é a **seção 3** do
-[roadbook.js](assets/js/roadbook.js), logo depois dos portões e do Lenis. Ele era
+[main.js](src/js/main.js), logo depois da inicialização do GSAP e do Lenis. Ele era
 a penúltima seção, e ali qualquer exceção no mapa, nas provas ao vento ou na
 planilha abortava a função inteira antes de o ouvinte ser ligado: a navegação
 morria por causa de um defeito numa animação. Agora só depende do que vem antes
@@ -909,13 +913,13 @@ sendo escondida de quem já chegou.
 ## Histórico: o ônibus como recorte de catálogo
 
 Este registro descreve uma exploração visual anterior. O render não é usado pela
-página ativa e está em `originais/`, fora da publicação.
+página ativa e está em `source-media/`, fora da publicação.
 
 Ele já foi um recorte com alfa, flutuando na banda escura, e as duas queixas do
 usuário foram "partes ficaram cortadas e muita rebarba" e "a integração não ficou
 nem um pouco boa". As duas têm a mesma raiz, e a raiz não era de posicionamento.
 
-**O `Design/DESIGN.md` deste projeto proíbe render de produto**, com todas as
+**O `docs/design/DESIGN.md` deste projeto proíbe render de produto**, com todas as
 letras: *"no illustrations, no product renders, no abstract graphics. The only
 non-photographic visual is simple line-drawn icon badges"*. Um render solto lia
 como colagem porque **é** corpo estranho ao sistema, em qualquer lugar onde
@@ -1427,13 +1431,16 @@ seria pior que mapa nenhum; a leitura em mono no canto diz de onde para onde.
 ## Como a página é feita
 
 ```
-index.html              markup, copy e a folha de símbolos SVG
-assets/css/estilo.css   um arquivo, seções comentadas
-assets/js/roadbook.js   o relógio único da rolagem
-assets/fontes/          Archivo + Barlow + Martian Mono, subset latin
-assets/img/             fotos em AVIF, WebP e JPG
-assets/video/           dois loops em MP4 e WebM, com poster
-originais/              NÃO PUBLICAR
+src/                    fonte legível da landing
+  index.html            markup, copy e a folha de símbolos SVG
+  styles/               CSS por responsabilidade
+  js/                   inicialização e recursos de interação
+  assets/               fontes e mídia
+dist/                   artefato minificado a publicar (gerado)
+docs/design/            direção visual e tokens
+docs/history/           decisões e histórico de trabalho
+scripts/                verificações locais
+source-media/           originais — NÃO PUBLICAR
 ```
 
 **Um relógio só.** Toda animação ligada à rolagem sai do ScrollTrigger. Sem
@@ -1532,7 +1539,7 @@ O detector do `impeccable` reporta 11 avisos. Todos conferidos contra o render:
   traçado do mapa se desenhando.
 - **A sensação do Lenis.** Que os gatilhos não quebraram está medido; se a
   inércia está no ponto, ou pesada demais, só se sente rolando. O ajuste é o
-  `duration: 1.05` em `roadbook.js`, e desligar tudo é apagar uma linha.
+  `duration: 1.05` em `src/js/main.js`, e desligar tudo é apagar uma linha.
 - **O loop dando a volta.** Corte, taxa e formato estão conferidos; o salto na
   emenda do loop só se vê rodando.
 - **Movimento reduzido no sistema operacional**, e a página num aparelho real.

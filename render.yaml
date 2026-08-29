@@ -1,0 +1,7 @@
+services:
+  - type: web
+    runtime: static
+    name: trilha-certa-demo
+    buildCommand: npm ci && npm run build
+    staticPublishPath: dist
+    autoDeploy: true

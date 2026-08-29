@@ -1,5 +1,12 @@
-originais/
+source-media/
 .agents/
 .claude/
 .codex/
 .impeccable/hook.cache.json
+node_modules/
+.npm-cache/
+dist/
+.env
+.env.*
+!.env.example
+npm-debug.log*

@@ -1,0 +1,52 @@
+.movimento-ativo .dor__lista li {
+
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path var(--dur-revelar) var(--ease-revelar);
+}
+
+
+.movimento-ativo .dor__lista li { transition-duration: 420ms; }
+.movimento-ativo .dor__lista[data-revelado] li { clip-path: inset(0 0 0 0); }
+.movimento-ativo .dor__lista li:nth-child(2) { transition-delay:  70ms; }
+.movimento-ativo .dor__lista li:nth-child(3) { transition-delay: 140ms; }
+.movimento-ativo .dor__lista li:nth-child(4) { transition-delay: 210ms; }
+
+
+
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+
+  .barra__marca,
+  .barra__marca:hover,
+  .barra__marca:active { transform: none; transition: filter var(--dur-estado) linear; }
+
+  .movimento-ativo .dor__lista li {
+    clip-path: inset(0 0 0 0);
+    transition: none;
+    transition-delay: 0s;
+  }
+
+
+  .mapa { transition: none; }
+  .mapa__rota { stroke-dashoffset: 0 !important; }
+  .mapa__parada { transform: scale(1); opacity: 1; }
+
+
+  @media (min-width: 64rem) {
+    .folha { position: static; min-height: 0; padding-block: var(--e-16); }
+    .folha + .folha { margin-top: var(--e-6); }
+  }
+
+  .botao { transition: background-color var(--dur-estado) linear, color var(--dur-estado) linear; }
+  .botao:active { transform: none; opacity: 0.82; }
+}
+
+
+html.lenis,
+html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: clip; }
+.lenis.lenis-smooth iframe { pointer-events: none; }
