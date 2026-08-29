@@ -1,5 +1,4 @@
-export function initRoadbook({ gsap, ScrollTrigger, root }) {
-  const raiz = root;
+export function initRoadbook({ gsap, ScrollTrigger }) {
   // Layout metrics are cached outside the scroll callback to avoid transform feedback.
 var mm = gsap.matchMedia();
   mm.add('(prefers-reduced-motion: no-preference)', function () {
@@ -24,48 +23,6 @@ var mm = gsap.matchMedia();
 
       return Math.round(Math.max(piso, window.innerHeight * FRACAO_LEITURA));
     }
-
-
-
-
-
-    var animacoesTulipa = new WeakMap();
-    var estilosRaiz = getComputedStyle(raiz);
-    var duracaoEntradaTulipa = parseFloat(estilosRaiz.getPropertyValue('--dur-estado')) || 200;
-    var easeEntradaTulipa = estilosRaiz.getPropertyValue('--ease-revelar').trim();
-
-    function chegou(folha) {
-      var tulipa = folha.querySelector('.folha__tulipa');
-      if (!tulipa || typeof tulipa.animate !== 'function') { return; }
-
-
-      var anterior = animacoesTulipa.get(tulipa);
-      if (anterior) anterior.cancel();
-
-
-      var par = folhas.indexOf(folha) % 2 === 1;
-      var de = par ? 'translate3d(-8px, 0, 0) scale(0.96)'
-                   : 'translate3d(0, -6px, 0) scale(0.96)';
-      var animacao = tulipa.animate(
-        [
-          { transform: de, opacity: 0.55 },
-          { transform: 'translate3d(0, 0, 0) scale(1)', opacity: 1 }
-        ],
-        {
-          duration: duracaoEntradaTulipa,
-          easing: easeEntradaTulipa,
-          fill: 'none'
-        }
-      );
-
-      animacoesTulipa.set(tulipa, animacao);
-      animacao.onfinish = function () {
-        if (animacoesTulipa.get(tulipa) === animacao) {
-          animacoesTulipa.delete(tulipa);
-        }
-      };
-    }
-
 
     function rolarContador(valor) {
       if (contador.textContent === valor) { return; }
@@ -101,7 +58,6 @@ var mm = gsap.matchMedia();
           folha.classList.toggle('folha--ativa', self.isActive);
           if (self.isActive) {
             rolarContador(folha.dataset.ref);
-            chegou(folha);
           }
         }
       });
@@ -118,7 +74,6 @@ var mm = gsap.matchMedia();
     var RECUO       = 90;
     var VEU         = 0.42;
     var PERSPECTIVA = 1400;
-    var PROFUNDIDADE_PROVA = 28;
 
 
     var ALCANCE     = 320;
@@ -129,7 +84,6 @@ var mm = gsap.matchMedia();
 
 
     var SURGIR = 120;
-    var ALCA   = 20;
 
     var caixas = [];
     var topoUtil = 0;
@@ -142,7 +96,6 @@ var mm = gsap.matchMedia();
       RECUO       = celular ? 150 : 90;
       VEU         = celular ? 0.50 : 0.42;
       PERSPECTIVA = celular ? 1000 : 1400;
-      PROFUNDIDADE_PROVA = celular ? 42 : 28;
 
 
       var barraPagina = parseFloat(getComputedStyle(document.documentElement)
@@ -165,7 +118,7 @@ var mm = gsap.matchMedia();
           angulo: Math.min(ANGULO_MAX,
                     Math.asin(Math.min(1, DOBRA_LONGE / alto)) * 180 / Math.PI),
           cabeca: gsap.utils.toArray(folha.querySelectorAll(
-            '.folha__ref, .folha__tulipa, .folha__dia, .folha__etapa')),
+            '.folha__ref, .folha__dia, .folha__etapa')),
           corpo: corpo,
           prova: prova
         };
@@ -270,13 +223,9 @@ var mm = gsap.matchMedia();
         ));
 
         gsap.set(c.cabeca, { opacity: vFolha });
-        gsap.set(c.corpo, { opacity: vFolha, y: (1 - vFolha) * ALCA });
+        gsap.set(c.corpo, { opacity: vFolha });
 
-        gsap.set(c.prova, {
-          opacity: vFolha,
-          y: (1 - vFolha) * ALCA,
-          z: PROFUNDIDADE_PROVA
-        });
+        gsap.set(c.prova, { opacity: vFolha });
       }
     }
 

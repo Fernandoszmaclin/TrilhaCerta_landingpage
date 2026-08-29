@@ -216,9 +216,6 @@
 .folha { transform-style: preserve-3d; }
 
 
-.folha .placa { transform: translateZ(28px); }
-
-
 .folha .placa {
   filter:
     saturate(calc(1 - 0.45 * var(--veu, 0)))
@@ -227,7 +224,6 @@
 
 
 .roteiro__janela--voando .folha { will-change: transform; }
-.roteiro__janela--voando .folha__tulipa { will-change: transform, opacity; }
 
 
 
