@@ -467,6 +467,9 @@
 .rodape__marca { width: auto; height: 56px; opacity: 0.85; }
 .rodape__linha { color: var(--tinta-fraca); font-size: var(--txt-apoio);
                  font-family: var(--fonte-mono); font-stretch: 78%; }
+.rodape__contato { color: inherit; text-decoration: underline;
+                   text-underline-offset: 0.2em; }
+.rodape__contato:hover { color: var(--tinta); }
 
 @media (min-width: 64rem) {
   .rodape { padding-bottom: var(--e-12); }
