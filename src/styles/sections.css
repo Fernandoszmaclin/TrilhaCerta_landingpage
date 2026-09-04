@@ -90,9 +90,15 @@
   font-size: var(--txt-titulo);
 
   line-height: 1.25;
-  letter-spacing: var(--tracking-display);
+  letter-spacing: -0.04em;
   color: var(--acento);
-  max-width: 24ch;
+  max-width: 30ch;
+  text-wrap: balance;
+}
+
+.dor__remate span {
+  display: inline-block;
+  max-inline-size: 100%;
 }
 .dor .botao { width: 100%; }
 

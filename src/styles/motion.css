@@ -42,6 +42,10 @@
   .botao { transition: background-color var(--dur-estado) linear, color var(--dur-estado) linear; }
   .botao:active { transform: none; opacity: 0.82; }
 
+  .botao--reserva::before { display: none; }
+  .botao--reserva .botao__marca { transform: none; transition: none; }
+  .botao--reserva:active { background: var(--laranja-fundo); }
+
   .redes__lista a { transition: color var(--dur-estado) linear; }
   .redes__lista a:active { transform: none; opacity: 0.82; }
 }

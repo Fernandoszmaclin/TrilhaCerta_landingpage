@@ -26,6 +26,34 @@
   background: var(--laranja);
   color: var(--sobre-marca);
 }
+
+.botao--reserva {
+  isolation: isolate;
+  overflow: hidden;
+  position: relative;
+}
+
+.botao--reserva::before {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  inset-block: -20%;
+  left: -42%;
+  width: 40%;
+  background: rgb(226 255 204 / 0.28);
+  transform: skewX(-18deg);
+  transition: transform var(--dur-estado) var(--ease-saida);
+}
+
+.botao--reserva > span,
+.botao--reserva .botao__marca {
+  position: relative;
+  z-index: 1;
+}
+
+.botao--reserva .botao__marca {
+  transition: transform var(--dur-toque) var(--ease-saida);
+}
 .botao--secundario {
   background: transparent;
   border-color: var(--acento);
@@ -80,6 +108,9 @@
   .botao--primario:hover   { background: var(--laranja-fundo); }
   .botao--flutuante:hover  { background: var(--zap-toque); }
 
+  .botao--reserva:hover::before { transform: translateX(350%) skewX(-18deg); }
+  .botao--reserva:hover .botao__marca { transform: translateX(2px); }
+
 
   .barra__marca:hover {
     transform: translateY(-2px) scale(1.05);
@@ -90,6 +121,10 @@
 
 
 .botao:active { transform: scale(0.98); }
+.botao--reserva:active {
+  background: var(--laranja-fundo);
+  transform: scale(0.97);
+}
 
 
 

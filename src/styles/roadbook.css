@@ -192,7 +192,10 @@
   text-wrap: pretty;
 }
 
-.folha .placa { margin-top: var(--e-5); }
+.folha .placa {
+  margin-top: var(--e-5);
+  border: 0;
+}
 
 
 
